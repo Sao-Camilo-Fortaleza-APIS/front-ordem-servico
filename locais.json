@@ -1,0 +1,46 @@
+[
+  {
+    "id": "1",
+    "name": "Sala de Emergência"
+  },
+  {
+    "id": "2",
+    "name": "Departamento de Cardiologia"
+  },
+  {
+    "id": "3",
+    "name": "Departamento de Radiologia"
+  },
+  {
+    "id": "4",
+    "name": "Enfermaria de Pediatria"
+  },
+  {
+    "id": "5",
+    "name": "Departamento de Cirurgia"
+  },
+  {
+    "id": "6",
+    "name": "Departamento de Oncologia"
+  },
+  {
+    "id": "7",
+    "name": "Enfermaria de Ortopedia"
+  },
+  {
+    "id": "8",
+    "name": "Departamento de Neurologia"
+  },
+  {
+    "id": "9",
+    "name": "Enfermaria de Maternidade"
+  },
+  {
+    "id": "10",
+    "name": "Unidade de Terapia Intensiva"
+  },
+  {
+    "id": "11",
+    "name": "Departamento de Psiquiatria"
+  }
+]
