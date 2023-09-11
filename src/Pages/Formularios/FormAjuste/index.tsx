@@ -101,16 +101,17 @@ export function FormAjuste() {
     const usuarioTrim = nm_usuario.trim();
     const userMaiusculo = usuarioTrim.toUpperCase();
 
-    /* 
- useEffect(() => {
+
+    useEffect(() => {
         async function fetchData() {
-            const response = await fetch('http://10.10.0.200:4321/get/setor');
-            const data = await response.json(); 
-            const optionsWithBlank = [{ id: "", name: "Selecione uma opção" }, ...data];
-            setOpcoes(optionsWithBlank);
+            const response = await api.get(`${import.meta.env.VITE_BASE_URL_PRD}/get/setor`)
+                .then(response => {
+                    const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
+                    setOpcoes(optionsWithBlank);
+                })
         }
         fetchData();
-    }, []); */
+    }, []);
 
     const handleChange = (event: any) => {
         setSelectedValue(event.target.value);
