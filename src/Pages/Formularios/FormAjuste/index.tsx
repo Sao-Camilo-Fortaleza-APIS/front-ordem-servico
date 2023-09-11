@@ -104,7 +104,7 @@ export function FormAjuste() {
 
     useEffect(() => {
         async function fetchData() {
-            const response = await api.get(`${import.meta.env.VITE_BASE_URL_PRD}/get/setor`)
+            const response = await api.get('/get/setor')
                 .then(response => {
                     const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
                     setOpcoes(optionsWithBlank);
