@@ -1,7 +1,15 @@
+import { ReactNode } from "react";
+import { StyledContainerForm } from "./styles";
+
+interface ContainerFormProps{
+  children: ReactNode;
+}
 
 
-export function ContainerForm() {
+export function ContainerForm({ children }: ContainerFormProps) {
   return (
-    <ContainerForm />
+    <StyledContainerForm>
+      {children}
+    </StyledContainerForm>
   )
 }

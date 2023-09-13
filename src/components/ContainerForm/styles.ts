@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const ContainerForm = styled.div`
+export const StyledContainerForm = styled.div`
     height: 100vh;
     width: 100%;
     display: flex;
