@@ -4,6 +4,8 @@ import { FormAjuste } from './Pages/Formularios/FormAjuste'
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess'
 import { GlobalStyles } from './Styles/global'
 import { HeaderComponent } from './components/Header'
+import { ContainerForm } from './components/ContainerForm'
+import { NavBar } from './components/NavBar'
 
 function App() {
 
@@ -23,12 +25,15 @@ function App() {
       {/*  <Router>
         <Routes> */}
       {/* Rota principal que exibe as opçoes de formularios  */}
-      {/*          <Route path='/' element={<FormAjuste />} />
+      {/* <Route path='/' element={<FormAjuste />} />
           <Route path='/ajuste/success/:nr_seq_os' element={<AjusteOk />} />
         </Routes>
       </Router> */}
-      <HeaderComponent />
-      <Outlet />
+      <ContainerForm>
+        <HeaderComponent />
+        <NavBar />
+        <Outlet />
+      </ContainerForm>
     </>
   )
 }

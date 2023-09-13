@@ -7,6 +7,7 @@ import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import { FormAjuste } from './Pages/Formularios/FormAjuste';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
+import { Historico } from './Pages/Formularios/Historico';
 
 
 const router = createBrowserRouter([
@@ -15,12 +16,16 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/ajuste',
+        path: '/',
         element: <RegisterServiceOrdem />,
       },
       {
         path: '/ajuste/success/:nr_seq_os',
         element: <AjusteOk />,
+      },
+      {
+        path: '/pesquisa',
+        element: <Historico />,
       }
     ],
   }

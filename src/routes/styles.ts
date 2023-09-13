@@ -1,7 +1,7 @@
 import styled from "styled-components";
 
 export const CardForm = styled.div`
-    margin-top: 1rem;
+/*     margin-top: 1rem; */
     width: 650px;
     height: 100%;
     @media (max-width:600px){
@@ -17,7 +17,7 @@ export const InputContainer = styled.div`
     background: white;
     border-radius: 10px;
     #titulo{
-        border-radius: 10px 10px 0px 0px;
+        /* border-radius: 10px 10px 0px 0px; */
         display: flex;
         justify-content: center;
         align-items: center;

@@ -1,10 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, ContainerForm, ImageBanner, Header, Logo, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./styles";
+import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./styles";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
+//import { ContainerForm } from "../components/ContainerForm";
 
 
 export function RegisterServiceOrdem() {
@@ -200,83 +201,83 @@ export function RegisterServiceOrdem() {
   }
   return (
     <>
-      <ContainerForm>
-        {isLoading && <Loader />}
 
-        <CardForm>
-          <div className="meio">
-            <form onSubmit={handleSubmit(registrarEvento)}>
-              <InputContainer>
-                <div className="titulo" id="titulo">
-                  <h2>Abertura de Ordem de Serviço</h2>
+      {isLoading && <Loader />}
+
+      <CardForm>
+        <div className="meio">
+          <form onSubmit={handleSubmit(registrarEvento)}>
+            <InputContainer>
+              <div className="titulo" id="titulo">
+                <h2>Abertura de Ordem de Serviço</h2>
+              </div>
+              <Solicitante>
+                <p>Usuário Tasy do solicitante: <b>*</b></p>
+                <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
+              </Solicitante>
+            </InputContainer>
+            <NmItem>
+              <p>Qual o seu setor? <b>*</b></p>
+              <select value={selectedValue} onChange={handleChange}>
+                {opcoesSetor.map(option => (
+                  <option key={option.nr_sequencia} value={option.nr_sequencia} >
+                    {option.ds_localizacao}
+                  </option>
+                ))}
+              </select>
+            </NmItem>
+            <NmItem>
+              <p>Equipamento: <b>*</b></p>
+              <select value={equipamento} onChange={handleEquip}>
+                {opcoesEquipamento.map(option => (
+                  <option key={option.nome_equipamento} value={option.valor} >
+                    {option.nome_equipamento}
+                  </option>
+                ))}
+              </select>
+              <Aviso>
+                <p>Neste campo informe qual equipe deverá de atender.</p>
+              </Aviso>
+            </NmItem>
+            <NmItem >
+              <p>Existe indisponibilidade? <b>*</b></p>
+              <div className="div" id="valores">
+                <div className="radio">
+                  <input type="radio" name="Sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
+                  <p>Sim</p>
                 </div>
-                <Solicitante>
-                  <p>Usuário Tasy do solicitante: <b>*</b></p>
-                  <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
-                </Solicitante>
-              </InputContainer>
-              <NmItem>
-                <p>Qual o seu setor? <b>*</b></p>
-                <select value={selectedValue} onChange={handleChange}>
-                  {opcoesSetor.map(option => (
-                    <option key={option.nr_sequencia} value={option.nr_sequencia} >
-                      {option.ds_localizacao}
-                    </option>
-                  ))}
-                </select>
-              </NmItem>
-              <NmItem>
-                <p>Equipamento: <b>*</b></p>
-                <select value={equipamento} onChange={handleEquip}>
-                  {opcoesEquipamento.map(option => (
-                    <option key={option.nome_equipamento} value={option.valor} >
-                      {option.nome_equipamento}
-                    </option>
-                  ))}
-                </select>
-                <Aviso>
-                  <p>Neste campo informe qual equipe deverá de atender.</p>
-                </Aviso>
-              </NmItem>
-              <NmItem >
-                <p>Existe indisponibilidade? <b>*</b></p>
-                <div className="div" id="valores">
-                  <div className="radio">
-                    <input type="radio" name="Sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
-                    <p>Sim</p>
-                  </div>
-                  <div className="radio">
-                    <input type="radio" name="Não" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
-                    <p>Não</p>
-                  </div>
-                  <div className="radio">
-                    <input type="radio" name="Parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
-                    <p>Parcialmente</p>
-                  </div>
+                <div className="radio">
+                  <input type="radio" name="Não" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
+                  <p>Não</p>
                 </div>
-                <Aviso>
-                  <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
-                </Aviso>
-              </NmItem>
-              <NmItem>
-                <p>Título da ordem: <b>*</b></p>
-                <input required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
-              </NmItem>
-              <NmItem>
-                <p>Detalhes do defeito: <b>*</b></p>
-                <input required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
-              </NmItem>
-              <NmItem>
-                <p>N° Ramal:<b>*</b></p>
-                <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
-              </NmItem>
-              <Btns>
-                <button id="enviar" type="submit">Enviar</button>
-              </Btns>
-            </form>
-          </div>
-        </CardForm>
-      </ContainerForm>
+                <div className="radio">
+                  <input type="radio" name="Parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
+                  <p>Parcialmente</p>
+                </div>
+              </div>
+              <Aviso>
+                <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
+              </Aviso>
+            </NmItem>
+            <NmItem>
+              <p>Título da ordem: <b>*</b></p>
+              <input required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
+            </NmItem>
+            <NmItem>
+              <p>Detalhes do defeito: <b>*</b></p>
+              <input required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
+            </NmItem>
+            <NmItem>
+              <p>N° Ramal:<b>*</b></p>
+              <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
+            </NmItem>
+            <Btns>
+              <button id="enviar" type="submit">Enviar</button>
+            </Btns>
+          </form>
+        </div>
+      </CardForm>
+
     </>
   )
 }
