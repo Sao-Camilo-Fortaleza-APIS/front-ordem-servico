@@ -1,9 +1,13 @@
 # Front-end Aplicação Ordem de Serviço
 
+![image](https://github.com/myguelangello/front-ordem-servico/assets/42946156/93ba09e6-01a4-46d1-9db2-2ab9c8f5b8d5)
+
+
 ## Tecnologias Utilizadas
 
 - [ReactJS](https://react.dev/) - Biblioteca Javascript para criação de interfaces do usuário
-- [Vitejs](https://vitejs.dev/) - Ferramenta de construção que visa fornecer uma experiência de desenvolvimento mais rápida e enxuta para projetos web modernos
+- [Styled-components](https://styled-components.com/) - Biblioteca de estilização que possibilita escrever códigos CSS dentro do JavaScript (CSS-in-JS).
+- [Vitejs](https://vitejs.dev/) - Ferramenta de construção de apps que visa fornecer uma experiência de desenvolvimento mais rápida e enxuta para projetos web modernos
 
 ## Como Executar
 
