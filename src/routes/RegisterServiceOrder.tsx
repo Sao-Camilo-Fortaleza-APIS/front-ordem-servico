@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./styles";
+import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./RegisterServiceOrder.styles";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
