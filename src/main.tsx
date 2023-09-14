@@ -16,15 +16,16 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/',
+        path: '/adicionar',
         element: <RegisterServiceOrdem />,
+        //index: true,
       },
       {
         path: '/ajuste/success/:nr_seq_os',
         element: <AjusteOk />,
       },
       {
-        path: '/pesquisa',
+        path: '/historico',
         element: <Historico />,
       }
     ],

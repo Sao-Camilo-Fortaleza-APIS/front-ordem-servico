@@ -1,11 +1,9 @@
-import { BrowserRouter as Router, Routes, Route, Outlet } from 'react-router-dom'
+import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
-import { FormAjuste } from './Pages/Formularios/FormAjuste'
-import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess'
 import { GlobalStyles } from './Styles/global'
-import { HeaderComponent } from './components/Header'
+import { Header } from './components/Header'
 import { ContainerForm } from './components/ContainerForm'
-import { NavBar } from './components/NavBar'
+import { Navbar } from './components/Navbar'
 
 function App() {
 
@@ -30,8 +28,8 @@ function App() {
         </Routes>
       </Router> */}
       <ContainerForm>
-        <HeaderComponent />
-        <NavBar />
+        <Header />
+        <Navbar />
         <Outlet />
       </ContainerForm>
     </>

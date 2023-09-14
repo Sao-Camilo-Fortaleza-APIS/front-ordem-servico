@@ -1,17 +1,35 @@
 import styled from "styled-components";
+import { Link } from "react-router-dom";
 
-export const StyledNavBar = styled.nav`
-    margin-top: 1rem;
-    width: 650px;
-    height: auto;
-    background: #CE2929;
+export const NavbarContainer = styled.nav`
+    height: 2.5rem;
+    width: 100%;
     display: flex;
-    padding: 2rem 1rem;
-    border-radius: 10px 10px 0 0;
-`;
+    align-items: center;
+    justify-content: space-evenly;
+    gap: 2rem;
+    margin: 1rem 0;
+    /*     background-color: #CE2929; */
+    `;
 
-export const StyledNavList = styled.ul`
-    display: flex;
+export const NavItem = styled(Link) < { active: boolean } > `
+    width: 100%;
+    text-align: center;
+    text-decoration: none;
+    font-size: 1rem;
+    padding: 0.625rem;
+    border-radius: 0.625rem;
+
+    background-color: #ce2929;
+    color: #fff; 
+    ${(props) => props.active ? `
+        background-color: #ce2929;
+        color: #fff;
+        ` : `
+        background-color: #fff;
+        color: #ce2929;    
+    `}
+   /*  display: flex;
     align-items: center;
     justify-content: space-evenly;
     gap: 4rem;
@@ -33,5 +51,5 @@ export const StyledNavList = styled.ul`
             color: #fff;
             font-weight: 600;
         }
-    }
+    } */
 `;

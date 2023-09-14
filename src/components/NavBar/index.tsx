@@ -1,21 +1,12 @@
-import { Link } from "react-router-dom";
-import { StyledNavList, StyledNavBar } from "./styles";
+import { useLocation } from "react-router-dom";
+import { NavItem, NavbarContainer } from "./styles";
 
-export function NavBar() {
+export function Navbar() {
+    const location = useLocation();
     return (
-        <StyledNavBar>
-            <StyledNavList>
-                <li>
-                    <Link to={'/'}>
-                        <span>Abertura de Ordem de Serviço</span>
-                    </Link>
-                </li>
-                <li>
-                    <Link to={'/pesquisa'}>
-                        <span>Pesquisar Ordem de Serviço</span>
-                    </Link>
-                </li>
-            </StyledNavList>
-        </StyledNavBar>
+        <NavbarContainer>
+            <NavItem to="/adicionar" active={location.pathname === '/adicionar'}>Abrir Ordem de Serviço</NavItem>
+            <NavItem to="/historico" active={location.pathname === '/historico'}>Visualizar histórico de Ordem</NavItem>
+        </NavbarContainer>
     );
 }
