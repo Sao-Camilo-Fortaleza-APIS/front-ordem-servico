@@ -208,9 +208,9 @@ export function RegisterServiceOrdem() {
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>
             <InputContainer>
-              <div className="titulo" id="titulo">
-                <h2>Abertura de Ordem de Serviço</h2>
-              </div>
+              {/*  <div className="titulo" id="titulo">
+                <h2>{location.pathname === '/adicionar' ? 'Abertura de Ordem de Serviço' : 'Visualização de histórico de Ordem'}</h2>
+              </div> */}
               <Solicitante>
                 <p>Usuário Tasy do solicitante: <b>*</b></p>
                 <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />

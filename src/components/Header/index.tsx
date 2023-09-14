@@ -1,13 +1,13 @@
-import { Header, ImageBanner, Logo } from "./styles";
+import { HeaderContainer, ImageBanner, Logo } from "./styles";
 
-export function HeaderComponent() {
+export function Header() {
   return (
-    <Header>
+    <HeaderContainer>
       <ImageBanner>
       </ImageBanner>
       <Logo>
         <img src="..\src\Images\logo_horizontal.png" alt="" width={250} />
       </Logo>
-    </Header>
+    </HeaderContainer>
   )
 }

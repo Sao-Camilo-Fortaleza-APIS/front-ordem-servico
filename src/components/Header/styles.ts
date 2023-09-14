@@ -1,11 +1,11 @@
 import styled from "styled-components"
 
-export const Header = styled.header`
+export const HeaderContainer = styled.header`
     display: flex;
     background: white;
     align-items: center;
     border-radius: 10px;
-    width: 650px;
+    width: 40.625rem;
     margin-top: 1rem;
     div{
         img{

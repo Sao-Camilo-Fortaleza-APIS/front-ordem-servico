@@ -15,9 +15,9 @@ export const CardForm = styled.div`
 
 export const InputContainer = styled.div`
     background: white;
-    border-radius: 10px;
+    border-radius: 0.625rem;
     #titulo{
-        /* border-radius: 10px 10px 0px 0px; */
+        border-radius: 10px 10px 0px 0px;
         display: flex;
         justify-content: center;
         align-items: center;
