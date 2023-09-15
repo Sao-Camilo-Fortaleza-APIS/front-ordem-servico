@@ -16,9 +16,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/adicionar',
+        path: '/',
         element: <RegisterServiceOrdem />,
-        //index: true,
+        index: true,
       },
       {
         path: '/ajuste/success/:nr_seq_os',

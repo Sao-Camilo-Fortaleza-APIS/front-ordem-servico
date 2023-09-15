@@ -2,7 +2,7 @@ import styled from "styled-components";
 
 export const CardForm = styled.div`
 /*     margin-top: 1rem; */
-    width: 650px;
+    width: 40.625rem;
     height: 100%;
     @media (max-width:600px){
         width: 95%;
@@ -93,16 +93,16 @@ export const Aviso = styled.div`
 `
 
 export const NmItem = styled.div`
-    background: white;
-    border-radius: 10px;
+    background: #fff;
+    border-radius: 0.625rem;
     padding: 1rem;
-    margin-top: 10px;
-    box-shadow: 0px 10px 40px -12px #00000056;
+    margin-top: 0.625rem;
+    box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056;
     b{
-        color: red;
+        color: #FF0000;
     }
     input{
-        margin-top: 04px;
+        margin-top: 0.25rem;
         background: none;
         width: 90%;
         padding: 0.5rem;

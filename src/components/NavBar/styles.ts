@@ -14,6 +14,7 @@ export const NavbarContainer = styled.nav`
 
 export const NavItem = styled(Link) < { active: boolean } > `
     width: 100%;
+    height: 100%;
     text-align: center;
     text-decoration: none;
     font-size: 1rem;
@@ -29,27 +30,27 @@ export const NavItem = styled(Link) < { active: boolean } > `
         background-color: #fff;
         color: #ce2929;    
     `}
-   /*  display: flex;
-    align-items: center;
-    justify-content: space-evenly;
-    gap: 4rem;
-    list-style: none;
-    width: 100%;
-    li{
-        transition: all 0.25s ease;
-        font-weight: 500;
-        :hover{
-            text-decoration: underline;
-            text-decoration-color: #fff;
-            cursor: pointer;
-        }
-        a {
-            text-decoration: none;
-            color: #fff;
-        }
-        span {
-            color: #fff;
-            font-weight: 600;
-        }
-    } */
 `;
+/*  display: flex;
+ align-items: center;
+ justify-content: space-evenly;
+ gap: 4rem;
+ list-style: none;
+ width: 100%;
+ li{
+     transition: all 0.25s ease;
+     font-weight: 500;
+     :hover{
+         text-decoration: underline;
+         text-decoration-color: #fff;
+         cursor: pointer;
+     }
+     a {
+         text-decoration: none;
+         color: #fff;
+     }
+     span {
+         color: #fff;
+         font-weight: 600;
+     }
+ } */
