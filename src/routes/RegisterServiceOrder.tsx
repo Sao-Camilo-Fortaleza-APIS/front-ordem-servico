@@ -105,11 +105,14 @@ export function RegisterServiceOrdem() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await api.get('/get/setor')
+      await api.get('/get/setor')
         .then(response => {
           const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
           setOpcoes(optionsWithBlank);
         })
+        .catch(error => {
+          console.log(error);
+        });
     }
     fetchData();
   }, []);
@@ -208,9 +211,6 @@ export function RegisterServiceOrdem() {
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>
             <InputContainer>
-              {/*  <div className="titulo" id="titulo">
-                <h2>{location.pathname === '/adicionar' ? 'Abertura de Ordem de Serviço' : 'Visualização de histórico de Ordem'}</h2>
-              </div> */}
               <Solicitante>
                 <p>Usuário Tasy do solicitante: <b>*</b></p>
                 <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
@@ -219,7 +219,7 @@ export function RegisterServiceOrdem() {
             <NmItem>
               <p>Qual o seu setor? <b>*</b></p>
               <select value={selectedValue} onChange={handleChange}>
-                {opcoesSetor.map(option => (
+                {opcoes.map(option => (
                   <option key={option.nr_sequencia} value={option.nr_sequencia} >
                     {option.ds_localizacao}
                   </option>
