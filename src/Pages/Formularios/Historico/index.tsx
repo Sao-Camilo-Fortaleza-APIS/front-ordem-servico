@@ -2,35 +2,39 @@ import { useState } from "react";
 import { Label } from "../../../components/Label";
 import { Input } from "../../../components/Input";
 
-import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles";
+import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
-import { CheckCircle2, Search } from "lucide-react";
+import { CheckCircle2, Search } from "lucide-react"; // Importação dos ícones
 
 import api from "../../../services/api";
 
-interface ResultOrderDataProps {
+interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   updated_at: string
   username: string
   text: string
 }
 
 export function Historico() {
-  const [orderNumber, setOrderNumber] = useState<number>(0)
+  const [orderNumber, setOrderNumber] = useState<number>(0) // orderNumber é o estado que guarda o valor do input de número da ordem
+
+  /**
+   * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
+   * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
+   */
   const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
 
   async function handleSearch() {
-    const response = await api.get(`/get/hist_ordem`, {
-      params: {
-        nr_ordem_servico: orderNumber
-      }
-    }).then(response => {
-      console.log(response.data)
-      setResultOrderData(response.data as ResultOrderDataProps)
-    }).catch(error => {
-      console.log("deu errrroooooooooo");
+    console.log();
 
-      console.log(error)
-    })
+    await api // await é o método que espera a resposta da API
+      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
+      .then(response => {
+        console.log(response.data)
+        setResultOrderData(response.data as ResultOrderDataProps) // setResultOrderData é o método que guarda os dados da ordem pesquisada no estado resultOrderData
+      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
+      .catch(error => {
+        console.log(error)
+      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
 
   }
   return (
