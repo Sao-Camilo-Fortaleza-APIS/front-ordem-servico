@@ -4,14 +4,14 @@ import { Input } from "../../../components/Input";
 
 import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
-import { CheckCircle2, Search } from "lucide-react"; // Importação dos ícones
+import { Search } from "lucide-react"; // Importação dos ícones
 
 import api from "../../../services/api";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
-  updated_at: string
-  username: string
-  text: string
+  date: string
+  user: string
+  history: string
 }
 
 export function Historico() {
@@ -21,7 +21,7 @@ export function Historico() {
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
    * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
    */
-  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
+  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps[]>([])
 
   async function handleSearch() {
     console.log();
@@ -30,7 +30,7 @@ export function Historico() {
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
         console.log(response.data)
-        setResultOrderData(response.data as ResultOrderDataProps) // setResultOrderData é o método que guarda os dados da ordem pesquisada no estado resultOrderData
+        setResultOrderData(response.data) // setResultOrderData é o método que guarda os dados da ordem pesquisada no estado resultOrderData
       }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
       .catch(error => {
         console.log(error)
@@ -52,21 +52,22 @@ export function Historico() {
       <ContainerChat>
         <h2>Histórico</h2>
         <ContainerMessages>
-          <Message>
-            <span>myguel.angello</span>
-            <span>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-              Lorem ipsum dolor sit amet consectetur adipisicing elit.
-            </span>
-            <span>14/09/2023 - 10h12</span>
-          </Message>
+          {resultOrderData.map(order => {
+            return (
+              <Message>
+                <span>{order.user}</span>
+                <span>{order.history}</span>
+                <span>{order.date}</span>
+              </Message>
+            )
+          })}
 
-          <ContainerButton>
+          {/* <ContainerButton>
             <button className="check" onClick={handleSearch}>
               <CheckCircle2 size={20} />
               Marcar como solucionada
             </button>
-          </ContainerButton>
+          </ContainerButton> */}
         </ContainerMessages>
       </ContainerChat>
 
