@@ -1,9 +1,14 @@
 import * as Dialog from '@radix-ui/react-dialog';
 import { Input, Button, DialogContent, DialogDescription, DialogOverlay, DialogTitle, Fieldset, Flex, IconButton } from './styles';
 import { Search, X } from 'lucide-react';
+import { ReactElement, ReactNode } from 'react';
+
+interface ModalProps {
+  children: ReactNode;
+}
 
 
-export function Modal() {
+export function Modal({ children }: ModalProps) {
   return (
     <Dialog.Root>
       <Dialog.Trigger>
@@ -22,13 +27,7 @@ export function Modal() {
 
           </DialogDescription>
 
-          <Input id='order' name='order' />
-
-          <Flex>
-            <Dialog.Close asChild>
-              <Button>Pesquisar</Button>
-            </Dialog.Close>
-          </Flex>
+          {children}
 
           <Dialog.Close asChild>
             <IconButton aria-label='Close'>

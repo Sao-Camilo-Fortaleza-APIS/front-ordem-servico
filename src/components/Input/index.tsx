@@ -1,6 +1,6 @@
 import { Element } from "./styles";
 
-interface InputProps {
+export interface InputProps {
   type: string
   name: string
   value: string | number

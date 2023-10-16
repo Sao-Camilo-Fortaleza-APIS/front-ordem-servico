@@ -1,12 +1,15 @@
 import { useState } from "react";
 import { Label } from "../../../components/Label";
-import { Input } from "../../../components/Input";
 
 import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
-import { Search } from "lucide-react"; // Importação dos ícones
 
 import api from "../../../services/api";
+import { Modal } from "../../../components/Modal";
+import { Button, Flex, Input } from "../../../components/Modal/styles";
+import * as Dialog from "@radix-ui/react-dialog";
+
+import { Search } from "lucide-react"; // Importação dos ícones
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   order: number
@@ -22,13 +25,15 @@ interface ResultHistoryDataProps { // Essa interface é o tipo dos dados que a A
 
 
 export function Historico() {
-  const [orderNumber, setOrderNumber] = useState<number>(0) // orderNumber é o estado que guarda o valor do input de número da ordem
+  const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
 
   /**
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
    * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
    */
   const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
+
+  const [open, setOpen] = useState(false);
 
   async function handleSearch() {
     console.log();
@@ -46,18 +51,28 @@ export function Historico() {
   }
   return (
     <Container>
-      <Label htmlFor="order" content="Número da Ordem" required />
+      {/* <Label htmlFor="order" content="Número da Ordem" required />
       <div>
-        <Input name="order" value={orderNumber} onChange={event => setOrderNumber(event.target.value)} type="number" />
+
         <ContainerButton>
           <button className="pesquisar" onClick={handleSearch}>
             <Search size={20} />
           </button>
         </ContainerButton>
-      </div>
+      </div> */}
 
       <ContainerChat>
-        <h2>Histórico</h2>
+        <div>
+          <h2>Histórico</h2>
+          <Modal>
+            <Input name="order" value={orderNumber} onChange={event => setOrderNumber(event.target.value)} type="text" />
+            <Flex>
+              <Dialog.Close asChild>
+                <Button type="submit">Pesquisar</Button>
+              </Dialog.Close>
+            </Flex>
+          </Modal>
+        </div>
         <ContainerMessages>
           {resultHistoryData.map((history, index) => {
             return (
