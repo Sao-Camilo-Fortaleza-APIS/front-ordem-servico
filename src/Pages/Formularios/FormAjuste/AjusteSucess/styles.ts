@@ -16,8 +16,12 @@ export const Ok = styled.div`
         justify-content: center;
     }
     h3{
-        font-weight: 300;
+        font-weight: 400;
         padding-top: 0.5rem;
+        
+        >span{
+            font-weight: 700;
+        }
     }
     img{
         margin: 4rem 0;
@@ -55,7 +59,7 @@ export const BotaoAjuste = styled.div`
             color: #FFFFFF;
             border-radius: 5px;
             outline: none;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;

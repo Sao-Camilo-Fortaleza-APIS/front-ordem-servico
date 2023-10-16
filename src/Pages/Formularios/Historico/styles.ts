@@ -29,7 +29,7 @@ export const ContainerButton = styled.div`
           margin-left: 0.625rem;
           gap: 0.25rem;
 
-          font-weight: 600;
+          font-weight: 500;
           color: #fff;
           background-color: #10b981;
           border-radius: 0.625rem;
@@ -95,6 +95,6 @@ export const Message = styled.div`
 const Span = styled.span`
 color: #f00;
 font-size: 1.125rem;
-font-weight: 600;
+font-weight: 500;
 margin-left: 0.25rem;
 `

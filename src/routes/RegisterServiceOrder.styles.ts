@@ -334,7 +334,7 @@ export const Btns = styled.div`
             color: #FFFFFF;
             border-radius: 5px;
             outline: none;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;
@@ -350,7 +350,7 @@ export const Btns = styled.div`
             color: #FFFFFF;
             border-radius: 5px;
             outline: none;
-            font-weight: 800;
+            font-weight: 700;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;
