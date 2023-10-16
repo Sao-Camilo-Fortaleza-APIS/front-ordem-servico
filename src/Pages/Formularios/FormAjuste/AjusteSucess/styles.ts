@@ -1,15 +1,15 @@
 import styled from "styled-components";
 
 export const Ok = styled.div`
-    background: white;
+    background: #ffffff;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    border-radius: 5px;
+    justify-content: flex-start;
     height: 100%;
-    margin-top: 1rem;
-    width: 70%;
+    width: 100%;
+    border-radius: 5px;
+    padding-top: 2rem;
     div{
         display: flex;
         align-items: center;
@@ -17,9 +17,10 @@ export const Ok = styled.div`
     }
     h3{
         font-weight: 300;
+        padding-top: 0.5rem;
     }
     img{
-        margin-top: 3rem;
+        margin: 4rem 0;
     }
     @media (max-width: 600px) {
        width: 96%;
@@ -39,18 +40,15 @@ export const Ok = styled.div`
 `
 
 export const BotaoAjuste = styled.div`
-    margin-top: 4rem;
+    display: flex;
     align-items: center;
     justify-content: center;
-    display: flex;
     gap: 3rem;
-    margin-bottom: 1rem;
+    //margin: 2rem 0;
     button{
         padding: 20px;
         width: 400px;
-        margin-bottom: 8rem;
-        font-size: large;
-       
+        font-size: large; 
         }
         #enviar{
             background: linear-gradient(to right, #2412c7, #4ab6f5);
