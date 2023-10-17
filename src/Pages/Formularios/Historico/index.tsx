@@ -4,7 +4,7 @@ import { Label } from "../../../components/Label";
 import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
 
-import removeHTML from '../../utils/remove-tag.ts';
+import removeHTML from '../../utils/remove-html.ts';
 
 import api from "../../../services/api";
 import { Modal } from "../../../components/Modal";
