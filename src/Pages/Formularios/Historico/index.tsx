@@ -36,7 +36,7 @@ export function Historico() {
   const [open, setOpen] = useState(true);
 
   async function handleSearch() {
-    console.log();
+    console.log(orderNumber);
 
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
@@ -66,10 +66,10 @@ export function Historico() {
         <div>
           <h2>Histórico</h2>
           <Modal open={open} setOpen={setOpen}>
-            <Input name="order" value={orderNumber} onChange={event => setOrderNumber(event.target.value)} type="text" />
+            <Input name="order" value={orderNumber} onChange={event => setOrderNumber(event.target.value)} type="text" autoComplete="false" />
             <Flex>
               <Dialog.Close asChild>
-                <Button type="submit">Pesquisar</Button>
+                <Button type="submit" onClick={handleSearch}>Pesquisar</Button>
               </Dialog.Close>
             </Flex>
           </Modal>
