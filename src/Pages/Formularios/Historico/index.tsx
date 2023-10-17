@@ -6,6 +6,8 @@ import { Container, ContainerButton, ContainerChat, ContainerMessages, Message }
 
 import { Search } from "lucide-react"; // Importação dos ícones
 
+import removeHTML from '../../utils/remove-tag.ts';
+
 import api from "../../../services/api";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
@@ -63,7 +65,7 @@ export function Historico() {
             return (
               <Message key={index}>
                 <span>{history.user}</span>
-                <span>{history.history}</span>
+                <span>{removeHTML(history.history)}</span>
                 <span>{history.date}</span>
               </Message>
             )
