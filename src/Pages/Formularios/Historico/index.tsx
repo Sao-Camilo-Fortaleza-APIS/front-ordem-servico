@@ -33,7 +33,7 @@ export function Historico() {
    */
   const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
 
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(true);
 
   async function handleSearch() {
     console.log();
@@ -51,6 +51,7 @@ export function Historico() {
   }
   return (
     <Container>
+
       {/* <Label htmlFor="order" content="Número da Ordem" required />
       <div>
 
@@ -64,7 +65,7 @@ export function Historico() {
       <ContainerChat>
         <div>
           <h2>Histórico</h2>
-          <Modal>
+          <Modal open={open} setOpen={setOpen}>
             <Input name="order" value={orderNumber} onChange={event => setOrderNumber(event.target.value)} type="text" />
             <Flex>
               <Dialog.Close asChild>

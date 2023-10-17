@@ -1,16 +1,18 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Input, Button, DialogContent, DialogDescription, DialogOverlay, DialogTitle, Fieldset, Flex, IconButton } from './styles';
+import { Button, DialogContent, DialogDescription, DialogOverlay, DialogTitle, Fieldset, Flex, IconButton } from './styles';
 import { Search, X } from 'lucide-react';
-import { ReactElement, ReactNode } from 'react';
+import { ReactNode } from 'react';
 
 interface ModalProps {
   children: ReactNode;
+  open: boolean;
+  setOpen: (open: boolean) => void;
 }
 
 
-export function Modal({ children }: ModalProps) {
+export function Modal({ open, setOpen, children }: ModalProps) {
   return (
-    <Dialog.Root>
+    <Dialog.Root open={open} onOpenChange={setOpen}>
       <Dialog.Trigger>
         <Button variant='search'>
           <Search size={20} />
