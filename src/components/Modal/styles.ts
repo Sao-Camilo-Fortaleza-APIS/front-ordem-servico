@@ -73,36 +73,35 @@ export const Flex = styled.div`
   margin-top: 1.25rem;
 `;
 
-export const Button = styled.button<props>`
+export const Button = styled.button<{ variant?: string }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  border-radius: 0.313rem;
-  padding: 0 1rem;
+  padding: 1rem 1rem;
   font-size: 1rem;
   line-height: 1;
   font-weight: 500;
-  height: 2.25rem;
-  background-color: #e4e4e7;
+  background-color: ${props => props.variant === 'search-icon' ? '#ce2929' : '#fff'};
   color: #000;
-	outline: none;
-	cursor: pointer;
-	border: #e4e4e7 1px solid;
-	
+  cursor: pointer;
+  transition: all 0.25s ease;
+  position: ${props => props.variant === 'search-icon' ? 'absolute' : 'relative'};
+  right: ${props => props.variant === 'search-icon' ? '-4rem' : ''};
+  top: ${props => props.variant === 'search-icon' ? '0.5rem' : ''};
+	border: ${props => props.variant === 'search-icon' ? 'none' : '#e4e4e7 1px solid'};
+  border-radius: ${props => props.variant === 'search-icon' ? '999px' : '0.313rem'};
 
+	
   :hover {
-		background-color: #fafafa;
-		border: #e4e4e7 2px solid;
+		background-color: ${props => props.variant === 'search-icon' ? '#ef4444' : '#e4e4e7'};
+		border: ${props => props.variant === 'search-icon' ? 'none' : '#71717a 1px solid'};
 	}
 
 	:focus {
-		box-shadow: 0 0 0 2px #000;
+		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 	}
 
-	${props => props.variant === 'search' && `
-		border-radius: 0.313rem 0 0 0.313rem;
-		
-	`}
+
 `;
 
 export const IconButton = styled.button`
@@ -118,24 +117,14 @@ export const IconButton = styled.button`
   color: #000;
   position: absolute;
   top: 0.625rem;
-  right: 0.625rem;
+  right:  0.625rem;
 
 	:hover {
 		background-color: #e4e4e7;
 	}
 	:focus {
-		box-shadow: 0 0 0 2px #000;
+		box-shadow: 0 0 0 1px #000;
 	}
-`;
-
-
-export const Fieldset = styled.fieldset`
-  all: unset;
-  display: flex;
-  gap: 1.25rem;
-  align-items: center;
-	justify-content: center;
-  margin-bottom: 1rem;
 `;
 
 export const Label = styled.label`
@@ -153,15 +142,16 @@ export const Input = styled.input`
   justify-content: center;
   border-radius: 0.313rem;
   padding: 0 0.5rem;
-	margin: 1rem 0;
+	margin: 0.5rem 0;
   font-size: 1rem;
   line-height: 1;
   color: #000;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   height: 2.25rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+  border: #E4E4E7 1px solid;
 
 	:focus {
-  box-shadow: 0 0 0 2px #000;
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 }
 
 `;

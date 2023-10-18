@@ -61,6 +61,9 @@ export const ContainerMessages = styled.div`
   height: 100%;
   border-radius: 0.625rem;
   padding: 1rem;
+
+  /* para alinhar button com icone de pesquisa */
+  position: relative;
 `
 
 
