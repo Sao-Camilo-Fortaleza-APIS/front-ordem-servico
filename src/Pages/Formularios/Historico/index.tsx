@@ -4,14 +4,16 @@ import { Modal } from "../../../components/Modal";
 import { Button, Flex, Input } from "../../../components/Modal/styles";
 import * as Dialog from "@radix-ui/react-dialog";
 
-import { Container, ContainerButton, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
+import { Container, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
-import { useFetch } from "../../../hooks/useFetch";
 import { Loader } from "../../../components/Load";
 
 import { removeHTML } from '../../../utils/remove-html'
 
+import EmptyHistory from '../../../Images/location_search.svg'
+
 import api from "../../../services/api";
+import { convertDate } from "../../../utils/convert-date";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   order: number
@@ -55,13 +57,16 @@ export function Historico() {
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
 
   }
+
   return (
     <>
       {isLoading && <Loader />}
-      <Container>
 
+      <Container>
         <ContainerChat>
+
           <h2>Histórico</h2>
+
           <ContainerMessages>
             <Modal open={open} setOpen={setOpen}>
               <Input
@@ -88,25 +93,25 @@ export function Historico() {
               </Flex>
             </Modal>
 
-            {resultHistoryData.map((history, index) => {
-              return (
-                <Message key={index}>
-                  <span>{history.user}</span>
-                  <span>{removeHTML(history.history)}</span>
-                  <span>{history.date}</span>
-                </Message>
-              )
-            })}
+            {resultHistoryData.length === 0 ? (
+              <div className="div-image">
+                <img className="image" src={EmptyHistory} alt="Não há histórico" />
+              </div>
+            ) : (
+              resultHistoryData.map((history, index) => {
+                return (
+                  <Message key={index}>
+                    <span>{history.user}</span>
+                    <span>{removeHTML(history.history)}</span>
+                    <span>{convertDate(history.date)}</span>
+                  </Message>
+                )
+              })
+            )}
 
-            {/* <ContainerButton>
-            <button className="check" onClick={handleSearch}>
-              <CheckCircle2 size={20} />
-              Marcar como solucionada
-            </button>
-          </ContainerButton> */}
+
           </ContainerMessages>
         </ContainerChat>
-
       </Container>
     </>
   )

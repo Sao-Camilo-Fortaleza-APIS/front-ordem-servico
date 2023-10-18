@@ -41,9 +41,7 @@ export const ContainerButton = styled.div`
             opacity: 0.9;
             color: #fff;
           }
-          
         }
-
 `;
 
 export const ContainerChat = styled.div`
@@ -52,7 +50,7 @@ export const ContainerChat = styled.div`
   width: 100%;
   height: fit-content;
   gap: 0.5rem;
-  margin: 1rem 0 2rem 0;
+  margin: 0 0 2rem 0;
 `
 
 export const ContainerMessages = styled.div`
@@ -64,6 +62,18 @@ export const ContainerMessages = styled.div`
 
   /* para alinhar button com icone de pesquisa */
   position: relative;
+
+  /* ajustar img */
+  > .div-image {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+  > .div-image .image {
+    width: 12.5rem;
+    height: 12.5rem;
+    border-radius: 50%;
+  }
 `
 
 
