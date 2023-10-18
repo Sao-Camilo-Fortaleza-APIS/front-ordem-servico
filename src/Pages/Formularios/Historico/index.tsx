@@ -14,6 +14,8 @@ import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
 import { convertDate } from "../../../utils/convert-date";
+import { Span } from "../../../components/Label/styles";
+import { Link } from "react-router-dom";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   order: number
@@ -99,13 +101,35 @@ export function Historico() {
               </div>
             ) : (
               resultHistoryData.map((history, index) => {
-                return (
-                  <Message key={index}>
-                    <span>{history.user}</span>
-                    <span>{removeHTML(history.history)}</span>
-                    <span>{convertDate(history.date)}</span>
-                  </Message>
-                )
+                if (resultHistoryData.length > 3 && index > resultHistoryData.length - 4) { // Se o tamanho do array for maior que 3 e o index for menor que 3, ele renderiza os 3 primeiros elementos do array
+                  if (index === 0) { // No terceiro elemento do array, ele renderiza o botão de ver mais
+                    return (
+                      <>
+                        <a href="#"><span>Ver mais</span></a>
+                        <br />
+                        <br />
+                        <Message key={index}>
+                          <span>{history.user}</span>
+                          <span>{removeHTML(history.history)}</span>
+                          <span>{convertDate(history.date)}</span>
+                        </Message>
+                      </>
+                    )
+                  }
+
+                  return (
+                    <Message key={index}>
+                      <span>{history.user}</span>
+                      <span>{removeHTML(history.history)}</span>
+                      <span>{convertDate(history.date)}</span>
+                    </Message>
+                  )
+                } else if (index < 1) {
+                  return (
+                    <Message key={index}>
+                      <span>Ver mais</span>
+                    </Message>)
+                }
               })
             )}
 

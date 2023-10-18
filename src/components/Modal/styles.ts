@@ -90,7 +90,6 @@ export const Button = styled.button<{ variant?: string }>`
   top: ${props => props.variant === 'search-icon' ? '0.5rem' : ''};
 	border: ${props => props.variant === 'search-icon' ? 'none' : '#e4e4e7 1px solid'};
   border-radius: ${props => props.variant === 'search-icon' ? '999px' : '0.313rem'};
-
 	
   :hover {
 		background-color: ${props => props.variant === 'search-icon' ? '#ef4444' : '#e4e4e7'};
@@ -101,7 +100,23 @@ export const Button = styled.button<{ variant?: string }>`
 		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
 	}
 
-
+  /* link */
+  ${props => props.variant === 'link' && `
+    margin-top: 0.5rem;
+    background-color: #e4e4e7;
+    color: #000;
+    border: transparent 1px solid;
+    padding: 0;
+    font-size: 1rem;
+    font-weight: 400;
+    line-height: 1.5;
+    text-decoration: underline;
+    cursor: pointer;
+    transition: all 0.25s ease;
+    :hover {
+      opacity: 0.9;
+    }
+  `}
 `;
 
 export const IconButton = styled.button`
