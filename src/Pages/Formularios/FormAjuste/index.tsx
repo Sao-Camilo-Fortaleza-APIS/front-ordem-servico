@@ -234,8 +234,8 @@ export function FormAjuste() {
                             <NmItem>
                                 <p>Equipamento: <b>*</b></p>
                                 <select value={equipamento} onChange={handleEquip}>
-                                    {opcoesEquipamento.map(option => (
-                                        <option key={option.nome_equipamento} value={option.valor} >
+                                    {opcoesEquipamento.map((option, index) => (
+                                        <option key={index} value={option.valor} >
                                             {option.nome_equipamento}
                                         </option>
                                     ))}
