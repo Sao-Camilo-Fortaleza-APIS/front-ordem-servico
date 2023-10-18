@@ -1,13 +1,10 @@
-export function removeHTML(stringWithHTML): string { 
-    if ((str===null) || (str==='')) 
-        return false; 
+export function removeHTML(stringHTML: any): string | boolean {
+    if ((stringHTML === null) || (stringHTML === ''))
+        return false;
     else
-        str = str.toString(); 
-          
-    // Regular expression to identify HTML tags in 
-    // the input string. Replacing the identified 
-    // HTML tag with a null string. 
-    const stringWithoutHTML = str.replace( /(<([^>]+)>)/ig, ''); 
+        stringHTML = stringHTML.toString();
+
+    const stringWithoutHTML = stringHTML.replace(/(<([^>]+)>)/ig, '');
 
     return stringWithoutHTML;
 }
