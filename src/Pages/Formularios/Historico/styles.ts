@@ -88,7 +88,8 @@ export const HeaderOrder = styled.div`
 export const ContainerMessages = styled.div`
   background-color: #fff;
   width: 100%;
-  height: 100%;
+  height: 55vh;
+  overflow-y: scroll;
   border-radius: 0.625rem;
   padding: 1rem;
 

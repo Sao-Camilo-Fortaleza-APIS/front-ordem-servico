@@ -6,7 +6,7 @@ import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
 
-import { Container, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
+import { Container, ContainerChat, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
@@ -16,9 +16,10 @@ import { Search } from "lucide-react";
 
 import api from "../../../services/api";
 import { Fieldset } from "../../../components/Modal/styles";
+import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
-  order: number
+  number: number
   requester: string
   title: string
 }
@@ -40,6 +41,7 @@ export function Historico() {
    * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
   */
   const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
+  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>()
 
   async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -49,8 +51,9 @@ export function Historico() {
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
-        console.log(response.data.history)
+        console.log(response.data.order)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
+        setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setOrderNumber('')
         setIsLoading(false)
       }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
@@ -66,57 +69,57 @@ export function Historico() {
       {isLoading && <Loader />}
 
       <Container>
+        <h3>Histórico</h3>
+        <HeaderOrder>
+          <div className="number-and-title">
+            <strong>{resultOrderData?.number} - </strong>
+            <span>{resultOrderData?.title} aqui nodfgfgf posto</span>
+          </div>
+
+          <div className="requester">
+            <span>{resultOrderData?.requester}</span>
+          </div>
+
+          <Modal open={open} setOpen={setOpen}>
+
+            <form onSubmit={handleSearch}>
+              <Label htmlFor="order">Número da Ordem de Serviço</Label>
+              <Fieldset>
+                <Input
+                  required
+                  id="order"
+                  name="order"
+                  type="number"
+                  min={1}
+                  value={orderNumber}
+                  onChange={event => setOrderNumber(event.target.value)}
+                  placeholder="Número da ordem"
+                />
+                <Button type="submit">
+                  <Search size="20" color="#71717a" />
+                </Button>
+              </Fieldset>
+            </form>
+          </Modal>
+        </HeaderOrder>
+
         <ContainerChat>
 
-          <h2>Histórico</h2>
+
 
           <ContainerMessages>
-            <Modal open={open} setOpen={setOpen}>
-
-              <form onSubmit={handleSearch}>
-                <Label htmlFor="order">Número da Ordem de Serviço</Label>
-                <Fieldset>
-                  <Input
-                    required
-                    id="order"
-                    name="order"
-                    type="number"
-                    min={1}
-                    value={orderNumber}
-                    onChange={event => setOrderNumber(event.target.value)}
-                    placeholder="Número da ordem"
-                  />
-                  <Button
-                    type="submit"
-                  >
-                    <Search size="20" color="#71717a" />
-                  </Button>
-                </Fieldset>
-              </form>
-            </Modal>
-
             {resultHistoryData.length === 0 ? (
               <div className="div-image">
                 <img className="image" src={EmptyHistory} alt="Não há histórico" />
               </div>
             ) : (
               resultHistoryData.map((history, index) => {
-                if (resultHistoryData.length > 3 && index > resultHistoryData.length - 4) { // Se o tamanho do array for maior que 3 e o index for menor que 3, ele renderiza os 3 primeiros elementos do array
-                  if (index === 0) { // No terceiro elemento do array, ele renderiza o botão de ver mais
-                    return (
-                      <>
-                        <a href="#"><span>Ver mais</span></a>
-                        <br />
-                        <br />
-                        <Message key={index}>
-                          <span>{history.user}</span>
-                          <span>{removeHTML(history.history)}</span>
-                          <span>{convertDate(history.date)}</span>
-                        </Message>
-                      </>
-                    )
-                  }
-
+                /**
+                 * Se o tamanho do array for maior que 3 e o index for maior/igual que o tamanho do array -3 (limite de mensagens), 
+                 * ele renderizará somente os 3 primeiros elementos do array
+                 */
+                if (resultHistoryData.length > 3 && index >= resultHistoryData.length - 3) {
+                  //if (index = resultHistoryData.length - 3) { // No terceiro elemento do array, ele renderiza o botão de ver mais
                   return (
                     <Message key={index}>
                       <span>{history.user}</span>
@@ -124,11 +127,15 @@ export function Historico() {
                       <span>{convertDate(history.date)}</span>
                     </Message>
                   )
-                } else if (index < 1) {
+                  //}
+                } else {
                   return (
                     <Message key={index}>
-                      <span>Ver mais</span>
-                    </Message>)
+                      <span>{history.user}</span>
+                      <span>{removeHTML(history.history)}</span>
+                      <span>{convertDate(history.date)}</span>
+                    </Message>
+                  )
                 }
               })
             )}
