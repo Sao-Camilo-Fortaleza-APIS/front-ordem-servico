@@ -1,15 +1,15 @@
 import { ReactNode } from 'react';
+import { DialogContent, DialogDescription, DialogOverlay, DialogTitle, IconButton } from './styles';
 import * as Dialog from '@radix-ui/react-dialog';
-import { Button, DialogContent, DialogDescription, DialogOverlay, DialogTitle, IconButton, Label } from './styles';
 
 import { Search, X } from 'lucide-react';
+import { Button } from '../Button';
 
 interface ModalProps {
   children: ReactNode;
   open: boolean;
   setOpen: (open: boolean) => void;
 }
-
 
 export function Modal({ open, setOpen, children }: ModalProps) {
   return (
@@ -27,7 +27,6 @@ export function Modal({ open, setOpen, children }: ModalProps) {
           <DialogTitle>Busca</DialogTitle>
           <DialogDescription>Busque por uma ordem para visualizar os históricos</DialogDescription>
 
-          <Label htmlFor="order">Número da Ordem de Serviço</Label>
           {children}
 
           <Dialog.Close asChild>

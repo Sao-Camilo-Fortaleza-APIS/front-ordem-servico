@@ -70,53 +70,7 @@ export const DialogDescription = styled(Dialog.Description)`
 export const Flex = styled.div`
   display: flex; 
   justify-content: flex-end;
-  margin-top: 1.25rem;
-`;
-
-export const Button = styled.button<{ variant?: string }>`
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  padding: 1rem 1rem;
-  font-size: 1rem;
-  line-height: 1;
-  font-weight: 500;
-  background-color: ${props => props.variant === 'search-icon' ? '#ce2929' : '#fff'};
-  color: #000;
-  cursor: pointer;
-  transition: all 0.25s ease;
-  position: ${props => props.variant === 'search-icon' ? 'absolute' : 'relative'};
-  right: ${props => props.variant === 'search-icon' ? '-4rem' : ''};
-  top: ${props => props.variant === 'search-icon' ? '0.5rem' : ''};
-	border: ${props => props.variant === 'search-icon' ? 'none' : '#e4e4e7 1px solid'};
-  border-radius: ${props => props.variant === 'search-icon' ? '999px' : '0.313rem'};
-	
-  :hover {
-		background-color: ${props => props.variant === 'search-icon' ? '#ef4444' : '#e4e4e7'};
-		border: ${props => props.variant === 'search-icon' ? 'none' : '#71717a 1px solid'};
-	}
-
-	:focus {
-		box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-	}
-
-  /* link */
-  ${props => props.variant === 'link' && `
-    margin-top: 0.5rem;
-    background-color: #e4e4e7;
-    color: #000;
-    border: transparent 1px solid;
-    padding: 0;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    text-decoration: underline;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    :hover {
-      opacity: 0.9;
-    }
-  `}
+  padding: 0.5rem 0;
 `;
 
 export const IconButton = styled.button`
@@ -141,33 +95,3 @@ export const IconButton = styled.button`
 		box-shadow: 0 0 0 1px #000;
 	}
 `;
-
-export const Label = styled.label`
-	color: #000;
-	font-size: 0.875rem;
-	font-weight: 400;
-	line-height: 1.5;
-`;
-
-export const Input = styled.input`
-	width: 100%;
-  flex: 1;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  border-radius: 0.313rem;
-  padding: 0 0.5rem;
-	margin: 0.5rem 0;
-  font-size: 1rem;
-  line-height: 1;
-  color: #000;
-  height: 2.25rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-  border: #E4E4E7 1px solid;
-
-	:focus {
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-}
-
-`;
-
