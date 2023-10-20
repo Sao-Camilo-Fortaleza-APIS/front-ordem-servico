@@ -1,21 +1,21 @@
 import { useState } from "react";
 
 import { Modal } from "../../../components/Modal";
-import { Button, Flex, Input } from "../../../components/Modal/styles";
-import * as Dialog from "@radix-ui/react-dialog";
+import { Loader } from "../../../components/Load";
+import { Input } from "../../../components/Input";
+import { Button } from "../../../components/Button";
+import { Label } from "../../../components/Label";
 
 import { Container, ContainerChat, ContainerMessages, Message } from "./styles"; // Importação dos estilos
 
-import { Loader } from "../../../components/Load";
-
 import { removeHTML } from '../../../utils/remove-html'
+import { convertDate } from "../../../utils/convert-date";
 
 import EmptyHistory from '../../../Images/location_search.svg'
+import { Search } from "lucide-react";
 
 import api from "../../../services/api";
-import { convertDate } from "../../../utils/convert-date";
-import { Span } from "../../../components/Label/styles";
-import { Link } from "react-router-dom";
+import { Fieldset } from "../../../components/Modal/styles";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   order: number
@@ -33,6 +33,7 @@ interface ResultHistoryDataProps { // Essa interface é o tipo dos dados que a A
 export function Historico() {
   const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
   const [isLoading, setIsLoading] = useState(false)
+  const [open, setOpen] = useState(true);
 
   /**
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
@@ -40,24 +41,23 @@ export function Historico() {
   */
   const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
 
-  const [open, setOpen] = useState(true);
+  async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setOpen(false);
+    setIsLoading(true);
 
-  async function handleSearch() {
-    setIsLoading(true)
-
-    await api // await é o método que espera a resposta da API
-      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
-      .then(response => {
-        console.log(response.data.history)
-        setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setOrderNumber('')
-        setIsLoading(false)
-      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
-      .catch(error => {
-        console.log(error)
-        setIsLoading(false)
-      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
-
+    await api
+      .get(`/get/hist_ordem/${orderNumber}`)
+      .then((response) => {
+        console.log(response.data.history);
+        setResultHistoryData(response.data.history);
+        setOrderNumber("");
+        setIsLoading(false);
+      })
+      .catch((error) => {
+        console.log(error);
+        setIsLoading(false);
+      });
   }
 
   return (
@@ -71,28 +71,27 @@ export function Historico() {
 
           <ContainerMessages>
             <Modal open={open} setOpen={setOpen}>
-              <Input
-                required
-                id="order"
-                name="order"
-                type="number"
-                value={orderNumber}
-                onChange={event => setOrderNumber(event.target.value)}
-              />
-              <Flex>
-                <Dialog.Close asChild>
-                  {orderNumber.length > 0 && (
-                    <Button
-                      type="submit"
-                      variant="search"
-                      onClick={handleSearch}
-                      disabled={!orderNumber && true}
-                    >
-                      Pesquisar
-                    </Button>
-                  )}
-                </Dialog.Close>
-              </Flex>
+
+              <form onSubmit={handleSearch}>
+                <Label htmlFor="order">Número da Ordem de Serviço</Label>
+                <Fieldset>
+                  <Input
+                    required
+                    id="order"
+                    name="order"
+                    type="number"
+                    min={1}
+                    value={orderNumber}
+                    onChange={event => setOrderNumber(event.target.value)}
+                    placeholder="Número da ordem"
+                  />
+                  <Button
+                    type="submit"
+                  >
+                    <Search size="20" color="#71717a" />
+                  </Button>
+                </Fieldset>
+              </form>
             </Modal>
 
             {resultHistoryData.length === 0 ? (
