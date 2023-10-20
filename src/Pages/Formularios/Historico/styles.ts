@@ -53,6 +53,38 @@ export const ContainerChat = styled.div`
   margin: 0 0 2rem 0;
 `
 
+export const HeaderOrder = styled.div`
+
+  display: flex;
+  justify-content: space-between;
+  //grid-template-columns: 3fr 1fr;
+  align-items: center;
+  gap: 0 1rem;
+  height: 2rem;
+
+  padding: 0.25rem 0.75rem;
+  border-radius: 0.5rem;
+  
+  background-color: #ce2929;
+  color: white;
+
+  .number-and-title {
+    max-width: 100%;
+    width: 70%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+
+  .requester {
+    max-width: min-content;
+    width: 30%;
+    overflow: hidden;
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  }
+`;
+
 export const ContainerMessages = styled.div`
   background-color: #fff;
   width: 100%;
