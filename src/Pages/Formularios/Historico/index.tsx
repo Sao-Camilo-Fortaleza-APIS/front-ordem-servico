@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 
 import { Modal } from "../../../components/Modal";
 import { Loader } from "../../../components/Load";
@@ -6,7 +6,7 @@ import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
 
-import { Container, ContainerChat, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
+import { Container, ContainerChat, ContainerHeader, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
@@ -16,7 +16,6 @@ import { Search } from "lucide-react";
 
 import api from "../../../services/api";
 import { Fieldset } from "../../../components/Modal/styles";
-import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   number: number
@@ -32,6 +31,8 @@ interface ResultHistoryDataProps { // Essa interface é o tipo dos dados que a A
 
 
 export function Historico() {
+  const divRef = useRef<HTMLDivElement>(null);
+
   const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(true);
@@ -64,24 +65,39 @@ export function Historico() {
 
   }
 
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollTop = divRef.current.scrollHeight;
+    }
+  }, [])
+
+  useEffect(() => {
+    if (divRef.current) {
+      divRef.current.scrollTop = divRef.current.scrollHeight;
+    }
+  }, [resultHistoryData])
+
   return (
     <>
       {isLoading && <Loader />}
 
       <Container>
-        <h3>Histórico</h3>
-        <HeaderOrder>
-          <div className="number-and-title">
-            <strong>{resultOrderData?.number} - </strong>
-            <span>{resultOrderData?.title} aqui nodfgfgf posto</span>
-          </div>
 
-          <div className="requester">
-            <span>{resultOrderData?.requester}</span>
-          </div>
+        <ContainerHeader>
+          <h3>Histórico</h3>
+          {resultOrderData && (
+            <HeaderOrder>
+              <div className="number-and-title">
+                <strong>{resultOrderData?.number} - </strong>
+                <span>{resultOrderData?.title} aqui nodfgfgf posto</span>
+              </div>
 
+              <div className="requester">
+                <span>{resultOrderData?.requester}</span>
+              </div>
+            </HeaderOrder>
+          )}
           <Modal open={open} setOpen={setOpen}>
-
             <form onSubmit={handleSearch}>
               <Label htmlFor="order">Número da Ordem de Serviço</Label>
               <Fieldset>
@@ -101,13 +117,10 @@ export function Historico() {
               </Fieldset>
             </form>
           </Modal>
-        </HeaderOrder>
+        </ContainerHeader>
 
         <ContainerChat>
-
-
-
-          <ContainerMessages>
+          <ContainerMessages ref={divRef}>
             {resultHistoryData.length === 0 ? (
               <div className="div-image">
                 <img className="image" src={EmptyHistory} alt="Não há histórico" />
@@ -139,8 +152,6 @@ export function Historico() {
                 }
               })
             )}
-
-
           </ContainerMessages>
         </ContainerChat>
       </Container>

@@ -44,6 +44,16 @@ export const ContainerButton = styled.div`
         }
 `;
 
+export const ContainerHeader = styled.div`
+  display: flexbox;
+  flex-direction: column;
+  width: 100%;
+  margin-bottom: 0.5rem;
+
+  /* para alinhar button com icone de pesquisa */
+  position: relative;
+`;
+
 export const ContainerChat = styled.div`
   display: flexbox;
   flex-direction: column;
@@ -93,8 +103,22 @@ export const ContainerMessages = styled.div`
   border-radius: 0.625rem;
   padding: 1rem;
 
-  /* para alinhar button com icone de pesquisa */
-  position: relative;
+  /* Estilo da barra de rolagem */
+    &::-webkit-scrollbar {
+        width: 0.74rem;
+    }
+
+    /* Estilo do polegar da barra de rolagem */
+    &::-webkit-scrollbar-thumb {
+        background: #71717a; 
+        border-radius: 0.625rem; 
+    }
+
+    /* Estilo da faixa de trilha da barra de rolagem */
+    &::-webkit-scrollbar-track {
+        background: #fff;
+        border-radius: 0.625rem;
+    }
 
   /* ajustar img */
   > .div-image {
