@@ -13,5 +13,11 @@ export const GlobalStyles = createGlobalStyle`
           align-items: center;
           justify-content: center;
      }
+     /* Estilo para ocultar as setas internas do input type number */
+     input[type="number"]::-webkit-inner-spin-button,
+     input[type="number"]::-webkit-outer-spin-button {
+          -webkit-appearance: none;
+          margin: 0;
+     }
 
 `;
