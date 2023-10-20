@@ -67,10 +67,12 @@ export const DialogDescription = styled(Dialog.Description)`
   line-height: 1.5;
 `;
 
-export const Flex = styled.div`
+export const Fieldset = styled.fieldset`
   display: flex; 
   justify-content: flex-end;
-  padding: 0.5rem 0;
+  border: none;
+  height: 2.5rem;
+  margin: 0.5rem 0;
 `;
 
 export const IconButton = styled.button`
