@@ -46,18 +46,19 @@ export function Historico() {
     setOpen(false);
     setIsLoading(true);
 
-    await api
-      .get(`/get/hist_ordem/${orderNumber}`)
-      .then((response) => {
-        console.log(response.data.history);
-        setResultHistoryData(response.data.history);
-        setOrderNumber("");
-        setIsLoading(false);
-      })
-      .catch((error) => {
-        console.log(error);
-        setIsLoading(false);
-      });
+    await api // await é o método que espera a resposta da API
+      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
+      .then(response => {
+        console.log(response.data.history)
+        setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
+        setOrderNumber('')
+        setIsLoading(false)
+      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
+      .catch(error => {
+        console.log(error)
+        setIsLoading(false)
+      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
+
   }
 
   return (
