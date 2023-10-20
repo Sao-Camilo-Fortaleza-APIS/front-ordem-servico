@@ -4,7 +4,7 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  padding: 1rem 1rem;
+  padding: 0.75rem;
   font-size: 1rem;
   line-height: 1;
   font-weight: 500;
@@ -14,9 +14,9 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
   transition: all 0.25s ease;
   position: ${props => props.variant === 'search-icon' ? 'absolute' : 'relative'};
   right: ${props => props.variant === 'search-icon' ? '-4rem' : ''};
-  top: ${props => props.variant === 'search-icon' ? '0.5rem' : ''};
+  top: ${props => props.variant === 'search-icon' ? '4rem' : ''};
 	border: ${props => props.variant === 'search-icon' ? 'none' : '#71717a 1px solid'};
-  border-radius: ${props => props.variant === 'search-icon' ? '999px' : '0 0.5rem 0.5rem 0'};
+  border-radius: ${props => props.variant === 'search-icon' ? '9999px' : '0 0.5rem 0.5rem 0'};
 	
   :hover {
 		background-color: ${props => props.variant === 'search-icon' ? '#ef4444' : '#e4e4e7'};
