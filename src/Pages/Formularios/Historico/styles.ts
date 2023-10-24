@@ -120,7 +120,7 @@ export const ContainerMessages = styled.div`
         border-radius: 0.625rem;
     }
 
-  /* ajustar img */
+  /* ajustar img de histórico vazio*/
   > .div-image {
     display: flex;
     align-items: center;

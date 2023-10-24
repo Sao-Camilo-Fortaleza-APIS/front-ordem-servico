@@ -6,7 +6,7 @@ import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
 
-import { Container, ContainerChat, ContainerHeader, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
+import { Container, ContainerButton, ContainerChat, ContainerHeader, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
@@ -16,6 +16,7 @@ import { Search } from "lucide-react";
 
 import api from "../../../services/api";
 import { Fieldset } from "../../../components/Modal/styles";
+import { Btns } from "../../../routes/RegisterServiceOrder.styles";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   number: number
@@ -153,6 +154,11 @@ export function Historico() {
               })
             )}
           </ContainerMessages>
+
+          <Btns>
+            <button id="enviar" type="submit">Responder</button>
+            <button id="enviar" type="submit">Responder</button>
+          </Btns>
         </ContainerChat>
       </Container>
     </>

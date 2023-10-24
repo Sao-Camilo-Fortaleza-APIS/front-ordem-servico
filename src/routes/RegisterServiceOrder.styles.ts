@@ -326,41 +326,56 @@ export const Btns = styled.div`
         width: 400px;
         margin-bottom: 8rem;
         font-size: large;
+        font-weight: 500;
     }
     
 
     #enviar{
-            background: linear-gradient(to right, #2412c7, #4ab6f5);
+            background-color: #2563eb;
             color: #FFFFFF;
             border-radius: 5px;
             outline: none;
-            font-weight: 700;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;
             :hover{
-            background: linear-gradient(to right, #4D40C0, #7DCAF7);
+            background-color:#4D40C0;
             border-color: none;
             border: none;
             color: #FFFFFF;
         }
     }
-    #voltar{
-            background: linear-gradient(to right, #EE2929, #E00404);
+    #danger{
+            background-color: #EE2929;
             color: #FFFFFF;
             border-radius: 5px;
             outline: none;
-            font-weight: 700;
+            font-weight: 500;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;
             :hover{
-            background: linear-gradient(to right, #EE7272, #FF4F4F);
+            background-color: #EE2929;
             border-color: none;
             border: none;
             color: #FFFFFF;
         }
     }
+    #check {
+
+          font-weight: 500;
+          color: #fff;
+          background-color: #10b981;
+          border-radius: 5px;
+          border: 1px solid #10b981;
+          
+          transition: all 0.25s ease;
+          :hover {
+            background-color: #10b981;
+            opacity: 0.9;
+            color: #fff;
+          }
+        }
     @media (max-width:600px){
         button{
             width: 90%;
