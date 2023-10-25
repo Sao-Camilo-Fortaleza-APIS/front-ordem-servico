@@ -123,13 +123,23 @@ export const ContainerMessages = styled.div`
   /* ajustar img */
   > .div-image {
     display: flex;
+    height: 100%;
+    flex-direction: column;
     align-items: center;
     justify-content: center;
   }
   > .div-image .image {
-    width: 12.5rem;
-    height: 12.5rem;
+    width: 16rem;
+    height: 16rem;
     border-radius: 50%;
+  }
+
+  > .div-image span {
+    font-weight: 500;
+    color: #a1a1aa;
+    width: 70%;
+    text-align: center;
+    line-height: 1.5;
   }
 `
 

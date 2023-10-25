@@ -111,7 +111,7 @@ export function Historico() {
                   onChange={event => setOrderNumber(event.target.value)}
                   placeholder="Número da ordem"
                 />
-                <Button type="submit">
+                <Button type="submit" variant="search">
                   <Search size="20" color="#71717a" />
                 </Button>
               </Fieldset>
@@ -124,6 +124,7 @@ export function Historico() {
             {resultHistoryData.length === 0 ? (
               <div className="div-image">
                 <img className="image" src={EmptyHistory} alt="Não há histórico" />
+                <span>Pesquise o número da ordem de serviço para visualizar seus históricos...</span>
               </div>
             ) : (
               resultHistoryData.map((history, index) => {
