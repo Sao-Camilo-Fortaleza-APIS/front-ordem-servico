@@ -319,7 +319,7 @@ export const Btns = styled.div`
     align-items: center;
     justify-content: center;
     display: flex;
-    gap: 3rem;
+    gap: 2rem;
     margin-bottom: 1rem;
     button{
         padding: 20px;
@@ -333,13 +333,13 @@ export const Btns = styled.div`
     #enviar{
             background-color: #2563eb;
             color: #FFFFFF;
-            border-radius: 5px;
+            border-radius: 0.75rem;
             outline: none;
             cursor: pointer;
             transition: all 300ms ease;
             border:none;
             :hover{
-            background-color:#4D40C0;
+            background-color: #1d4ed8;
             border-color: none;
             border: none;
             color: #FFFFFF;
@@ -348,7 +348,7 @@ export const Btns = styled.div`
     #danger{
             background-color: #EE2929;
             color: #FFFFFF;
-            border-radius: 5px;
+            border-radius: 0.75rem;
             outline: none;
             font-weight: 500;
             cursor: pointer;
@@ -362,11 +362,10 @@ export const Btns = styled.div`
         }
     }
     #check {
-
           font-weight: 500;
           color: #fff;
           background-color: #10b981;
-          border-radius: 5px;
+          border-radius: 0.75rem;
           border: 1px solid #10b981;
           
           transition: all 0.25s ease;
