@@ -17,7 +17,7 @@ export const NavItem = styled(Link) < { active: boolean } > `
     text-decoration: none;
     font-size: 1rem;
     padding: 0.75rem 1.5rem;
-    border-radius: 0.625rem;
+    border-radius: 0.5rem;
     font-weight: 400;
     transition: all 0.25s ease;
 
