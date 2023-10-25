@@ -90,7 +90,7 @@ export function Historico() {
             <HeaderOrder>
               <div className="number-and-title">
                 <strong>{resultOrderData?.number} - </strong>
-                <span>{resultOrderData?.title} aqui nodfgfgf posto</span>
+                <span>{resultOrderData?.title}</span>
               </div>
 
               <div className="requester">
