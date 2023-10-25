@@ -30,6 +30,11 @@ interface ResultHistoryDataProps { // Essa interface é o tipo dos dados que a A
   history: string
 }
 
+type ReplyHistoryDataProps = Pick<ResultOrderDataProps, "number"> & {
+  user: string;
+  reply: string;
+}
+
 
 export function Historico() {
   const divRef = useRef<HTMLDivElement>(null);
@@ -37,6 +42,7 @@ export function Historico() {
   const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
   const [isLoading, setIsLoading] = useState(false)
   const [open, setOpen] = useState(true);
+  const [openFormReply, setOpenFormReply] = useState(false);
 
   /**
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
@@ -44,9 +50,11 @@ export function Historico() {
   */
   const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
   const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>()
+  const [replyHistory, setReplyHistory] = useState<string>('')
+  const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
-  async function handleSearch(event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSearch(orderNumber: any) {
+    /* event.preventDefault(); */
     setOpen(false);
     setIsLoading(true);
 
@@ -66,11 +74,23 @@ export function Historico() {
 
   }
 
-  useEffect(() => {
-    if (divRef.current) {
-      divRef.current.scrollTop = divRef.current.scrollHeight;
-    }
-  }, [])
+  async function handleReplyHistory(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    console.log(resultOrderData?.number, userReplyHistory, replyHistory);
+    await api.post('/post/history', {
+      nr_order: resultOrderData?.number,
+      nm_user: userReplyHistory,
+      history: replyHistory
+    }).then(response => {
+      console.log(response.data)
+      setReplyHistory('')
+      setUserReplyHistory('')
+      handleSearch(resultOrderData?.number)
+    }).catch(error => {
+      console.log(error)
+    })
+  }
+
 
   useEffect(() => {
     if (divRef.current) {
@@ -99,7 +119,7 @@ export function Historico() {
             </HeaderOrder>
           )}
           <Modal open={open} setOpen={setOpen}>
-            <form onSubmit={handleSearch}>
+            <form onSubmit={() => handleSearch(orderNumber)}>
               <Label htmlFor="order">Número da Ordem de Serviço</Label>
               <Fieldset>
                 <Input
@@ -155,13 +175,28 @@ export function Historico() {
               })
             )}
           </ContainerMessages>
-
-          <Btns>
-            <button id="enviar" type="submit">Responder</button>
-            <button id="enviar" type="submit">Responder</button>
-          </Btns>
+          {resultOrderData && (
+            <form action="" onSubmit={handleReplyHistory}>
+              <Fieldset>
+                <input
+                  value={userReplyHistory}
+                  onChange={event => setUserReplyHistory(event.target.value)}
+                  type="text"
+                  placeholder="usuário"
+                />
+                <textarea
+                  value={replyHistory}
+                  onChange={event => setReplyHistory(event.target.value)}
+                  placeholder="resposta" name="reply" id="reply" cols={30} rows={2}
+                />
+              </Fieldset>
+              <Btns>
+                <button id="enviar" type="submit">Responder</button>
+              </Btns>
+            </form>
+          )}
         </ContainerChat>
-      </Container>
+      </Container >
     </>
   )
 }

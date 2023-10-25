@@ -100,24 +100,24 @@ export const ContainerMessages = styled.div`
   width: 100%;
   height: 55vh;
   overflow-y: scroll;
-  border-radius: 0.625rem;
+  border-radius: 0.75rem;
   padding: 1rem;
 
   /* Estilo da barra de rolagem */
     &::-webkit-scrollbar {
-        width: 0.74rem;
+        width: 0.75rem;
     }
 
     /* Estilo do polegar da barra de rolagem */
     &::-webkit-scrollbar-thumb {
         background: #71717a; 
-        border-radius: 0.625rem; 
+        border-radius: 0.75rem; 
     }
 
     /* Estilo da faixa de trilha da barra de rolagem */
     &::-webkit-scrollbar-track {
         background: #fff;
-        border-radius: 0.625rem;
+        border-radius: 0.75rem;
     }
 
   /* ajustar img de histórico vazio*/
