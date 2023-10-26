@@ -172,9 +172,29 @@ export const Message = styled.div`
   }
   `
 
-const Span = styled.span`
-color: #f00;
-font-size: 1.125rem;
-font-weight: 500;
-margin-left: 0.25rem;
-`
+export const Form = styled.form`
+
+  div {
+    width: 100%;
+    display: inline-flex;
+    justify-content: end;
+  }
+`;
+
+export const Textarea = styled.textarea`
+  resize: none;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  padding: 0.5rem;
+  margin-bottom: 0.5rem;
+  height: 5rem;
+  border-radius: 0.5rem;
+  
+  ::placeholder {
+    color: #a1a1aa;
+    font-family: 'Roboto', sans-serif;
+    font-size: 1rem;
+  }
+`;

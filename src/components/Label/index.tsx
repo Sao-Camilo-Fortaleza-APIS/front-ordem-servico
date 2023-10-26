@@ -1,4 +1,4 @@
-import { HTMLProps, LabelHTMLAttributes } from "react";
+import { LabelHTMLAttributes } from "react";
 import { LabelStyled, Span } from "./styles";
 
 interface LabelProps extends LabelHTMLAttributes<HTMLLabelElement> {

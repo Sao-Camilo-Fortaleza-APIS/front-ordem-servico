@@ -1,5 +1,5 @@
 import { InputHTMLAttributes } from "react";
-import { Element } from "./styles";
+import { InputStyled } from "./styles";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   type: string
@@ -7,11 +7,12 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   value: string | number
   placeholder?: string
   onChange: (e: any) => void
+  variant?: 'search' | 'default'
 }
 
 
-export function Input({ type, name, value, placeholder, ...rest }: InputProps) {
+export function Input({ type, name, value, placeholder, variant='default', ...rest }: InputProps) {
   return (
-    <Element type={type} id={name} name={name} placeholder={placeholder} value={value} {...rest} />
+    <InputStyled type={type} id={name} name={name} placeholder={placeholder} value={value} variant={variant} {...rest} />
   )
 }

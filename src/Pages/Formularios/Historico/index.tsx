@@ -6,7 +6,7 @@ import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
 
-import { Container, ContainerButton, ContainerChat, ContainerHeader, ContainerMessages, HeaderOrder, Message } from "./styles"; // Importação dos estilos
+import { Container, ContainerButton, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
@@ -136,6 +136,7 @@ export function Historico() {
                 <Input
                   required
                   id="order"
+                  variant="search"
                   name="order"
                   type="number"
                   min={1}
@@ -199,9 +200,8 @@ export function Historico() {
               </Btns>
             }
           >
-            <form action="" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
-
-              <Label htmlFor="user-reply">Usuário Tasy</Label>
+            <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
+            <Label htmlFor="user-reply">Usuário Tasy</Label>
               <Input
                 name="user-reply"
                 required
@@ -210,12 +210,18 @@ export function Historico() {
                 type="text"
                 placeholder="Ex: nome.sobrenome"
               />
-              <textarea
-                value={replyHistory}
-                onChange={event => setReplyHistory(event.target.value)}
-                placeholder="resposta" name="reply" id="reply" cols={30} rows={2}
-              />
-            </form>
+            <Label htmlFor="history-reply">Texto de resposta</Label>
+            <Textarea
+              required
+              name="history-reply"
+              value={replyHistory}
+              onChange={event => setReplyHistory(event.target.value)}
+              placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+            />
+            <div>
+              <Button variant="reply">Enviar</Button>
+            </div>
+            </Form>
 
           </Modal>
 

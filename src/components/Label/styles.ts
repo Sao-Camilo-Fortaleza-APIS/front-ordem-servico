@@ -2,9 +2,9 @@ import styled from "styled-components";
 
 export const LabelStyled = styled.label`
 	color: #000;
-	font-size: 0.875rem;
 	font-weight: 400;
 	line-height: 1.5;
+  color: #71717a;
 `;
 export const Span = styled.span`
   color: #f00;

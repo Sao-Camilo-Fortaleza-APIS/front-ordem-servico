@@ -31,9 +31,9 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
   ${props => props.variant === 'reply' && `
     font-weight: 500;
     color: #fff;
-    background-color: #059669;
+    background-color: #2563eb;
     border-radius: 0.625rem;
-    border: 1px solid #059669;
+    border: 1px solid #2563eb;
   `}
 
   /* link */
@@ -63,7 +63,7 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
       case 'search':
         return '#e4e4e7';
       case 'reply':
-        return '#10b981';
+        return '#1d4ed8';
       default:
         return '';
     }
