@@ -118,7 +118,18 @@ export function Historico() {
               </div>
             </HeaderOrder>
           )}
-          <Modal open={open} setOpen={setOpen}>
+          <Modal
+            open={open}
+            setOpen={setOpen}
+            title="Buscar"
+            description="Pesquise o número da ordem de serviço para visualizar seus históricos."
+            trigger={
+              <Button variant='search-icon'>
+                <Search size={24} color='white' />
+              </Button>
+            }
+          >
+
             <form onSubmit={() => handleSearch(orderNumber)}>
               <Label htmlFor="order">Número da Ordem de Serviço</Label>
               <Fieldset>
@@ -175,26 +186,39 @@ export function Historico() {
               })
             )}
           </ContainerMessages>
-          {resultOrderData && (
-            <form action="" onSubmit={handleReplyHistory}>
-              <Fieldset>
-                <input
-                  value={userReplyHistory}
-                  onChange={event => setUserReplyHistory(event.target.value)}
-                  type="text"
-                  placeholder="usuário"
-                />
-                <textarea
-                  value={replyHistory}
-                  onChange={event => setReplyHistory(event.target.value)}
-                  placeholder="resposta" name="reply" id="reply" cols={30} rows={2}
-                />
-              </Fieldset>
+
+          <Modal
+            open={openFormReply}
+            setOpen={setOpenFormReply}
+            title="Responder Histórico"
+            isInteractiveOutside={false}
+            overlay={false}
+            trigger={
               <Btns>
                 <button id="enviar" type="submit">Responder</button>
               </Btns>
+            }
+          >
+            <form action="" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
+
+              <Label htmlFor="user-reply">Usuário Tasy</Label>
+              <Input
+                name="user-reply"
+                required
+                value={userReplyHistory}
+                onChange={event => setUserReplyHistory(event.target.value)}
+                type="text"
+                placeholder="Ex: nome.sobrenome"
+              />
+              <textarea
+                value={replyHistory}
+                onChange={event => setReplyHistory(event.target.value)}
+                placeholder="resposta" name="reply" id="reply" cols={30} rows={2}
+              />
             </form>
-          )}
+
+          </Modal>
+
         </ContainerChat>
       </Container >
     </>
