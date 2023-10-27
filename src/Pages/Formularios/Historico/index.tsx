@@ -201,24 +201,28 @@ export function Historico() {
             }
           >
             <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
-            <Label htmlFor="user-reply">Usuário Tasy</Label>
-              <Input
-                name="user-reply"
-                required
-                value={userReplyHistory}
-                onChange={event => setUserReplyHistory(event.target.value)}
-                type="text"
-                placeholder="Ex: nome.sobrenome"
-              />
-            <Label htmlFor="history-reply">Texto de resposta</Label>
-            <Textarea
-              required
-              name="history-reply"
-              value={replyHistory}
-              onChange={event => setReplyHistory(event.target.value)}
-              placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
-            />
-            <div>
+              <div>
+                <Label htmlFor="user-reply">Usuário Tasy</Label>
+                <Input
+                  name="user-reply"
+                  required
+                  value={userReplyHistory}
+                  onChange={event => setUserReplyHistory(event.target.value)}
+                  type="text"
+                  placeholder="Ex: nome.sobrenome"
+                />
+              </div>
+              <div>
+                <Label htmlFor="history-reply">Texto de resposta</Label>
+                <Textarea
+                  required
+                  name="history-reply"
+                  value={replyHistory}
+                  onChange={event => setReplyHistory(event.target.value)}
+                  placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+                />
+              </div>
+            <div className="action-form">
               <Button variant="reply">Enviar</Button>
             </div>
             </Form>

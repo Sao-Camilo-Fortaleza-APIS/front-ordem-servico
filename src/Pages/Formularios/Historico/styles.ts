@@ -173,10 +173,13 @@ export const Message = styled.div`
   `
 
 export const Form = styled.form`
+display: flex;
+flex-direction: column;
+gap: 0.75rem 0;
 
-  div {
+  .action-form {
     width: 100%;
-    display: inline-flex;
+    display: flex;
     justify-content: end;
   }
 `;
