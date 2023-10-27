@@ -33,7 +33,7 @@ export const DialogOverlay = styled(Dialog.Overlay)`
   animation: ${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1);
 `;
 
-export const DialogContent = styled(Dialog.Content)`
+export const DialogContent = styled(Dialog.Content) <{ variant: 'lg' | 'md' | 'sm' }>`
   background-color: #fff;
   border-radius: 0.625rem;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
@@ -41,7 +41,18 @@ export const DialogContent = styled(Dialog.Content)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 90vw;
+  width: ${props => {
+    switch (props.variant) {
+      case 'lg':
+        return '90vw';
+      case 'md':
+        return '75vw';
+      case 'sm':
+        return '50vw';
+      default:
+        return '100%';
+    }
+  }};
   max-width: 450px;
   max-height: 85vh;
   padding: 1.75rem;
