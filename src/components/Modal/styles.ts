@@ -33,28 +33,44 @@ export const DialogOverlay = styled(Dialog.Overlay)`
   animation: ${overlayShow} 150ms cubic-bezier(0.16, 1, 0.3, 1);
 `;
 
-export const DialogContent = styled(Dialog.Content) <{ variant: 'lg' | 'md' | 'sm' }>`
+export const DialogPortal = styled(Dialog.Portal)`
+  display: block;
+`;
+
+export const DialogContent = styled(Dialog.Content) <{
+   size: 'lg' | 'md' | 'sm';
+   position:'right' | 'left';
+  }>`
   background-color: #fff;
   border-radius: 0.625rem;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
   top: 50%;
-  left: 50%;
+  ${props => {
+    switch (props.position) {
+      case 'right':
+        return 'right: 0';
+      case 'left':
+        return 'left: 0';
+      default:
+        return 'left: 50%';
+    }
+  }};
   transform: translate(-50%, -50%);
+  max-width: 450px;
+  max-height: 85vh;
   width: ${props => {
-    switch (props.variant) {
+    switch (props.size) {
       case 'lg':
-        return '90vw';
+        return '450px';
       case 'md':
-        return '75vw';
+        return '320px';
       case 'sm':
-        return '50vw';
+        return '256px';
       default:
         return '100%';
     }
   }};
-  max-width: 450px;
-  max-height: 85vh;
   padding: 1.75rem;
   animation: ${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1);
 

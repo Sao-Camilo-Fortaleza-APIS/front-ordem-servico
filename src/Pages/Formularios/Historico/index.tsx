@@ -120,7 +120,7 @@ export function Historico() {
           )}
           <Dialog open={open} setOpen={setOpen}>
             <Content
-              size="100%"
+              size="lg"
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
@@ -190,8 +190,10 @@ export function Historico() {
           </ContainerMessages>
           <Dialog open={openFormReply} setOpen={setOpenFormReply}>
             <Content
+              position="right"
               title="Responder Histórico"
-              size="300px"
+              size="sm"
+              
               overlay={false}
               isInteractiveOutside={false}
             >

@@ -9,7 +9,8 @@ export interface ModalProps {
   description?: string;
   overlay?: boolean;
   isInteractiveOutside?: boolean;
-  size: string | undefined
+  size?: 'lg' | 'md' | 'sm';
+  position?: 'right' | 'left' | 'center';
 }
 
 interface Props extends DialogPrimitive.DialogProps {
@@ -21,16 +22,17 @@ export const Content = forwardRef(
   ({
     children,
     title,
-    size,
     description,
     overlay = true,
     isInteractiveOutside = true,
+    ...rest
   }: ModalProps, forwardedRef) => (
     <DialogPrimitive.Portal>
       {overlay && <DialogOverlay />}
 
+      <div style={{display: 'flex'}}>
       <DialogContent
-        style={{ width: size }}
+        {...rest}
         ref={forwardedRef}
         onInteractOutside={(event: any) => { !isInteractiveOutside && event.preventDefault() }}
       >
@@ -46,6 +48,7 @@ export const Content = forwardRef(
         </DialogPrimitive.Close>
 
       </DialogContent>
+      </div>
     </DialogPrimitive.Portal>
   )
 );
