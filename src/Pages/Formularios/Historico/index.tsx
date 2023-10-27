@@ -1,22 +1,22 @@
 import { useEffect, useRef, useState } from "react";
 
-import { Modal } from "../../../components/Modal";
+import { Dialog, Trigger, Content } from "../../../components/Modal";
 import { Loader } from "../../../components/Load";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
+import { Fieldset } from "../../../components/Modal/styles";
 
-import { Container, ContainerButton, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
+import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
+import { Btns } from "../../../routes/RegisterServiceOrder.styles";
+import { Search } from "lucide-react";
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
 
 import EmptyHistory from '../../../Images/location_search.svg'
-import { Search } from "lucide-react";
 
 import api from "../../../services/api";
-import { Fieldset } from "../../../components/Modal/styles";
-import { Btns } from "../../../routes/RegisterServiceOrder.styles";
 
 interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
   number: number
@@ -118,38 +118,39 @@ export function Historico() {
               </div>
             </HeaderOrder>
           )}
-          <Modal
-            open={open}
-            setOpen={setOpen}
-            title="Buscar"
-            description="Pesquise o número da ordem de serviço para visualizar seus históricos."
-            trigger={
+          <Dialog open={open} setOpen={setOpen}>
+            <Content
+              size="100%"
+              title="Buscar"
+              description="Pesquise o número da ordem de serviço para visualizar seus históricos."
+            >
+
+              <form onSubmit={() => handleSearch(orderNumber)}>
+                <Label htmlFor="order">Número da Ordem de Serviço</Label>
+                <Fieldset>
+                  <Input
+                    required
+                    id="order"
+                    variant="search"
+                    name="order"
+                    type="number"
+                    min={1}
+                    value={orderNumber}
+                    onChange={event => setOrderNumber(event.target.value)}
+                    placeholder="Número da ordem"
+                  />
+                  <Button type="submit" variant="search">
+                    <Search size="20" color="#71717a" />
+                  </Button>
+                </Fieldset>
+              </form>
+            </Content>
+            <Trigger asChild>
               <Button variant='search-icon'>
                 <Search size={24} color='white' />
               </Button>
-            }
-          >
-
-            <form onSubmit={() => handleSearch(orderNumber)}>
-              <Label htmlFor="order">Número da Ordem de Serviço</Label>
-              <Fieldset>
-                <Input
-                  required
-                  id="order"
-                  variant="search"
-                  name="order"
-                  type="number"
-                  min={1}
-                  value={orderNumber}
-                  onChange={event => setOrderNumber(event.target.value)}
-                  placeholder="Número da ordem"
-                />
-                <Button type="submit" variant="search">
-                  <Search size="20" color="#71717a" />
-                </Button>
-              </Fieldset>
-            </form>
-          </Modal>
+            </Trigger>
+          </Dialog>
         </ContainerHeader>
 
         <ContainerChat>
@@ -187,48 +188,46 @@ export function Historico() {
               })
             )}
           </ContainerMessages>
-
-          <Modal
-            open={openFormReply}
-            setOpen={setOpenFormReply}
-            title="Responder Histórico"
-            isInteractiveOutside={false}
-            overlay={false}
-            trigger={
+          <Dialog open={openFormReply} setOpen={setOpenFormReply}>
+            <Content
+              title="Responder Histórico"
+              size="300px"
+              overlay={false}
+              isInteractiveOutside={false}
+            >
+              <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
+                <div>
+                  <Label htmlFor="user-reply">Usuário Tasy</Label>
+                  <Input
+                    name="user-reply"
+                    required
+                    value={userReplyHistory}
+                    onChange={event => setUserReplyHistory(event.target.value)}
+                    type="text"
+                    placeholder="Ex: nome.sobrenome"
+                  />
+                </div>
+                <div>
+                  <Label htmlFor="history-reply">Texto de resposta</Label>
+                  <Textarea
+                    required
+                    name="history-reply"
+                    value={replyHistory}
+                    onChange={event => setReplyHistory(event.target.value)}
+                    placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+                  />
+                </div>
+                <div className="action-form">
+                  <Button variant="reply">Enviar</Button>
+                </div>
+              </Form>
+            </Content>
+            <Trigger asChild>
               <Btns>
                 <button id="enviar" type="submit">Responder</button>
               </Btns>
-            }
-          >
-            <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
-              <div>
-                <Label htmlFor="user-reply">Usuário Tasy</Label>
-                <Input
-                  name="user-reply"
-                  required
-                  value={userReplyHistory}
-                  onChange={event => setUserReplyHistory(event.target.value)}
-                  type="text"
-                  placeholder="Ex: nome.sobrenome"
-                />
-              </div>
-              <div>
-                <Label htmlFor="history-reply">Texto de resposta</Label>
-                <Textarea
-                  required
-                  name="history-reply"
-                  value={replyHistory}
-                  onChange={event => setReplyHistory(event.target.value)}
-                  placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
-                />
-              </div>
-            <div className="action-form">
-              <Button variant="reply">Enviar</Button>
-            </div>
-            </Form>
-
-          </Modal>
-
+            </Trigger>
+          </Dialog>
         </ContainerChat>
       </Container >
     </>
