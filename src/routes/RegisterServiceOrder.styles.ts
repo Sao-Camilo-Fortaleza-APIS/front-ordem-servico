@@ -59,7 +59,7 @@ export const Solicitante = styled.div`
             border-radius: 0;
             font-size: 1em;
             color: black;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Roboto', sans-serif;
             border:2px solid #FF0000;
             border-left-width: 0;
             border-top-width: 0;
@@ -124,7 +124,7 @@ export const NmItem = styled.div`
             border-radius: 0;
             font-size: 1em;
             color: black;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Roboto', sans-serif;
             border:2px solid #FF0000;
             border-left-width: 0;
             border-top-width: 0;
@@ -228,7 +228,7 @@ export const NmItemNumero = styled.div`
             border-radius: 0;
             font-size: 1em;
             color: black;
-            font-family: 'Quicksand', sans-serif;
+            font-family: 'Roboto', sans-serif;
             border:2px solid #FF0000;
             border-left-width: 0;
             border-top-width: 0;
@@ -322,6 +322,7 @@ export const Btns = styled.div`
     gap: 2rem;
     margin-bottom: 1rem;
     button{
+        font-family: 'Roboto', sans-serif;
         padding: 20px;
         width: 400px;
         margin-bottom: 8rem;
@@ -331,6 +332,7 @@ export const Btns = styled.div`
     
 
     #enviar{
+            width: 100%;
             background-color: #2563eb;
             color: #FFFFFF;
             border-radius: 0.75rem;
@@ -346,6 +348,7 @@ export const Btns = styled.div`
         }
     }
     #danger{
+            width: 100%;
             background-color: #EE2929;
             color: #FFFFFF;
             border-radius: 0.75rem;
@@ -362,6 +365,7 @@ export const Btns = styled.div`
         }
     }
     #check {
+            width: 100%;
           font-weight: 500;
           color: #fff;
           background-color: #10b981;
