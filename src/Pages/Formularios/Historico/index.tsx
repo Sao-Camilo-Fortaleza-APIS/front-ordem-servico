@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from "react";
+import { AxiosError } from "axios";
 
 import { Dialog, Trigger, Content } from "../../../components/Modal";
 import { Loader } from "../../../components/Load";
@@ -10,9 +11,11 @@ import { Fieldset } from "../../../components/Modal/styles";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
 import { Btns } from "../../../routes/RegisterServiceOrder.styles";
 import { Search } from "lucide-react";
+import { toast } from "react-toastify";
 
 import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
+import { configToastSuccess, configToastError } from "../../../utils/toast-config";
 
 import EmptyHistory from '../../../Images/location_search.svg'
 
@@ -53,8 +56,9 @@ export function Historico() {
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
-  async function handleSearch(orderNumber: any) {
-    /* event.preventDefault(); */
+  async function handleSearch(orderNumber: any, event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setOrderNumber('')
     setOpen(false);
     setIsLoading(true);
 
@@ -64,10 +68,12 @@ export function Historico() {
         console.log(response.data.order)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setOrderNumber('')
         setIsLoading(false)
       }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
-      .catch(error => {
+      .catch((error: AxiosError) => {
+        toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
+        setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
+        setResultOrderData(undefined) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
         console.log(error)
         setIsLoading(false)
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
@@ -76,18 +82,30 @@ export function Historico() {
 
   async function handleReplyHistory(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
+    setIsLoading(true)
     console.log(resultOrderData?.number, userReplyHistory, replyHistory);
     await api.post('/post/history', {
       nr_order: resultOrderData?.number,
       nm_user: userReplyHistory,
       history: replyHistory
     }).then(response => {
+      toast.success('Histórico respondido!', configToastSuccess)
       console.log(response.data)
       setReplyHistory('')
       setUserReplyHistory('')
-      handleSearch(resultOrderData?.number)
-    }).catch(error => {
-      console.log(error)
+      setOpenFormReply(false)
+      handleSearch(resultOrderData?.number, event)
+      setIsLoading(false)
+    }).catch((error: AxiosError) => {
+      if (error.response?.status === 404) {
+        toast.error(`${error?.response?.data}`, configToastError)
+      } else if (error?.code === 'ERR_NETWORK') {
+        toast.error('Houve um problema de rede. Por favor, tente novamente mais tarde.', configToastError)
+      } else {
+        toast.error('Não foi possível responder o histórico. Por favor, tente novamente mais tarde.', configToastError)
+      }
+      console.error(error)
+      setIsLoading(false)
     })
   }
 
@@ -124,7 +142,7 @@ export function Historico() {
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
 
-              <form onSubmit={() => handleSearch(orderNumber)}>
+              <form onSubmit={(event) => handleSearch(orderNumber, event)}>
                 <Label htmlFor="order">Número da Ordem de Serviço</Label>
                 <Fieldset>
                   <Input
