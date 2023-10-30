@@ -11,7 +11,7 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
 }
 
 
-export function Input({ type, name, value, placeholder, variant='default', ...rest }: InputProps) {
+export function Input({ type, name, value, placeholder, variant = 'default', ...rest }: InputProps) {
   return (
     <InputStyled type={type} id={name} name={name} placeholder={placeholder} value={value} variant={variant} {...rest} />
   )

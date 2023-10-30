@@ -21,13 +21,14 @@ import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
 
-interface ResultOrderDataProps { // Essa interface é o tipo dos dados que a API retorna
+interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
   requester: string
   title: string
+  stage: string;
 }
 
-interface ResultHistoryDataProps { // Essa interface é o tipo dos dados que a API retorna
+interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
   date: string
   user: string
   history: string
@@ -56,8 +57,8 @@ export function Historico() {
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
-  async function handleSearch(orderNumber: any, event: React.FormEvent<HTMLFormElement>) {
-    event.preventDefault();
+  async function handleSearch(orderNumber: any, event?: React.FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
     setOrderNumber('')
     setOpen(false);
     setIsLoading(true);
@@ -74,7 +75,7 @@ export function Historico() {
         toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
         setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
         setResultOrderData(undefined) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
-        console.log(error)
+        console.error(error)
         setIsLoading(false)
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
 
@@ -106,6 +107,27 @@ export function Historico() {
       }
       console.error(error)
       setIsLoading(false)
+    })
+  }
+
+  async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
+    console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
+    await api.post('/post/approbation', {
+      nr_order: orderNumber,
+      has_approve: hasApprove,
+    }).then(response => {
+      console.log(response.status, response.data);
+      if (response.status === 201) {
+        if (response.data === 'Ordem de Serviço Aprovada!') {
+          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
+        } else if (response.data === 'Ordem de Serviço Reprovada!') {
+          toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
+        }
+      }
+
+      handleSearch(orderNumber)
+    }).catch((error: AxiosError) => {
+      toast.error('Não foi possível aprovar a ordem de serviço. Por favor, tente novamente mais tarde.', configToastError)
     })
   }
 
@@ -205,47 +227,67 @@ export function Historico() {
               })
             )}
           </ContainerMessages>
-          <Dialog open={openFormReply} setOpen={setOpenFormReply}>
-            <Content
-              position="right"
-              title="Responder Histórico"
-              size="sm"
-              overlay={false}
-              isInteractiveOutside={false}
-            >
-              <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
-                <div>
-                  <Label htmlFor="user-reply">Usuário Tasy</Label>
-                  <Input
-                    name="user-reply"
-                    required
-                    value={userReplyHistory}
-                    onChange={event => setUserReplyHistory(event.target.value)}
-                    type="text"
-                    placeholder="Ex: nome.sobrenome"
-                  />
-                </div>
-                <div>
-                  <Label htmlFor="history-reply">Texto de resposta</Label>
-                  <Textarea
-                    required
-                    name="history-reply"
-                    value={replyHistory}
-                    onChange={event => setReplyHistory(event.target.value)}
-                    placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
-                  />
-                </div>
-                <div className="action-form">
-                  <Button type="submit" variant="reply">Enviar</Button>
-                </div>
-              </Form>
-            </Content>
-            <Trigger asChild>
-              <Btns>
-                <button id="enviar">Responder</button>
-              </Btns>
-            </Trigger>
-          </Dialog>
+          {resultOrderData?.stage === 'Aguardando Validação' ? (
+            <Btns>
+              <button
+                id="check"
+                onClick={() => handleApprobation('yes', resultOrderData?.number)}
+              >
+                Aprovar
+              </button>
+              <button
+                id="danger"
+                onClick={() => handleApprobation('not', resultOrderData?.number)}
+              >
+                Reprovar
+              </button>
+            </Btns>
+          ) : (
+            resultOrderData?.stage !== 'Encerrado' && (
+              <Dialog open={openFormReply} setOpen={setOpenFormReply}>
+                <Content
+                  position="right"
+                  title="Responder Histórico"
+                  size="sm"
+                  overlay={false}
+                  isInteractiveOutside={false}
+                >
+                  <Form className="reply" onSubmit={handleReplyHistory} style={{ width: '100%' }}>
+                    <div>
+                      <Label htmlFor="user-reply">Usuário Tasy</Label>
+                      <Input
+                        name="user-reply"
+                        required
+                        value={userReplyHistory}
+                        onChange={event => setUserReplyHistory(event.target.value)}
+                        type="text"
+                        placeholder="Ex: nome.sobrenome"
+                      />
+                    </div>
+                    <div>
+                      <Label htmlFor="history-reply">Texto de resposta</Label>
+                      <Textarea
+                        required
+                        name="history-reply"
+                        value={replyHistory}
+                        onChange={event => setReplyHistory(event.target.value)}
+                        placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+                      />
+                    </div>
+                    <div className="action-form">
+                      <Button type="submit" variant="reply">Enviar</Button>
+                    </div>
+                  </Form>
+                </Content>
+                <Trigger asChild>
+                  <Btns>
+                    <button id="enviar">Responder</button>
+                  </Btns>
+                </Trigger>
+              </Dialog>
+            )
+          )}
+
         </ContainerChat>
       </Container >
     </>

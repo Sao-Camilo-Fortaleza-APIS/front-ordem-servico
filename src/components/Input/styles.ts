@@ -1,6 +1,6 @@
 import styled from "styled-components";
 
-export const InputStyled = styled.input<{variant: string}>`
+export const InputStyled = styled.input<{ variant: string }>`
   min-height: 2.25rem;
 	/* margin: 0.5rem 0; */
   width: 100%;

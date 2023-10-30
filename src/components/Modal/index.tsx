@@ -30,24 +30,24 @@ export const Content = forwardRef(
     <DialogPrimitive.Portal>
       {overlay && <DialogOverlay />}
 
-      <div style={{display: 'flex'}}>
-      <DialogContent
-        {...rest}
-        ref={forwardedRef}
-        onInteractOutside={(event: any) => { !isInteractiveOutside && event.preventDefault() }}
-      >
-        <DialogTitle>{title}</DialogTitle>
-        <DialogDescription>{description}</DialogDescription>
+      <div style={{ display: 'flex' }}>
+        <DialogContent
+          {...rest}
+          ref={forwardedRef}
+          onInteractOutside={(event: any) => { !isInteractiveOutside && event.preventDefault() }}
+        >
+          <DialogTitle>{title}</DialogTitle>
+          <DialogDescription>{description}</DialogDescription>
 
-        {children}
+          {children}
 
-        <DialogPrimitive.Close asChild>
-          <IconButton aria-label='Close'>
-            <X size={20} />
-          </IconButton>
-        </DialogPrimitive.Close>
+          <DialogPrimitive.Close asChild>
+            <IconButton aria-label='Close'>
+              <X size={20} />
+            </IconButton>
+          </DialogPrimitive.Close>
 
-      </DialogContent>
+        </DialogContent>
       </div>
     </DialogPrimitive.Portal>
   )

@@ -358,24 +358,22 @@ export const Btns = styled.div`
             transition: all 300ms ease;
             border:none;
             :hover{
-            background-color: #EE2929;
+            background-color: #dc2626;
             border-color: none;
             border: none;
             color: #FFFFFF;
         }
     }
     #check {
-            width: 100%;
+          width: 100%;
           font-weight: 500;
           color: #fff;
           background-color: #10b981;
           border-radius: 0.75rem;
-          border: 1px solid #10b981;
-          
+          border: 1px solid #10b981;  
           transition: all 0.25s ease;
           :hover {
-            background-color: #10b981;
-            opacity: 0.9;
+            background-color: #059669;
             color: #fff;
           }
         }
