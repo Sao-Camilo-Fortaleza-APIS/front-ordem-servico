@@ -38,35 +38,43 @@ export const DialogPortal = styled(Dialog.Portal)`
 `;
 
 export const DialogContent = styled(Dialog.Content) <{
-   size: 'lg' | 'md' | 'sm';
-   position:'right' | 'left';
-  }>`
+  size: 'lg' | 'md' | 'sm';
+  position: 'right' | 'left';
+}>`
   background-color: #fff;
   border-radius: 0.625rem;
   box-shadow: hsl(206 22% 7% / 35%) 0px 10px 38px -10px, hsl(206 22% 7% / 20%) 0px 10px 20px -15px;
   position: fixed;
-  top: 50%;
   ${props => {
     switch (props.position) {
       case 'right':
-        return 'right: 0';
+        return 'bottom: 0; margin-left: 1rem;';
       case 'left':
-        return 'left: 0';
+        return 'bottom: 0; margin-left: 1rem;';
       default:
-        return 'left: 50%';
+        return 'left: 50%; top: 50%;';
     }
   }};
-  transform: translate(-50%, -50%);
-  max-width: 450px;
+  transform: ${props => {
+    switch (props.position) {
+      case 'right':
+        return 'translateY(-50%)';
+      case 'left':
+        return 'translateY(-50%)';
+      default:
+        return 'translate(-50%, -50%)';
+    }
+  }};
+  max-width: 28rem;
   max-height: 85vh;
   width: ${props => {
     switch (props.size) {
       case 'lg':
-        return '450px';
+        return '28rem';
       case 'md':
-        return '320px';
+        return '20rem';
       case 'sm':
-        return '256px';
+        return '16rem';
       default:
         return '100%';
     }
