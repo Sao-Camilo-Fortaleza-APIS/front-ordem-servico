@@ -236,13 +236,13 @@ export function Historico() {
                   />
                 </div>
                 <div className="action-form">
-                  <Button variant="reply">Enviar</Button>
+                  <Button type="submit" variant="reply">Enviar</Button>
                 </div>
               </Form>
             </Content>
             <Trigger asChild>
               <Btns>
-                <button id="enviar" type="submit">Responder</button>
+                <button id="enviar">Responder</button>
               </Btns>
             </Trigger>
           </Dialog>
