@@ -91,9 +91,8 @@ export function Historico() {
     })
   }
 
-
   useEffect(() => {
-    if (divRef.current) {
+    if (divRef.current) { // Se o divRef.current existir, ele vai fazer o scroll para o final do elemento
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
   }, [resultHistoryData])
@@ -193,7 +192,6 @@ export function Historico() {
               position="right"
               title="Responder Histórico"
               size="sm"
-              
               overlay={false}
               isInteractiveOutside={false}
             >
