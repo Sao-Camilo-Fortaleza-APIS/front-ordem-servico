@@ -72,9 +72,13 @@ export function Historico() {
         setIsLoading(false)
       }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
       .catch((error: AxiosError) => {
-        toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
         setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
         setResultOrderData(undefined) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
+        if (error?.code === 'ERR_NETWORK') {
+          toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
+        } else {
+          toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
+        }
         console.error(error)
         setIsLoading(false)
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
@@ -101,9 +105,9 @@ export function Historico() {
       if (error.response?.status === 404) {
         toast.error(`${error?.response?.data}`, configToastError)
       } else if (error?.code === 'ERR_NETWORK') {
-        toast.error('Houve um problema de rede. Por favor, tente novamente mais tarde.', configToastError)
+        toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
       } else {
-        toast.error('Não foi possível responder o histórico. Por favor, tente novamente mais tarde.', configToastError)
+        toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
       console.error(error)
       setIsLoading(false)
@@ -127,7 +131,7 @@ export function Historico() {
 
       handleSearch(orderNumber)
     }).catch((error: AxiosError) => {
-      toast.error('Não foi possível aprovar a ordem de serviço. Por favor, tente novamente mais tarde.', configToastError)
+      toast.error('Não foi possível aprovar a ordem de serviço. Tente novamente mais tarde.', configToastError)
     })
   }
 
@@ -243,7 +247,7 @@ export function Historico() {
               </button>
             </Btns>
           ) : (
-            resultOrderData?.stage !== 'Encerrado' && (
+            resultOrderData?.stage !== 'Encerrado' || orderNumber && (
               <Dialog open={openFormReply} setOpen={setOpenFormReply}>
                 <Content
                   position="right"
