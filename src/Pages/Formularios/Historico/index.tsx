@@ -52,12 +52,12 @@ export function Historico() {
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
    * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
   */
-  const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([])
-  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>()
+  const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([] as ResultHistoryDataProps[])
+  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
-  async function handleSearch(orderNumber: any, event?: React.FormEvent<HTMLFormElement>) {
+  async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
     setOrderNumber('')
     setOpen(false);
@@ -73,7 +73,7 @@ export function Historico() {
       }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
       .catch((error: AxiosError) => {
         setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
-        setResultOrderData(undefined) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
+        setResultOrderData({} as ResultOrderDataProps) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
         if (error?.code === 'ERR_NETWORK') {
           toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
         } else {
@@ -168,7 +168,7 @@ export function Historico() {
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
 
-              <form onSubmit={(event) => handleSearch(orderNumber, event)}>
+              <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
                 <Label htmlFor="order">Número da Ordem de Serviço</Label>
                 <Fieldset>
                   <Input
