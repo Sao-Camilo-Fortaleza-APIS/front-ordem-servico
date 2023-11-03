@@ -247,7 +247,7 @@ export function Historico() {
               </button>
             </Btns>
           ) : (
-            resultOrderData?.stage !== 'Encerrado' || orderNumber && (
+            resultOrderData?.stage !== 'Encerrado' && (
               <Dialog open={openFormReply} setOpen={setOpenFormReply}>
                 <Content
                   position="right"

@@ -261,11 +261,11 @@ export function RegisterServiceOrdem() {
             </NmItem>
             <NmItem>
               <p>Título da ordem: <b>*</b></p>
-              <input required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
+              <input name="titulo_order" required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
             </NmItem>
             <NmItem>
               <p>Detalhes do defeito: <b>*</b></p>
-              <input required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
+              <input name="datalhes_defeito" required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
             </NmItem>
             <NmItem>
               <p>N° Ramal:<b>*</b></p>
