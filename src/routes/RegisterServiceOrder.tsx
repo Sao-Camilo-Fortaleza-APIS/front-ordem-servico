@@ -19,57 +19,6 @@ export function RegisterServiceOrdem() {
     { "nome_equipamento": "Central de Cadastro", "valor": 206 },
   ];
 
-  const opcoesSetor = [
-    {
-      "nr_sequencia": "0",
-      "ds_localizacao": "Selecione uma localização"
-    },
-    {
-      "nr_sequencia": "1",
-      "ds_localizacao": "Sala de Emergência"
-    },
-    {
-      "nr_sequencia": "2",
-      "ds_localizacao": "Departamento de Cardiologia"
-    },
-    {
-      "nr_sequencia": "3",
-      "ds_localizacao": "Departamento de Radiologia"
-    },
-    {
-      "nr_sequencia": "4",
-      "ds_localizacao": "Enfermaria de Pediatria"
-    },
-    {
-      "nr_sequencia": "5",
-      "ds_localizacao": "Departamento de Cirurgia"
-    },
-    {
-      "nr_sequencia": "6",
-      "ds_localizacao": "Departamento de Oncologia"
-    },
-    {
-      "nr_sequencia": "7",
-      "ds_localizacao": "Enfermaria de Ortopedia"
-    },
-    {
-      "nr_sequencia": "8",
-      "ds_localizacao": "Departamento de Neurologia"
-    },
-    {
-      "nr_sequencia": "9",
-      "ds_localizacao": "Enfermaria de Maternidade"
-    },
-    {
-      "nr_sequencia": "10",
-      "ds_localizacao": "Unidade de Terapia Intensiva"
-    },
-    {
-      "nr_sequencia": "11",
-      "ds_localizacao": "Departamento de Psiquiatria"
-    }
-  ]
-
   const [equipamento, setEquipamento] = useState('')
   const handleEquip = (event: any) => {
     setEquipamento(event.target.value);
