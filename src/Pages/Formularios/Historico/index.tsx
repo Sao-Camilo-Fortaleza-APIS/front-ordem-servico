@@ -20,6 +20,7 @@ import { configToastSuccess, configToastError } from "../../../utils/toast-confi
 import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
+import SearchComponent from "../../../components/SearchComponent";
 
 interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -167,6 +168,7 @@ export function Historico() {
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
+              {/* <SearchComponent /> */}
 
               <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
                 <Label htmlFor="order">Número da Ordem de Serviço</Label>
