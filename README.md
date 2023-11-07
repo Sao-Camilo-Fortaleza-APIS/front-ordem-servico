@@ -23,7 +23,7 @@
    ```
 4. Como executar em modo de produção
    ```bash
-   npm run dev -- --host=0.0.0.0 --port=5175
+   npm run dev
    ```
 6. Variáveis de Ambiente: faça uma cópia do arquivo `.env` e altere para `.env.local` e adicione os valores desejados às variáveis
    
