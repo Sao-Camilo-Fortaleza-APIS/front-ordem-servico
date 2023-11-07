@@ -3,17 +3,43 @@ import { Button } from "../Button";
 import { Input } from "../Input";
 import { Label } from "../Label";
 import { Fieldset } from "../Modal/styles";
-import { useState } from "react";
-import { useFetch } from "../../hooks/useFetch";
+import { useSearch } from "../../contexts/SearchContext";
+import { AxiosError } from "axios";
+import { ResultOrderDataProps } from "../../Pages/Formularios/Historico";
+import { toast } from "react-toastify";
+import { configToastError } from "../../utils/toast-config";
+import api from "../../services/api";
 
 
-export function SearchOrderComponent(/* { orderNumber }: { orderNumber: number } */) {
-  const [order, setOrder] = useState(0)
-  const { apiData, fetchData, isLoading, serverError } = useFetch()
+export function SearchOrderComponent() {
+  const { setResultHistoryData, setResultOrderData, setOpen, setIsLoading, orderNumber, setOrderNumber } = useSearch()
 
-  const handleSearch = (query: number, e: any) => {
-    e.preventDefault()
-    fetchData(`/get/order_user/${query}`)
+  async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
+    event?.preventDefault();
+    setOrderNumber('')
+    setOpen(false);
+    setIsLoading(true);
+
+    await api // await é o método que espera a resposta da API
+      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
+      .then(response => {
+        console.log(response.data.order)
+        setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
+        setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
+        setIsLoading(false)
+      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
+      .catch((error: AxiosError) => {
+        setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
+        setResultOrderData({} as ResultOrderDataProps) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
+        if (error?.code === 'ERR_NETWORK') {
+          toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
+        } else {
+          toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
+        }
+        console.error(error)
+        setIsLoading(false)
+      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
+
   }
 
   return (
@@ -27,8 +53,8 @@ export function SearchOrderComponent(/* { orderNumber }: { orderNumber: number }
           name="order"
           type="number"
           min={1}
-          value={order}
-          onChange={event => setOrder(event.target.value)}
+          value={orderNumber}
+          onChange={event => setOrderNumber(event.target.value)}
           placeholder="Número da ordem"
         />
         <Button type="submit" variant="search">
