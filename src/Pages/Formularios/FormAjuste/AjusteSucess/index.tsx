@@ -1,6 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Btns, ContainerForm } from "../styles";
+import { ContainerForm } from "../styles";
 import { BotaoAjuste, Ok } from "./styles";
+import { Btns } from "../../../../routes/RegisterServiceOrder.styles";
 
 export function AjusteOk() {
 
@@ -15,9 +16,9 @@ export function AjusteOk() {
                 <div className="conteudo">
                     <img src="https://imagepng.org/wp-content/uploads/2019/12/check-icone-2.png" alt="" height={200} />
                 </div>
-                <BotaoAjuste>
+                <Btns>
                     <button onClick={() => { navigate('/') }} id="enviar">Fazer uma nova solicitação!</button>
-                </BotaoAjuste>
+                </Btns>
             </Ok>
         </ContainerForm>
     )
