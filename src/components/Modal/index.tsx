@@ -37,7 +37,7 @@ export const Content = forwardRef(
           onInteractOutside={(event: any) => { !isInteractiveOutside && event.preventDefault() }}
         >
           <DialogTitle>{title}</DialogTitle>
-          {/* <DialogDescription>{description}</DialogDescription> */}
+          <DialogDescription>{description}</DialogDescription>
 
           {children}
 
