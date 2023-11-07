@@ -21,15 +21,16 @@ import { configToastSuccess, configToastError } from "../../../utils/toast-confi
 import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
+import { useSearch } from "../../../contexts/SearchContext";
 
-interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
+export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
   requester: string
   title: string
   stage: string;
 }
 
-interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
+export interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
   date: string
   user: string
   history: string
@@ -42,6 +43,7 @@ type ReplyHistoryDataProps = Pick<ResultOrderDataProps, "number"> & {
 
 
 export function Historico() {
+  const { resultOrderData, setResultOrderData, resultHistoryData, setResultHistoryData } = useSearch()
   const divRef = useRef<HTMLDivElement>(null);
 
   const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
@@ -53,8 +55,8 @@ export function Historico() {
    * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
    * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
   */
-  const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([] as ResultHistoryDataProps[])
-  const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
+  //const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([] as ResultHistoryDataProps[])
+  //const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
@@ -168,7 +170,26 @@ export function Historico() {
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
-              <SearchForm />
+              {/*  <SearchForm /> */}
+              <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
+                <Label htmlFor="order">Número da Ordem de Serviço</Label>
+                <Fieldset>
+                  <Input
+                    required
+                    id="order"
+                    variant="search"
+                    name="order"
+                    type="number"
+                    min={1}
+                    value={orderNumber}
+                    onChange={event => setOrderNumber(event.target.value)}
+                    placeholder="Número da ordem"
+                  />
+                  <Button type="submit" variant="search">
+                    <Search size="20" color="#71717a" />
+                  </Button>
+                </Fieldset>
+              </form>
 
             </Content>
             <Trigger asChild>
