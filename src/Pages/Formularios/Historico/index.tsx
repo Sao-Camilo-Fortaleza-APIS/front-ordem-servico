@@ -170,26 +170,6 @@ export function Historico() {
             >
               <SearchForm />
 
-
-              <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
-                <Label htmlFor="order">Número da Ordem de Serviço</Label>
-                <Fieldset>
-                  <Input
-                    required
-                    id="order"
-                    variant="search"
-                    name="order"
-                    type="number"
-                    min={1}
-                    value={orderNumber}
-                    onChange={event => setOrderNumber(event.target.value)}
-                    placeholder="Número da ordem"
-                  />
-                  <Button type="submit" variant="search">
-                    <Search size="20" color="#71717a" />
-                  </Button>
-                </Fieldset>
-              </form>
             </Content>
             <Trigger asChild>
               <Button variant='search-icon'>
