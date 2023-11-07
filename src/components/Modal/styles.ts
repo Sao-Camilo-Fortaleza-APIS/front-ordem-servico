@@ -38,7 +38,7 @@ export const DialogPortal = styled(Dialog.Portal)`
 `;
 
 export const DialogContent = styled(Dialog.Content) <{
-  size: 'lg' | 'md' | 'sm';
+  size: 'xl' | 'lg' | 'md' | 'sm';
   position: 'right' | 'left';
 }>`
   background-color: #fff;
@@ -65,10 +65,12 @@ export const DialogContent = styled(Dialog.Content) <{
         return 'translate(-50%, -50%)';
     }
   }};
-  max-width: 28rem;
+  max-width: 36rem;
   max-height: 85vh;
   width: ${props => {
     switch (props.size) {
+      case 'xl':
+        return '36rem';
       case 'lg':
         return '28rem';
       case 'md':
@@ -95,7 +97,7 @@ export const DialogTitle = styled(Dialog.Title)`
 `;
 
 export const DialogDescription = styled(Dialog.Description)`
-  margin: 0.625rem 0 1.25rem;
+  margin-bottom: 0.5rem;
   color: #000;
   font-size: 0.875rem;
 	font-weight: 400;

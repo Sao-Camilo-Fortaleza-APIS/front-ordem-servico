@@ -9,7 +9,7 @@ export interface ModalProps {
   description?: string;
   overlay?: boolean;
   isInteractiveOutside?: boolean;
-  size?: 'lg' | 'md' | 'sm';
+  size?: 'xl' | 'lg' | 'md' | 'sm';
   position?: 'right' | 'left' | 'center';
 }
 
@@ -37,7 +37,7 @@ export const Content = forwardRef(
           onInteractOutside={(event: any) => { !isInteractiveOutside && event.preventDefault() }}
         >
           <DialogTitle>{title}</DialogTitle>
-          <DialogDescription>{description}</DialogDescription>
+          {/* <DialogDescription>{description}</DialogDescription> */}
 
           {children}
 
