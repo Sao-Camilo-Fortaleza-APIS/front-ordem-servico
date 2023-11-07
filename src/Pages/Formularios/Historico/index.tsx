@@ -36,27 +36,23 @@ export interface ResultHistoryDataProps { // Históricos: Essa interface é o ti
   history: string
 }
 
-type ReplyHistoryDataProps = Pick<ResultOrderDataProps, "number"> & {
-  user: string;
-  reply: string;
-}
-
-
 export function Historico() {
-  const { resultOrderData, setResultOrderData, resultHistoryData, setResultHistoryData } = useSearch()
+  const {
+    resultOrderData,
+    setResultOrderData,
+    resultHistoryData,
+    setResultHistoryData,
+    open,
+    setOpen,
+    isLoading,
+    setIsLoading,
+    setOrderNumber,
+    orderNumber
+  } = useSearch()
+
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [orderNumber, setOrderNumber] = useState<string>('') // orderNumber é o estado que guarda o valor do input de número da ordem
-  const [isLoading, setIsLoading] = useState(false)
-  const [open, setOpen] = useState(true);
   const [openFormReply, setOpenFormReply] = useState(false);
-
-  /**
-   * resultOrderData é o estado que guarda os dados da ordem pesquisada, 
-   * aqui ele é inicializado como um objeto vazio do tipo ResultOrderDataProps
-  */
-  //const [resultHistoryData, setResultHistoryData] = useState<ResultHistoryDataProps[]>([] as ResultHistoryDataProps[])
-  //const [resultOrderData, setResultOrderData] = useState<ResultOrderDataProps>({} as ResultOrderDataProps)
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
@@ -98,11 +94,14 @@ export function Historico() {
       history: replyHistory
     }).then(response => {
       toast.success('Histórico respondido!', configToastSuccess)
+
       console.log(response.data)
       setReplyHistory('')
       setUserReplyHistory('')
       setOpenFormReply(false)
+
       handleSearch(resultOrderData?.number, event)
+
       setIsLoading(false)
     }).catch((error: AxiosError) => {
       if (error.response?.status === 404) {
@@ -112,6 +111,9 @@ export function Historico() {
       } else {
         toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
+
+      setReplyHistory('')
+      setUserReplyHistory('')
       console.error(error)
       setIsLoading(false)
     })
@@ -170,26 +172,7 @@ export function Historico() {
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
-              {/*  <SearchForm /> */}
-              <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
-                <Label htmlFor="order">Número da Ordem de Serviço</Label>
-                <Fieldset>
-                  <Input
-                    required
-                    id="order"
-                    variant="search"
-                    name="order"
-                    type="number"
-                    min={1}
-                    value={orderNumber}
-                    onChange={event => setOrderNumber(event.target.value)}
-                    placeholder="Número da ordem"
-                  />
-                  <Button type="submit" variant="search">
-                    <Search size="20" color="#71717a" />
-                  </Button>
-                </Fieldset>
-              </form>
+              <SearchForm />
 
             </Content>
             <Trigger asChild>
