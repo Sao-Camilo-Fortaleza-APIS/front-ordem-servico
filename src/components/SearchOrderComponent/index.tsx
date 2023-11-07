@@ -4,10 +4,18 @@ import { Input } from "../Input";
 import { Label } from "../Label";
 import { Fieldset } from "../Modal/styles";
 import { useState } from "react";
+import { useFetch } from "../../hooks/useFetch";
 
 
-export function SearchOrderComponent() {
-  const [orderNumber, setOrderNumber] = useState<string>('')
+export function SearchOrderComponent(/* { orderNumber }: { orderNumber: number } */) {
+  const [order, setOrder] = useState(0)
+  const { apiData, fetchData, isLoading, serverError } = useFetch()
+
+  const handleSearch = (query: number, e: any) => {
+    e.preventDefault()
+    fetchData(`/get/order_user/${query}`)
+  }
+
   return (
     <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
       <Label htmlFor="order">Número da Ordem de Serviço</Label>
@@ -19,8 +27,8 @@ export function SearchOrderComponent() {
           name="order"
           type="number"
           min={1}
-          value={orderNumber}
-          onChange={event => setOrderNumber(event.target.value)}
+          value={order}
+          onChange={event => setOrder(event.target.value)}
           placeholder="Número da ordem"
         />
         <Button type="submit" variant="search">
