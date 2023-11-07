@@ -40,7 +40,7 @@ function SearchForm() {
       )}
 
       {searchType === 'ORDER' && (
-        <SearchOrderComponent orderNumber={10} />
+        <SearchOrderComponent />
       )}
     </div>
   );
