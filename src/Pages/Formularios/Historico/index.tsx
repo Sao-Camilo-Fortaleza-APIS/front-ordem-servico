@@ -6,6 +6,7 @@ import { Loader } from "../../../components/Load";
 import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
 import { Label } from "../../../components/Label";
+import SearchForm from "../../../components/SearchForm";
 import { Fieldset } from "../../../components/Modal/styles";
 
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
@@ -20,7 +21,6 @@ import { configToastSuccess, configToastError } from "../../../utils/toast-confi
 import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
-import SearchComponent from "../../../components/SearchComponent";
 
 interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -168,7 +168,8 @@ export function Historico() {
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
-              {/* <SearchComponent /> */}
+              <SearchForm />
+
 
               <form onSubmit={(event) => handleSearch(Number(orderNumber), event)}>
                 <Label htmlFor="order">Número da Ordem de Serviço</Label>
