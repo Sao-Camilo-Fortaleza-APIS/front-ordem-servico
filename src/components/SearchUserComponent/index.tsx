@@ -41,7 +41,7 @@ export function SearchUserComponent() {
                 </Fieldset>
             </form>
 
-            {isLoading && <Loader />}
+            {/* {isLoading && <Loader />} */}
             {/* {serverError && <p>Ocorreu um erro: {serverError}</p>} */}
 
             {apiData && apiData.length > 0 && <Table data={apiData} />}
