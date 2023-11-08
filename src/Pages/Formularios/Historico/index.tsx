@@ -108,12 +108,12 @@ export function Historico() {
         toast.error(`${error?.response?.data}`, configToastError)
       } else if (error?.code === 'ERR_NETWORK') {
         toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
+      } else if (orderNumber === '') {
+        toast.error('Pesquise uma Ordem de Serviço não encerrada para responder', configToastError)
       } else {
         toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
 
-      setReplyHistory('')
-      setUserReplyHistory('')
       console.error(error)
       setIsLoading(false)
     })
@@ -145,6 +145,13 @@ export function Historico() {
       divRef.current.scrollTop = divRef.current.scrollHeight;
     }
   }, [resultHistoryData])
+
+  useEffect(() => {
+    if (openFormReply === false) {
+      setReplyHistory('');
+      setUserReplyHistory('')
+    }
+  }, [openFormReply])
 
   return (
     <>
