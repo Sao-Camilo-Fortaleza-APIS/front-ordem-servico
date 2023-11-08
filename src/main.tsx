@@ -8,6 +8,7 @@ import { FormAjuste } from './Pages/Formularios/FormAjuste';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { Historico } from './Pages/Formularios/Historico';
+import { SearchProvider } from './contexts/SearchContext';
 
 
 const router = createBrowserRouter([
@@ -16,9 +17,9 @@ const router = createBrowserRouter([
     element: <App />,
     children: [
       {
-        path: '/adicionar',
+        path: '/',
         element: <RegisterServiceOrdem />,
-        //index: true,
+        index: true,
       },
       {
         path: '/ajuste/success/:nr_seq_os',
@@ -26,7 +27,7 @@ const router = createBrowserRouter([
       },
       {
         path: '/historico',
-        element: <Historico />,
+        element: <SearchProvider><Historico /></SearchProvider>,
       }
     ],
   }

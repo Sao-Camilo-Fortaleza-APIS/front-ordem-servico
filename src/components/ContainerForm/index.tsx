@@ -1,7 +1,7 @@
-import { ReactNode } from "react";
+import { HTMLAttributes, ReactNode } from "react";
 import { StyledContainerForm } from "./styles";
 
-interface ContainerFormProps{
+interface ContainerFormProps extends HTMLAttributes<HTMLDivElement> {
   children: ReactNode;
 }
 

@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./styles";
+import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./RegisterServiceOrder.styles";
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
@@ -18,57 +18,6 @@ export function RegisterServiceOrdem() {
     //    {"nome_equipamento":"Manutenção de equipamentos Biomedicos", "valor":205},
     { "nome_equipamento": "Central de Cadastro", "valor": 206 },
   ];
-
-  const opcoesSetor = [
-    {
-      "nr_sequencia": "0",
-      "ds_localizacao": "Selecione uma localização"
-    },
-    {
-      "nr_sequencia": "1",
-      "ds_localizacao": "Sala de Emergência"
-    },
-    {
-      "nr_sequencia": "2",
-      "ds_localizacao": "Departamento de Cardiologia"
-    },
-    {
-      "nr_sequencia": "3",
-      "ds_localizacao": "Departamento de Radiologia"
-    },
-    {
-      "nr_sequencia": "4",
-      "ds_localizacao": "Enfermaria de Pediatria"
-    },
-    {
-      "nr_sequencia": "5",
-      "ds_localizacao": "Departamento de Cirurgia"
-    },
-    {
-      "nr_sequencia": "6",
-      "ds_localizacao": "Departamento de Oncologia"
-    },
-    {
-      "nr_sequencia": "7",
-      "ds_localizacao": "Enfermaria de Ortopedia"
-    },
-    {
-      "nr_sequencia": "8",
-      "ds_localizacao": "Departamento de Neurologia"
-    },
-    {
-      "nr_sequencia": "9",
-      "ds_localizacao": "Enfermaria de Maternidade"
-    },
-    {
-      "nr_sequencia": "10",
-      "ds_localizacao": "Unidade de Terapia Intensiva"
-    },
-    {
-      "nr_sequencia": "11",
-      "ds_localizacao": "Departamento de Psiquiatria"
-    }
-  ]
 
   const [equipamento, setEquipamento] = useState('')
   const handleEquip = (event: any) => {
@@ -105,11 +54,14 @@ export function RegisterServiceOrdem() {
 
   useEffect(() => {
     async function fetchData() {
-      const response = await api.get('/get/setor')
+      await api.get('/get/setor')
         .then(response => {
           const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
           setOpcoes(optionsWithBlank);
         })
+        .catch(error => {
+          console.log(error);
+        });
     }
     fetchData();
   }, []);
@@ -208,9 +160,6 @@ export function RegisterServiceOrdem() {
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>
             <InputContainer>
-              {/*  <div className="titulo" id="titulo">
-                <h2>{location.pathname === '/adicionar' ? 'Abertura de Ordem de Serviço' : 'Visualização de histórico de Ordem'}</h2>
-              </div> */}
               <Solicitante>
                 <p>Usuário Tasy do solicitante: <b>*</b></p>
                 <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
@@ -219,8 +168,8 @@ export function RegisterServiceOrdem() {
             <NmItem>
               <p>Qual o seu setor? <b>*</b></p>
               <select value={selectedValue} onChange={handleChange}>
-                {opcoesSetor.map(option => (
-                  <option key={option.nr_sequencia} value={option.nr_sequencia} >
+                {opcoes.map((option, index) => (
+                  <option key={index} value={option.nr_sequencia} >
                     {option.ds_localizacao}
                   </option>
                 ))}
@@ -229,8 +178,8 @@ export function RegisterServiceOrdem() {
             <NmItem>
               <p>Equipamento: <b>*</b></p>
               <select value={equipamento} onChange={handleEquip}>
-                {opcoesEquipamento.map(option => (
-                  <option key={option.nome_equipamento} value={option.valor} >
+                {opcoesEquipamento.map((option, index) => (
+                  <option key={index} value={option.valor} >
                     {option.nome_equipamento}
                   </option>
                 ))}
@@ -261,11 +210,11 @@ export function RegisterServiceOrdem() {
             </NmItem>
             <NmItem>
               <p>Título da ordem: <b>*</b></p>
-              <input required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
+              <input name="titulo_order" required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
             </NmItem>
             <NmItem>
               <p>Detalhes do defeito: <b>*</b></p>
-              <input required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
+              <input name="datalhes_defeito" required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
             </NmItem>
             <NmItem>
               <p>N° Ramal:<b>*</b></p>
