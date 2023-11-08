@@ -109,7 +109,7 @@ export function Historico() {
       } else if (error?.code === 'ERR_NETWORK') {
         toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
       } else if (orderNumber === '') {
-        toast.error('Pesquise uma Ordem de Serviço não encerrada para responder', configToastError)
+        toast.error('Pesquise uma Ordem de Serviço válida', configToastError)
       } else {
         toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
