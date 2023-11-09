@@ -1,10 +1,18 @@
 export function removeHTML(stringHTML: any): string | boolean {
-    if ((stringHTML === null) || (stringHTML === ''))
+    if ((stringHTML === null) || (stringHTML === '')) {
         return false;
-    else
+    }
+    else {
         stringHTML = stringHTML.toString();
+    }
 
-    const stringWithoutHTML = stringHTML.replace(/(<([^>]+)>)/ig, '');
+
+    /**
+     * /<\/?(html|body)>/gi
+     * /(<([^>]+)>)/ig
+     */
+    const regex = /<html(?:\s+\w+="[^"]*")*\s*>|<\/html\s*>|<body(?:\s+\w+="[^"]*")*\s*>|<\/body\s*>/gi;
+    const stringWithoutHTML = stringHTML.replace(regex, '');
 
     return stringWithoutHTML;
 }

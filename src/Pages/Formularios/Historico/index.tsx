@@ -208,7 +208,7 @@ export function Historico() {
                   return (
                     <Message key={index}>
                       <span>{history.user}</span>
-                      <span>{removeHTML(history.history)}</span>
+                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
                       <span>{convertDate(history.date)}</span>
                     </Message>
                   )
@@ -217,7 +217,7 @@ export function Historico() {
                   return (
                     <Message key={index}>
                       <span>{history.user}</span>
-                      <span>{removeHTML(history.history)}</span>
+                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
                       <span>{convertDate(history.date)}</span>
                     </Message>
                   )
