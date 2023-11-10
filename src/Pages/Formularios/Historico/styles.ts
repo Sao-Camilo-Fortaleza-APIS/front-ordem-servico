@@ -169,6 +169,8 @@ export const Message = styled.div`
     span img {
       max-width: 100%;
       max-height: 100%;
+      object-fit: cover;
+      border-radius: 0.375rem;
     }
 
     :hover {
@@ -193,7 +195,7 @@ export const Textarea = styled.textarea`
   resize: none;
   width: 100%;
   font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
