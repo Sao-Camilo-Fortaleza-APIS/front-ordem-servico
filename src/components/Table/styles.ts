@@ -18,6 +18,10 @@ export const Container = styled.div`
         border-radius: 0.75rem; 
     }
 
+    &::-webkit-scrollbar-thumb:hover {
+      background: #52525b;
+    }
+
     /* Estilo da faixa de trilha da barra de rolagem */
     &::-webkit-scrollbar-track {
         background: #fff;
@@ -32,5 +36,11 @@ export const Th = styled.th`
   border-bottom: 1px solid #e4e4e7;
   font-weight: 500;
   text-align: left;
+`;
+
+export const Td = styled.td`
+  border-bottom: 1px solid #e4e4e7;
+  text-align: left;
+  padding: 0.5rem;
 `;
 
