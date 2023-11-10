@@ -175,7 +175,7 @@ export function Historico() {
           )}
           <Dialog open={open} setOpen={setOpen}>
             <Content
-              size="lg"
+              size="xl"
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
