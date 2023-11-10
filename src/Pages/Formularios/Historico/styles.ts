@@ -166,11 +166,18 @@ export const Message = styled.div`
     border: 1px solid #a1a1aa;
     transition: all 0.25s ease;
 
+    span img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: cover;
+      border-radius: 0.375rem;
+    }
+
     :hover {
       background-color: #e4e4e7;
     }
   }
-  `
+`
 
 export const Form = styled.form`
 display: flex;
@@ -188,7 +195,7 @@ export const Textarea = styled.textarea`
   resize: none;
   width: 100%;
   font-family: 'Roboto', sans-serif;
-  font-size: 1rem;
+  font-size: 0.875rem;
   line-height: 1;
   padding: 0.5rem;
   margin-bottom: 0.5rem;
