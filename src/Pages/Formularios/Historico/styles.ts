@@ -166,11 +166,16 @@ export const Message = styled.div`
     border: 1px solid #a1a1aa;
     transition: all 0.25s ease;
 
+    span img {
+      max-width: 100%;
+      max-height: 100%;
+    }
+
     :hover {
       background-color: #e4e4e7;
     }
   }
-  `
+`
 
 export const Form = styled.form`
 display: flex;
