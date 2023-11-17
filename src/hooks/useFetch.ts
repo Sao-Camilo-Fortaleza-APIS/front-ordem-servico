@@ -24,5 +24,12 @@ export const useFetch = () => {
         }
     }
 
-    return { isLoading, setIsLoading, apiData, serverError, fetchData }
+    return {
+        isLoading,
+        setIsLoading,
+        apiData,
+        setApiData,
+        serverError,
+        fetchData
+    }
 }

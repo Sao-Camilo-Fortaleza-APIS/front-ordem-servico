@@ -12,18 +12,21 @@ import { Label } from '../Label'
 
 export function SearchUserComponent() {
     const [query, setQuery] = useState<string>('')
-    const { apiData, fetchData, isLoading, serverError } = useFetch()
+    const [searchMade, setSearchMade] = useState<boolean>(false)
+    const { apiData, fetchData, setApiData, isLoading } = useFetch()
 
     const handleSearch = (e: any) => {
         e.preventDefault()
+        setApiData([])
+        setSearchMade(true)
         fetchData(`/get/order_user/${query}`)
     }
-
+    console.log(searchMade);
 
     return (
         <div>
             <form onSubmit={(event) => handleSearch(event)}>
-                <Label htmlFor="user">Nome do usuário</Label>
+                <Label htmlFor="user">Usuário do Tasy</Label>
                 <Fieldset>
                     <Input
                         required
@@ -33,7 +36,7 @@ export function SearchUserComponent() {
                         type="text"
                         value={query}
                         onChange={e => setQuery(e.target.value)}
-                        placeholder="Pesquise por usuário"
+                        placeholder="Ex: nome.sobrenome"
                     />
                     <Button type="submit" variant="search">
                         <Search size="20" color="#71717a" />
@@ -44,7 +47,28 @@ export function SearchUserComponent() {
             {/* {isLoading && <Loader />} */}
             {/* {serverError && <p>Ocorreu um erro: {serverError}</p>} */}
 
-            {apiData && apiData.length > 0 && <Table data={apiData} />}
+            {apiData && apiData.length > 0 ? (
+                <Table data={apiData} />
+            ) : (searchMade && !isLoading) ? (
+                <div
+                    style={{
+                        width: '100%',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        padding: '1.5rem 0',
+                        border: '1px solid #e4e4e7',
+                        borderRadius: '0.5rem',
+                    }}
+                >
+
+                    <p style={{ textAlign: 'center', color: '#71717a', fontSize: 14 }}>
+                        Usuário
+                        <span style={{ fontWeight: 500 }}> {query} </span>
+                        encontrado. Verifique e tente novamente.
+                    </p>
+                </div>
+            ) : null}
         </div>
     )
 }
