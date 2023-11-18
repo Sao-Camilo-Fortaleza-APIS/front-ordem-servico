@@ -152,7 +152,7 @@ export function Historico() {
       setUserReplyHistory('')
     }
   }, [openFormReply])
-  console.log(resultOrderData ? false : true);
+
   return (
     <>
       {isLoading && <Loader />}
