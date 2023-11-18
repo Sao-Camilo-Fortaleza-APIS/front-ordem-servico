@@ -152,7 +152,7 @@ export function Historico() {
       setUserReplyHistory('')
     }
   }, [openFormReply])
-
+  console.log(resultOrderData ? false : true);
   return (
     <>
       {isLoading && <Loader />}
@@ -228,13 +228,13 @@ export function Historico() {
           {resultOrderData?.stage === 'Aguardando Validação' ? (
             <Btns>
               <button
-                id="check"
+                className="check"
                 onClick={() => handleApprobation('yes', resultOrderData?.number)}
               >
                 Aprovar
               </button>
               <button
-                id="danger"
+                className="danger"
                 onClick={() => handleApprobation('not', resultOrderData?.number)}
               >
                 Reprovar
@@ -279,7 +279,7 @@ export function Historico() {
                 </Content>
                 <Trigger asChild>
                   <Btns>
-                    <button id="enviar">Responder</button>
+                    <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
                   </Btns>
                 </Trigger>
               </Dialog>
