@@ -277,11 +277,14 @@ export function Historico() {
                     </div>
                   </Form>
                 </Content>
-                <Trigger asChild>
-                  <Btns>
-                    <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
-                  </Btns>
-                </Trigger>
+                {!resultOrderData?.number === undefined ? (
+                  <Trigger asChild>
+                    <Btns>
+                      <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
+                    </Btns>
+                  </Trigger>
+                ) : null}
+
               </Dialog>
             )
           )}
