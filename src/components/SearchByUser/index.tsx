@@ -1,8 +1,5 @@
 import { useState } from 'react'
 import { useFetch } from '../../hooks/useFetch'
-import { Loader } from '../Load'
-import { configToastError } from '../../utils/toast-config'
-import { toast } from 'react-toastify'
 import Table from '../Table'
 import { Input } from '../Input'
 import { Fieldset } from '../Modal/styles'
@@ -10,7 +7,7 @@ import { Button } from '../Button'
 import { Search } from 'lucide-react'
 import { Label } from '../Label'
 
-export function SearchUserComponent() {
+export function SearchByUser() {
     const [query, setQuery] = useState<string>('')
     const [searchMade, setSearchMade] = useState<boolean>(false)
     const { apiData, fetchData, setApiData, isLoading } = useFetch()

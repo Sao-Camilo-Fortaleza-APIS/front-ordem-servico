@@ -1,6 +1,6 @@
 import { ChangeEvent, useState } from 'react';
-import { SearchUserComponent } from '../SearchUserComponent';
-import { SearchOrderComponent } from '../SearchOrderComponent';
+import { SearchByUser } from '../SearchByUser';
+import { SearchByOrderNumber } from '../SearchByOrderNumber';
 import { RadioButton } from './styles';
 
 function SearchForm() {
@@ -36,11 +36,11 @@ function SearchForm() {
       </RadioButton>
 
       {searchType === 'USER' && (
-        <SearchUserComponent />
+        <SearchByUser />
       )}
 
       {searchType === 'ORDER' && (
-        <SearchOrderComponent />
+        <SearchByOrderNumber />
       )}
     </div>
   );

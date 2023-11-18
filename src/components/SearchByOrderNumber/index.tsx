@@ -11,7 +11,7 @@ import { configToastError } from "../../utils/toast-config";
 import api from "../../services/api";
 
 
-export function SearchOrderComponent() {
+export function SearchByOrderNumber() {
   const { setResultHistoryData, setResultOrderData, setOpen, setIsLoading, orderNumber, setOrderNumber } = useSearch()
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
