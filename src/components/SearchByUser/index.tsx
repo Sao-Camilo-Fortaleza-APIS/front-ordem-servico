@@ -60,9 +60,7 @@ export function SearchByUser() {
                 >
 
                     <p style={{ textAlign: 'center', color: '#71717a', fontSize: 14 }}>
-                        Usuário
-                        <span style={{ fontWeight: 500 }}> {query} </span>
-                        encontrado. Verifique e tente novamente.
+                        Usuário não encontrado. Verifique e tente novamente.
                     </p>
                 </div>
             ) : null}
