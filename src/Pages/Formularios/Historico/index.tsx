@@ -22,6 +22,7 @@ import EmptyHistory from '../../../Images/location_search.svg'
 
 import api from "../../../services/api";
 import { useSearch } from "../../../contexts/SearchContext";
+import { Editor } from "../../../components/Editor";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -87,6 +88,18 @@ export function Historico() {
   async function handleReplyHistory(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true)
+
+    if (userReplyHistory === '') {
+      toast.error('Preencha o campo Usuário Tasy', configToastError)
+      setIsLoading(false)
+      return
+    }
+    if (replyHistory === '') {
+      toast.error('Preencha o campo de resposta ao formulário', configToastError)
+      setIsLoading(false)
+      return
+    }
+
     console.log(resultOrderData?.number, userReplyHistory, replyHistory);
     await api.post('/post/history', {
       nr_order: resultOrderData?.number,
@@ -264,12 +277,18 @@ export function Historico() {
                     </div>
                     <div>
                       <Label htmlFor="history-reply">Texto de resposta</Label>
-                      <Textarea
+                      {/* <Textarea
                         required
                         name="history-reply"
                         value={replyHistory}
                         onChange={event => setReplyHistory(event.target.value)}
                         placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+                      /> */}
+                      <Editor
+                        name="history-reply"
+                        value={replyHistory}
+                        placeholder="Digite uma resposta a esse histórico"
+                        onChange={event => setReplyHistory(event.currentTarget.innerHTML)}
                       />
                     </div>
                     <div className="action-form">
@@ -277,7 +296,7 @@ export function Historico() {
                     </div>
                   </Form>
                 </Content>
-                {!resultOrderData?.number === undefined ? (
+                {!resultOrderData?.number !== undefined ? (
                   <Trigger asChild>
                     <Btns>
                       <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
