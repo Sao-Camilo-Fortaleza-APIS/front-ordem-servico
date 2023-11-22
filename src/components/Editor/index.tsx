@@ -43,11 +43,26 @@ export function Editor(props: EditorProps) {
       style={{
         maxWidth: '100%',
         height: '5rem',
-        padding: '0.25rem 0.25rem 0.25rem 0.5rem',
+        padding: '0.25rem',
         marginBottom: '0.5rem',
         border: '1px solid #000',
         borderRadius: '0.5rem',
       }}
-    />
+    >
+      {editor && (
+        <BubbleMenu
+          editor={editor}
+          className='bg-zinc-700 shadow-xl border border-zinc-600 shadow-black/20
+           rounded-lg overflow-hidden flex divide-x divide-zinc-500'
+        >
+          <BubblueButton
+            onClick={() => editor.chain().focus().toggleBold().run()}
+            data-active={editor.isActive('bold')}
+          >
+            B
+          </BubblueButton>
+        </BubbleMenu>
+      )}
+    </EditorContent>
   )
 }
