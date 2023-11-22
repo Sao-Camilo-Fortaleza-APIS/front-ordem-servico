@@ -9,7 +9,7 @@ import { Label } from '../Label'
 
 export function SearchByUser() {
     const [query, setQuery] = useState<string>('')
-    const [searchMade, setSearchMade] = useState<boolean>(false)
+    const [searchMade, setSearchMade] = useState<boolean>(false) // Para mostrar a mensagem de erro caso a busca não retorne nada
     const { apiData, fetchData, setApiData, isLoading } = useFetch()
 
     const handleSearch = (e: any) => {
@@ -18,7 +18,6 @@ export function SearchByUser() {
         setSearchMade(true)
         fetchData(`/get/order_user/${query}`)
     }
-    console.log(searchMade);
 
     return (
         <div>
@@ -44,9 +43,9 @@ export function SearchByUser() {
             {/* {isLoading && <Loader />} */}
             {/* {serverError && <p>Ocorreu um erro: {serverError}</p>} */}
 
-            {apiData && apiData.length > 0 ? (
+            {apiData && apiData.length > 0 ? ( // Se a busca foi feita e retornou dados, mostra a tabela caso contrário segue para o próximo ternário
                 <Table data={apiData} />
-            ) : (searchMade && !isLoading) ? (
+            ) : (searchMade && !isLoading) ? ( // Se a busca foi feita e terminou de carregar, mas não retornou dados, mostra a mensagem de erro
                 <div
                     style={{
                         width: '100%',
@@ -58,7 +57,6 @@ export function SearchByUser() {
                         borderRadius: '0.5rem',
                     }}
                 >
-
                     <p style={{ textAlign: 'center', color: '#71717a', fontSize: 14 }}>
                         Usuário não encontrado. Verifique e tente novamente.
                     </p>
