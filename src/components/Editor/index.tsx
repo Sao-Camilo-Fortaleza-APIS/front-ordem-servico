@@ -43,7 +43,7 @@ export function Editor(props: EditorProps) {
       style={{
         maxWidth: '100%',
         height: '5rem',
-        padding: '0.5rem',
+        padding: '0.25rem 0.25rem 0.25rem 0.5rem',
         marginBottom: '0.5rem',
         border: '1px solid #000',
         borderRadius: '0.5rem',
