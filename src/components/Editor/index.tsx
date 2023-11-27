@@ -1,9 +1,10 @@
-import { EditorProvider, BubbleMenu, EditorContent, useEditor } from "@tiptap/react"
+import { BubbleMenu, EditorContent, useEditor } from "@tiptap/react"
 import StarterKit from "@tiptap/starter-kit"
+import { Bold } from "lucide-react"
+
 import { BubblueButton } from "../BubbleButton"
 
 import './styles.css'
-import { StyledEditorContent } from "./styles"
 
 interface EditorProps extends React.HTMLAttributes<HTMLDivElement> {
   value: string
@@ -52,14 +53,12 @@ export function Editor(props: EditorProps) {
       {editor && (
         <BubbleMenu
           editor={editor}
-          className='bg-zinc-700 shadow-xl border border-zinc-600 shadow-black/20
-           rounded-lg overflow-hidden flex divide-x divide-zinc-500'
         >
           <BubblueButton
             onClick={() => editor.chain().focus().toggleBold().run()}
             data-active={editor.isActive('bold')}
           >
-            B
+            <Bold size={20} />
           </BubblueButton>
         </BubbleMenu>
       )}
