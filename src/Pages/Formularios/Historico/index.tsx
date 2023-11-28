@@ -18,7 +18,7 @@ import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
 import { configToastSuccess, configToastError } from "../../../utils/toast-config";
 
-import EmptyHistory from '../../../Images/location_search.svg'
+import EmptyHistory from '/assets/location_search.svg'
 
 import api from "../../../services/api";
 import { useSearch } from "../../../contexts/SearchContext";

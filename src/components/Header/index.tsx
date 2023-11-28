@@ -6,7 +6,7 @@ export function Header() {
       <ImageBanner>
       </ImageBanner>
       <Logo>
-        <img src="..\src\Images\logo_horizontal.png" alt="" width={250} />
+        <img src="\assets\logo_horizontal.png" alt="" width={250} />
       </Logo>
     </HeaderContainer>
   )

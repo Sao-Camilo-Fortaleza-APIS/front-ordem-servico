@@ -12,6 +12,7 @@ interface EditorProps extends React.HTMLAttributes<HTMLDivElement> {
   onChange: (event: React.FormEvent<HTMLDivElement>) => void
 }
 
+
 export function Editor(props: EditorProps) {
 
   const editor = useEditor({
@@ -33,6 +34,7 @@ export function Editor(props: EditorProps) {
       } as React.FormEvent<HTMLDivElement>) // Aqui o editor é tipado como um FormEvent para a função onChange
     },
   })
+  console.log(editor?.getHTML());
 
   return (
     <EditorContent
