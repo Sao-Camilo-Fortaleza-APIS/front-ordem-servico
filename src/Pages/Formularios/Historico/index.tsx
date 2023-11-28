@@ -132,6 +132,11 @@ export function Historico() {
     })
   }
 
+  async function handlePreApprove() {
+    alert('Aprovou?')
+    handleApprobation('yes', resultOrderData?.number)
+  }
+
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
     console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
     await api.post('/post/approbation', {
@@ -242,7 +247,7 @@ export function Historico() {
             <Btns>
               <button
                 className="check"
-                onClick={() => handleApprobation('yes', resultOrderData?.number)}
+                onClick={handlePreApprove}
               >
                 Aprovar
               </button>
