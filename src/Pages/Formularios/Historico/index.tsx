@@ -18,7 +18,7 @@ import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
 import { configToastSuccess, configToastError } from "../../../utils/toast-config";
 
-import EmptyHistory from '../../../Images/location_search.svg'
+import EmptyHistory from '/assets/location_search.svg'
 
 import api from "../../../services/api";
 import { useSearch } from "../../../contexts/SearchContext";
@@ -132,6 +132,11 @@ export function Historico() {
     })
   }
 
+  async function handlePreApprove() {
+    alert('Aprovou?')
+    handleApprobation('yes', resultOrderData?.number)
+  }
+
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
     console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
     await api.post('/post/approbation', {
@@ -242,7 +247,7 @@ export function Historico() {
             <Btns>
               <button
                 className="check"
-                onClick={() => handleApprobation('yes', resultOrderData?.number)}
+                onClick={handlePreApprove}
               >
                 Aprovar
               </button>
