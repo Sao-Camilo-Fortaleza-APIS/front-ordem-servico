@@ -282,13 +282,6 @@ export function Historico() {
                     </div>
                     <div>
                       <Label htmlFor="history-reply">Texto de resposta</Label>
-                      {/* <Textarea
-                        required
-                        name="history-reply"
-                        value={replyHistory}
-                        onChange={event => setReplyHistory(event.target.value)}
-                        placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
-                      /> */}
                       <Editor
                         name="history-reply"
                         value={replyHistory}
