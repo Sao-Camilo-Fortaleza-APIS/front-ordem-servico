@@ -36,22 +36,14 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
     border: 1px solid #2563eb;
   `}
 
-  /* link */
-  ${props => props.variant === 'link' && `
-    margin-top: 0.5rem;
-    background-color: #e4e4e7;
-    color: #000;
-    border: transparent 1px solid;
-    padding: 0;
-    font-size: 1rem;
-    font-weight: 400;
-    line-height: 1.5;
-    text-decoration: underline;
+  /* danger */
+  ${props => props.variant === 'danger' && `
+  font-weight: 500;
+    color: #fff;
+    background-color: #ee2929;
+    border-radius: 0.625rem;
+    border: 1px solid #ee2929;
     cursor: pointer;
-    transition: all 0.25s ease;
-    :hover {
-      opacity: 0.9;
-    }
   `}
 
   :hover {
@@ -65,7 +57,7 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
       case 'reply':
         return '#1d4ed8';
       default:
-        return '';
+        return '#e4e4e7';
     }
   }};
 		border: ${props => props.variant === 'search-icon' ? 'none' : '#71717a 1px solid'};

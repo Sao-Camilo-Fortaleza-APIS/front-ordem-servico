@@ -23,6 +23,7 @@ import EmptyHistory from '/assets/location_search.svg'
 import api from "../../../services/api";
 import { useSearch } from "../../../contexts/SearchContext";
 import { Editor } from "../../../components/Editor";
+import { ApprobationModal } from "../../../components/ApprobationModal";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -54,6 +55,7 @@ export function Historico() {
   const divRef = useRef<HTMLDivElement>(null);
 
   const [openFormReply, setOpenFormReply] = useState(false);
+  const [openPreApprove, setOpenPreApprove] = useState(false);
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
 
@@ -148,6 +150,7 @@ export function Historico() {
         if (response.data === 'Ordem de Serviço Aprovada!') {
           toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
         } else if (response.data === 'Ordem de Serviço Reprovada!') {
+          setOpenFormReply(true)
           toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
         }
       }
@@ -245,12 +248,7 @@ export function Historico() {
           </ContainerMessages>
           {resultOrderData?.stage === 'Aguardando Validação' ? (
             <Btns>
-              <button
-                className="check"
-                onClick={handlePreApprove}
-              >
-                Aprovar
-              </button>
+              <ApprobationModal open={openPreApprove} setOpen={setOpenPreApprove} hasApprove="yes" orderNumber={resultOrderData?.number} />
               <button
                 className="danger"
                 onClick={() => handleApprobation('not', resultOrderData?.number)}
