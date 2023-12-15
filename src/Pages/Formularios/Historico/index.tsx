@@ -224,25 +224,13 @@ export function Historico() {
                  * Se o tamanho do array for maior que 3 e o index for maior/igual que o tamanho do array -3 (limite de mensagens), 
                  * ele renderizará somente os 3 primeiros elementos do array
                  */
-                if (resultHistoryData.length > 3 && index >= resultHistoryData.length - 3) {
-                  //if (index = resultHistoryData.length - 3) { // No terceiro elemento do array, ele renderiza o botão de ver mais
-                  return (
-                    <Message key={index}>
-                      <span>{history.user}</span>
-                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                      <span>{convertDate(history.date)}</span>
-                    </Message>
-                  )
-                  //}
-                } else {
-                  return (
-                    <Message key={index}>
-                      <span>{history.user}</span>
-                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                      <span>{convertDate(history.date)}</span>
-                    </Message>
-                  )
-                }
+                return (
+                  <Message key={index}>
+                    <span>{history.user}</span>
+                    <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
+                    <span>{convertDate(history.date)}</span>
+                  </Message>
+                )
               })
             )}
           </ContainerMessages>
