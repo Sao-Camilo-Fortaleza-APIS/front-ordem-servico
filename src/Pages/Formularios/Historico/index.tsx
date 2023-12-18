@@ -54,10 +54,11 @@ export function Historico() {
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [openFormReply, setOpenFormReply] = useState(false);
-  const [openPreApprove, setOpenPreApprove] = useState(false);
+  const [openFormReply, setOpenFormReply] = useState<boolean>(false);
+  const [openPreApprove, setOpenPreApprove] = useState<boolean>(false);
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
+  const [userApprobation, setUserApprobation] = useState<string>('')
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -134,13 +135,10 @@ export function Historico() {
     })
   }
 
-  async function handlePreApprove() {
-    alert('Aprovou?')
-    handleApprobation('yes', resultOrderData?.number)
-  }
-
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
     console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
+
+
     await api.post('/post/approbation', {
       nr_order: orderNumber,
       has_approve: hasApprove,
@@ -148,6 +146,7 @@ export function Historico() {
       console.log(response.status, response.data);
       if (response.status === 201) {
         if (response.data === 'Ordem de Serviço Aprovada!') {
+          setOpenPreApprove(false)
           toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
         } else if (response.data === 'Ordem de Serviço Reprovada!') {
           setOpenFormReply(true)
@@ -159,6 +158,14 @@ export function Historico() {
     }).catch((error: AxiosError) => {
       toast.error('Não foi possível aprovar a ordem de serviço. Tente novamente mais tarde.', configToastError)
     })
+  }
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleApprobation('yes', resultOrderData?.number)
+  }
+
+  async function sendApprove() {
+    setOpenPreApprove(true)
   }
 
   useEffect(() => {
@@ -235,15 +242,55 @@ export function Historico() {
             )}
           </ContainerMessages>
           {resultOrderData?.stage === 'Aguardando Validação' ? (
-            <Btns>
-              <ApprobationModal open={openPreApprove} setOpen={setOpenPreApprove} hasApprove="yes" orderNumber={resultOrderData?.number} />
-              <button
-                className="danger"
-                onClick={() => handleApprobation('not', resultOrderData?.number)}
-              >
-                Reprovar
-              </button>
-            </Btns>
+            <>
+              <Btns>
+                {/* <ApprobationModal open={openPreApprove} setOpen={setOpenPreApprove} hasApprove="yes" orderNumber={resultOrderData?.number} /> */}
+                <button
+                  className="check"
+                  onClick={sendApprove}
+                >
+                  Aprovar
+                </button>
+
+                <button
+                  className="danger"
+                  onClick={() => handleApprobation('not', resultOrderData?.number)}
+                >
+                  Reprovar
+                </button>
+              </Btns>
+              {/* DIALOG APPROVE */}
+              <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
+                <Content
+                  size="sm"
+                  title="Deseja aprovar?"
+                >
+                  <Form onSubmit={handleSubmit}>
+                    <Label htmlFor="user-approbation">Usuário do Tasy</Label>
+                    <Input
+                      name="user-approbation"
+                      type="text"
+                      placeholder="Ex: nome.sobrenome"
+                      required
+                      value={userApprobation}
+                      onChange={event => setUserApprobation(event.target.value)}
+                    />
+
+                    {/* 'search-icon' | 'search' | 'reply' | 'danger' */}
+                    <Fieldset>
+                      <Button onClick={() => setOpenPreApprove(false)}>Cancelar</Button>
+                      <Button variant="reply" type="submit">Sim</Button>
+                    </Fieldset>
+                  </Form>
+
+                </Content>
+                {/* <Trigger asChild>
+                  <Button variant='search-icon'>
+                    <Search size={24} color='white' />
+                  </Button>
+                </Trigger> */}
+              </Dialog>
+            </>
           ) : (
             resultOrderData?.stage !== 'Encerrado' && (
               <Dialog open={openFormReply} setOpen={setOpenFormReply}>
