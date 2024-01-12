@@ -12,11 +12,11 @@ export function RegisterServiceOrdem() {
   // Opções dos select
   const opcoesEquipamento = [
     { "nome_equipamento": "", "valor": 0 },
-    { "nome_equipamento": "Suporte Tasy", "valor": 202 },
-    { "nome_equipamento": "Suporte TIC", "valor": 203 },
-    { "nome_equipamento": "Manutenção Predial", "valor": 204 },
+    { "nome_equipamento": "Suporte Tasy", "valor": "Suporte Tasy" },
+    { "nome_equipamento": "Suporte TIC", "valor": "Suporte TIC" },
+    { "nome_equipamento": "Manutenção Predial", "valor": "Manutenção Predial" },
     //    {"nome_equipamento":"Manutenção de equipamentos Biomedicos", "valor":205},
-    { "nome_equipamento": "Central de Cadastro", "valor": 206 },
+    { "nome_equipamento": "Central de Cadastro", "valor": "Central de Cadastro" },
   ];
 
   const [equipamento, setEquipamento] = useState('')
@@ -69,7 +69,7 @@ export function RegisterServiceOrdem() {
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value);
     if (equipamento === '205') {
-      setEquipamento('202')
+      setEquipamento("Suporte Tasy")
     }
   };
 
@@ -90,19 +90,19 @@ export function RegisterServiceOrdem() {
     } else if (parado === 'N') {
       dt_inicio_desejado.setMinutes(dt_inicio_desejado.getMinutes() + 60);
     }
-    if (equipamento === '202') {
+    if (equipamento === "Suporte Tasy") {
       grupoPlanejamento = '28',
         grupoTrabalho = '27'
-    } else if (equipamento === '203') {
+    } else if (equipamento === "Suporte TIC") {
       grupoPlanejamento = '28',
         grupoTrabalho = '28'
-    } else if (equipamento === '204') {
+    } else if (equipamento === "Manutenção Predial") {
       grupoPlanejamento = '26',
         grupoTrabalho = '17'
     } else if (equipamento === '205') {
       grupoPlanejamento = '31',
         grupoTrabalho = '31'
-    } else if (equipamento === '206') {
+    } else if (equipamento === "Central de Cadastro") {
       grupoPlanejamento = '28',
         grupoTrabalho = '23'
     }
@@ -145,7 +145,7 @@ export function RegisterServiceOrdem() {
         setIsLoading(false);
         const erro = status.request.status
         const request = status.request.response
-        console.log('ERRO:', erro)
+        console.log('ERRO:', status, request)
         toast.error(request)
       }
     }
@@ -177,7 +177,10 @@ export function RegisterServiceOrdem() {
             </NmItem>
             <NmItem>
               <p>Equipamento: <b>*</b></p>
-              <select value={equipamento} onChange={handleEquip}>
+              <select value={equipamento} onChange={e => {
+                setEquipamento(e.target.value)
+                console.log(equipamento);
+              }}>
                 {opcoesEquipamento.map((option, index) => (
                   <option key={index} value={option.valor} >
                     {option.nome_equipamento}
