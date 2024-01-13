@@ -5,6 +5,7 @@ import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, Input
 import { useNavigate } from "react-router-dom";
 import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
+import { configToastError } from "../utils/toast-config";
 //import { ContainerForm } from "../components/ContainerForm";
 
 
@@ -49,7 +50,8 @@ export function RegisterServiceOrdem() {
           setOpcoes(optionsWithBlank);
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
+          toast.error('Não foi possível carregar os setores.', configToastError)
         });
     }
     fetchData();
