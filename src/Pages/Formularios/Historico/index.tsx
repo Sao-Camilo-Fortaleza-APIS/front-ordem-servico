@@ -69,7 +69,7 @@ export function Historico() {
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
-        console.log(response.data.order)
+        // console.log(response.data.order)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setIsLoading(false)
@@ -103,7 +103,7 @@ export function Historico() {
       return
     }
 
-    console.log(resultOrderData?.number, userReplyHistory, replyHistory);
+    // console.log(resultOrderData?.number, userReplyHistory, replyHistory);
     await api.post('/post/history', {
       nr_order: resultOrderData?.number,
       nm_user: userReplyHistory,
@@ -111,7 +111,7 @@ export function Historico() {
     }).then(response => {
       toast.success('Histórico respondido!', configToastSuccess)
 
-      console.log(response.data)
+      // console.log(response.data)
       setReplyHistory('')
       setUserReplyHistory('')
       setOpenFormReply(false)
@@ -143,7 +143,7 @@ export function Historico() {
       nr_order: orderNumber,
       has_approve: hasApprove,
     }).then(response => {
-      console.log(response.status, response.data);
+      //console.log(response.status, response.data);
       if (response.status === 201) {
         if (response.data === 'Ordem de Serviço Aprovada!') {
           setOpenPreApprove(false)
