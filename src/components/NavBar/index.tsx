@@ -6,8 +6,8 @@ export function Navbar() {
 
     return (
         <NavbarContainer>
-            <NavItem to="/" active={location.pathname === '/'}>Abrir Ordem de Serviço</NavItem>
-            <NavItem to="/historico" active={location.pathname === '/historico'}>Visualizar histórico de Ordem</NavItem>
+            <NavItem to="/" active={(location.pathname === '/').toString()}>Abrir Ordem de Serviço</NavItem>
+            <NavItem to="/historico" active={(location.pathname === '/historico').toString()}>Visualizar histórico de Ordem</NavItem>
         </NavbarContainer>
     );
 }
