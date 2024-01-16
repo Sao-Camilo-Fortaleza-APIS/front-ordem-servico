@@ -67,7 +67,6 @@ export function Historico() {
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
-        // console.log(response.data.order)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setIsLoading(false)
@@ -80,7 +79,6 @@ export function Historico() {
         } else {
           toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
         }
-        console.error(error)
         setIsLoading(false)
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
 
@@ -101,7 +99,6 @@ export function Historico() {
       return
     }
 
-    // console.log(resultOrderData?.number, userReplyHistory, replyHistory);
     await api.post('/post/history', {
       nr_order: resultOrderData?.number,
       nm_user: userReplyHistory,
@@ -109,7 +106,6 @@ export function Historico() {
     }).then(response => {
       toast.success('Histórico respondido!', configToastSuccess)
 
-      // console.log(response.data)
       setReplyHistory('')
       setUserReplyHistory('')
       setOpenFormReply(false)
@@ -127,14 +123,11 @@ export function Historico() {
       } else {
         toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
-
-      console.error(error)
       setIsLoading(false)
     })
   }
 
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
-    console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
 
     if (hasApprove === 'not') {
       try {
@@ -156,11 +149,11 @@ export function Historico() {
         })
         if (response?.status == 201) {
           setOpenPreApprove(false)
+          setUserApprobation('')
           toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
         }
         handleSearch(orderNumber)
       } catch (error: AxiosError<Error> | any) {
-        console.info(error)
         if (error?.response?.status === 400) {
           toast.error('Informe o Usuário do Tasy. Exemplo: nome.sobrenome', configToastError)
         } else if (error?.response?.status === 404) {
@@ -175,10 +168,6 @@ export function Historico() {
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleApprobation('yes', resultOrderData?.number)
-  }
-
-  async function sendApprove() {
-    setOpenPreApprove(true)
   }
 
   useEffect(() => {
@@ -257,10 +246,9 @@ export function Historico() {
           {resultOrderData?.stage === 'Aguardando Validação' ? (
             <>
               <Btns>
-                {/* <ApprobationModal open={openPreApprove} setOpen={setOpenPreApprove} hasApprove="yes" orderNumber={resultOrderData?.number} /> */}
                 <button
                   className="check"
-                  onClick={sendApprove}
+                  onClick={() => setOpenPreApprove(true)}
                 >
                   Aprovar
                 </button>
@@ -288,8 +276,6 @@ export function Historico() {
                       value={userApprobation}
                       onChange={event => setUserApprobation(event.target.value)}
                     />
-
-                    {/* 'search-icon' | 'search' | 'reply' | 'danger' */}
                     <Fieldset>
                       <Button onClick={() => setOpenPreApprove(false)}>Cancelar</Button>
                       <Button variant="reply" type="submit">Sim</Button>
@@ -297,11 +283,11 @@ export function Historico() {
                   </Form>
 
                 </Content>
-                {/* <Trigger asChild>
+                <Trigger asChild>
                   <Button variant='search-icon'>
                     <Search size={24} color='white' />
                   </Button>
-                </Trigger> */}
+                </Trigger>
               </Dialog>
             </>
           ) : (
