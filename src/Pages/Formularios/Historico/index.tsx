@@ -1,29 +1,27 @@
-import { useEffect, useRef, useState } from "react";
 import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
 
-import { Dialog, Trigger, Content } from "../../../components/Modal";
-import { Loader } from "../../../components/Load";
-import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
+import { Input } from "../../../components/Input";
 import { Label } from "../../../components/Label";
-import SearchForm from "../../../components/SearchForm";
+import { Loader } from "../../../components/Load";
+import { Content, Dialog, Trigger } from "../../../components/Modal";
 import { Fieldset } from "../../../components/Modal/styles";
+import SearchForm from "../../../components/SearchForm";
 
-import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
-import { Btns } from "../../../routes/RegisterServiceOrder.styles";
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
+import { Btns } from "../../../routes/RegisterServiceOrder.styles";
+import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
-import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
-import { configToastSuccess, configToastError } from "../../../utils/toast-config";
+import { configToastError, configToastSuccess } from "../../../utils/toast-config";
 
-import EmptyHistory from '/assets/location_search.svg'
+import EmptyHistory from '/assets/location_search.svg';
 
-import api from "../../../services/api";
-import { useSearch } from "../../../contexts/SearchContext";
 import { Editor } from "../../../components/Editor";
-import { ApprobationModal } from "../../../components/ApprobationModal";
+import { useSearch } from "../../../contexts/SearchContext";
+import api from "../../../services/api";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -138,27 +136,42 @@ export function Historico() {
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
     console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
 
-
-    await api.post('/post/approbation', {
-      nr_order: orderNumber,
-      has_approve: hasApprove,
-    }).then(response => {
-      //console.log(response.status, response.data);
-      if (response.status === 201) {
-        if (response.data === 'Ordem de Serviço Aprovada!') {
-          setOpenPreApprove(false)
-          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
-        } else if (response.data === 'Ordem de Serviço Reprovada!') {
+    if (hasApprove === 'not') {
+      try {
+        const response = await api.post('/post/approbation', { nr_order: `${orderNumber}`, has_approve: `${hasApprove}` })
+        if (response?.status === 201) {
           setOpenFormReply(true)
           toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
         }
+        handleSearch(orderNumber)
+      } catch (error) {
+        toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
       }
-
-      handleSearch(orderNumber)
-    }).catch((error: AxiosError) => {
-      toast.error('Não foi possível aprovar a ordem de serviço. Tente novamente mais tarde.', configToastError)
-    })
+    } else if (hasApprove === 'yes') {
+      try {
+        const response = await api.post('/post/approbation', {
+          nr_order: `${orderNumber}`,
+          has_approve: `${hasApprove}`,
+          nm_usuario: `${userApprobation}`
+        })
+        if (response?.status == 201) {
+          setOpenPreApprove(false)
+          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
+        }
+        handleSearch(orderNumber)
+      } catch (error: AxiosError<Error> | any) {
+        console.info(error)
+        if (error?.response?.status === 400) {
+          toast.error('Informe o Usuário do Tasy. Exemplo: nome.sobrenome', configToastError)
+        } else if (error?.response?.status === 404) {
+          toast.error('Usuário não encontrado. Tente novamente.', configToastError)
+        } else {
+          toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
+        }
+      }
+    }
   }
+
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleApprobation('yes', resultOrderData?.number)
