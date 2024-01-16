@@ -1,13 +1,11 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import api from "../services/api";
-import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./RegisterServiceOrder.styles";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
+import { Loader } from "../components/Load";
+import api from "../services/api";
 import { configToastError } from "../utils/toast-config";
-//import { ContainerForm } from "../components/ContainerForm";
-
+import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "./RegisterServiceOrder.styles";
 
 export function RegisterServiceOrdem() {
   // Estado para o nome do equipamento
