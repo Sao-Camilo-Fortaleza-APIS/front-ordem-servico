@@ -29,7 +29,7 @@ export const NavItem = styled(Link) < { active: string } > `
         opacity: 0.8;
     }
 
-    ${(props) => props.active ? `
+    ${(props) => props.active === 'true' ? `
         background-color: #ce2929;
         color: #fff;
 
