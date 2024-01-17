@@ -35,7 +35,7 @@ export const ImageBanner = styled.div`
     height: 200px;
     width: 900px;
     border-radius: 5px;
-    background: url("../src/Images/hospital_resized.jpg") no-repeat;
+    background: url("/assets/hospital_resized.jpg") no-repeat;
     @media (max-width:600px){
         display: none;
     }

@@ -1,12 +1,12 @@
+import { AxiosError } from 'axios'
+import { EyeIcon } from 'lucide-react'
+import { toast } from 'react-toastify'
+import { ResultOrderDataProps } from '../../Pages/Formularios/Historico'
 import { useSearch } from '../../contexts/SearchContext'
 import { ApiDataProps } from '../../hooks/useFetch'
+import { configToastError } from '../../utils/toast-config'
 import { Button } from '../Button'
 import { Container, Th } from './styles'
-import { ResultOrderDataProps } from '../../Pages/Formularios/Historico'
-import { toast } from 'react-toastify'
-import { configToastError } from '../../utils/toast-config'
-import { EyeIcon } from 'lucide-react'
-import { AxiosError } from 'axios'
 
 import api from '../../services/api'
 
@@ -51,22 +51,28 @@ export default function Table({ data }: TableProps) {
     }
     return (
         <Container>
-            <table>
-                <tr>
-                    <Th>Número ordem</Th>
-                    <Th>Título da ordem</Th>
-                    <Th>Ação</Th>
-                </tr>
-                {data.map((result, index) => (
-                    <tr key={index}>
-                        <td>{result.number}</td>
-                        <td>{result.title}</td>
-                        <Button variant='reply' onClick={() => { handleSearch(result.number) }}>
-                            <EyeIcon size={20} />
-                        </Button>
+            <table style={{ width: '100%' }}>
+                <thead>
+                    <tr>
+                        <Th>Número ordem</Th>
+                        <Th>Título da ordem</Th>
+                        <Th style={{ textAlign: 'center' }}>Ação</Th>
                     </tr>
-                )
-                )}
+                </thead>
+                <tbody>
+                    {data.map((result, index) => (
+                        <tr key={index}>
+                            <td>{result.number}</td>
+                            <td>{result.title}</td>
+                            <td style={{ textAlign: 'center' }}>
+                                <Button variant='reply' onClick={() => handleSearch(result.number)}>
+                                    <EyeIcon size={20} />
+                                </Button>
+                            </td>
+                        </tr>
+                    )
+                    )}
+                </tbody>
             </table>
         </Container>
     )

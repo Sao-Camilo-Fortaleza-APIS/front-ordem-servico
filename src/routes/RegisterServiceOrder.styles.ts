@@ -329,9 +329,13 @@ export const Btns = styled.div`
         font-size: large;
         font-weight: 500;
     }
-    
+    button:disabled,
+    button[disabled] {
+        opacity: 0.7;
+        cursor: not-allowed;
+    }
 
-    #enviar{
+    .enviar{
             width: 100%;
             background-color: #2563eb;
             color: #FFFFFF;
@@ -347,7 +351,7 @@ export const Btns = styled.div`
             color: #FFFFFF;
         }
     }
-    #danger{
+    .danger{
             width: 100%;
             background-color: #EE2929;
             color: #FFFFFF;
@@ -364,7 +368,7 @@ export const Btns = styled.div`
             color: #FFFFFF;
         }
     }
-    #check {
+    .check {
           width: 100%;
           font-weight: 500;
           color: #fff;

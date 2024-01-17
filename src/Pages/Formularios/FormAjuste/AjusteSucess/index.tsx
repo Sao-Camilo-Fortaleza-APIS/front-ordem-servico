@@ -17,7 +17,7 @@ export function AjusteOk() {
                     <img src="https://imagepng.org/wp-content/uploads/2019/12/check-icone-2.png" alt="" height={200} />
                 </div>
                 <Btns>
-                    <button onClick={() => { navigate('/') }} id="enviar">Fazer uma nova solicitação!</button>
+                    <button onClick={() => { navigate('/') }} className="enviar">Fazer uma nova solicitação!</button>
                 </Btns>
             </Ok>
         </ContainerForm>

@@ -1,28 +1,15 @@
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import api from "../services/api";
-import { Aviso, Btns, CardForm, NmItem, NmItemNumero, Radios, Solicitante, InputContainer } from "./RegisterServiceOrder.styles";
 import { useNavigate } from "react-router-dom";
-import { Loader } from "../components/Load";
 import { toast } from "react-toastify";
-//import { ContainerForm } from "../components/ContainerForm";
-
+import { Loader } from "../components/Load";
+import api from "../services/api";
+import { configToastError } from "../utils/toast-config";
+import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "./RegisterServiceOrder.styles";
 
 export function RegisterServiceOrdem() {
-  // Opções dos select
-  const opcoesEquipamento = [
-    { "nome_equipamento": "", "valor": 0 },
-    { "nome_equipamento": "Suporte Tasy", "valor": 202 },
-    { "nome_equipamento": "Suporte TIC", "valor": 203 },
-    { "nome_equipamento": "Manutenção Predial", "valor": 204 },
-    //    {"nome_equipamento":"Manutenção de equipamentos Biomedicos", "valor":205},
-    { "nome_equipamento": "Central de Cadastro", "valor": 206 },
-  ];
-
+  // Estado para o nome do equipamento
   const [equipamento, setEquipamento] = useState('')
-  const handleEquip = (event: any) => {
-    setEquipamento(event.target.value);
-  };
 
   // Função para redirecionar a pagina
   const navigate = useNavigate();
@@ -45,6 +32,7 @@ export function RegisterServiceOrdem() {
   let dt_inicio_desejado = new Date()
   let grupoPlanejamento: any
   let grupoTrabalho: any
+  let seqEquipamento: string
 
   // Tratando os dados
   // Tirando os espaços vazios e deixando o usuario em maiusculo 
@@ -60,7 +48,8 @@ export function RegisterServiceOrdem() {
           setOpcoes(optionsWithBlank);
         })
         .catch(error => {
-          console.log(error);
+          // console.log(error);
+          toast.error('Não foi possível carregar os setores.', configToastError)
         });
     }
     fetchData();
@@ -68,9 +57,6 @@ export function RegisterServiceOrdem() {
 
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value);
-    if (equipamento === '205') {
-      setEquipamento('202')
-    }
   };
 
 
@@ -90,19 +76,24 @@ export function RegisterServiceOrdem() {
     } else if (parado === 'N') {
       dt_inicio_desejado.setMinutes(dt_inicio_desejado.getMinutes() + 60);
     }
-    if (equipamento === '202') {
+    if (equipamento === "Suporte Tasy") {
+      seqEquipamento = '202'
       grupoPlanejamento = '28',
         grupoTrabalho = '27'
-    } else if (equipamento === '203') {
+    } else if (equipamento === "Suporte TIC") {
+      seqEquipamento = '203'
       grupoPlanejamento = '28',
         grupoTrabalho = '28'
-    } else if (equipamento === '204') {
+    } else if (equipamento === "Manutenção Predial") {
+      seqEquipamento = '204'
       grupoPlanejamento = '26',
         grupoTrabalho = '17'
-    } else if (equipamento === '205') {
-      grupoPlanejamento = '31',
-        grupoTrabalho = '31'
-    } else if (equipamento === '206') {
+    } else if (equipamento === "Suporte de Impressoras") {
+      seqEquipamento = '203'
+      grupoPlanejamento = '28',
+        grupoTrabalho = '26'
+    } else if (equipamento === "Central de Cadastro") {
+      seqEquipamento = '206'
       grupoPlanejamento = '28',
         grupoTrabalho = '23'
     }
@@ -123,7 +114,7 @@ export function RegisterServiceOrdem() {
       window.scrollTo(0, 0)
       try {
         const dataOficial = dt_inicio_desejado.toLocaleDateString('pt-BR', options)
-        console.log({ user: userMaiusculo, ajuste: ajuste, obs: obs, ramal: ramal, parado: parado, prioridade: ie_prioridade, dt: dataOficial, slec: selectedValue, equipamento: equipamento, grupoPlanejamento: grupoPlanejamento, grupoTrabalho: grupoTrabalho })
+        // console.log({ user: userMaiusculo, ajuste: ajuste, obs: obs, ramal: ramal, parado: parado, prioridade: ie_prioridade, dt: dataOficial, slec: selectedValue, seqEquipamento: seqEquipamento, equipamento: equipamento, grupoPlanejamento: grupoPlanejamento, grupoTrabalho: grupoTrabalho })
         const response = await api.post('/form/ajuste', {
           nm_usuario: `${userMaiusculo}`,
           nr_contato: `${ramal}`,
@@ -132,7 +123,7 @@ export function RegisterServiceOrdem() {
           ie_parado: `${parado}`,
           dt_inicio_desejado: `${dataOficial}`,
           nr_seq_localizacao: `${selectedValue}`,
-          nr_seq_equipamento: `${equipamento}`,
+          nr_seq_equipamento: `${seqEquipamento}`,
           nr_grupo_planej: `${grupoPlanejamento}`,
           nr_grupo_trabalho: `${grupoTrabalho}`
         })
@@ -145,7 +136,7 @@ export function RegisterServiceOrdem() {
         setIsLoading(false);
         const erro = status.request.status
         const request = status.request.response
-        console.log('ERRO:', erro)
+        //console.log('ERRO:', erro)
         toast.error(request)
       }
     }
@@ -177,12 +168,13 @@ export function RegisterServiceOrdem() {
             </NmItem>
             <NmItem>
               <p>Equipamento: <b>*</b></p>
-              <select value={equipamento} onChange={handleEquip}>
-                {opcoesEquipamento.map((option, index) => (
-                  <option key={index} value={option.valor} >
-                    {option.nome_equipamento}
-                  </option>
-                ))}
+              <select value={equipamento} onChange={event => setEquipamento(event.target.value)}>
+                <option value="0"></option>
+                <option value="Suporte Tasy">Suporte Tasy</option>
+                <option value="Suporte TIC">Suporte TIC</option>
+                <option value="Suporte de Impressoras">Suporte de Impressoras</option>
+                <option value="Manutenção Predial">Manutenção Predial</option>
+                <option value="Central de Cadastro">Central de Cadastro</option>
               </select>
               <Aviso>
                 <p>Neste campo informe qual equipe deverá de atender.</p>
@@ -221,7 +213,7 @@ export function RegisterServiceOrdem() {
               <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
             </NmItem>
             <Btns>
-              <button id="enviar" type="submit">Enviar</button>
+              <button className="enviar" type="submit">Enviar</button>
             </Btns>
           </form>
         </div>

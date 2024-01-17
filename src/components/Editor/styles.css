@@ -1,0 +1,33 @@
+.editor {
+  outline: none;
+  width: 100%;
+  font-family: 'Roboto', sans-serif;
+  font-size: 1rem;
+  line-height: 1;
+  margin-bottom: 1rem;
+  padding: 0.25rem;
+  height: 100%;
+  border-radius: 0.5rem;
+  overflow-y: scroll;
+
+  /* Estilo da barra de rolagem */
+  &::-webkit-scrollbar {
+    width: 0.4rem;
+  }
+
+  /* Estilo do polegar da barra de rolagem */
+  &::-webkit-scrollbar-thumb {
+    background: #71717a;
+    border-radius: 0.75rem;
+  }
+
+  &::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
+  }
+
+  /* Estilo da faixa de trilha da barra de rolagem */
+  &::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 0.75rem;
+  }
+}

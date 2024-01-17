@@ -1,27 +1,27 @@
-import { useEffect, useRef, useState } from "react";
 import { AxiosError } from "axios";
+import { useEffect, useRef, useState } from "react";
 
-import { Dialog, Trigger, Content } from "../../../components/Modal";
-import { Loader } from "../../../components/Load";
-import { Input } from "../../../components/Input";
 import { Button } from "../../../components/Button";
+import { Input } from "../../../components/Input";
 import { Label } from "../../../components/Label";
-import SearchForm from "../../../components/SearchForm";
+import { Loader } from "../../../components/Load";
+import { Content, Dialog, Trigger } from "../../../components/Modal";
 import { Fieldset } from "../../../components/Modal/styles";
+import SearchForm from "../../../components/SearchForm";
 
-import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message, Textarea } from "./styles"; // Importação dos estilos
-import { Btns } from "../../../routes/RegisterServiceOrder.styles";
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
+import { Btns } from "../../../routes/RegisterServiceOrder.styles";
+import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
-import { removeHTML } from '../../../utils/remove-html'
 import { convertDate } from "../../../utils/convert-date";
-import { configToastSuccess, configToastError } from "../../../utils/toast-config";
+import { configToastError, configToastSuccess } from "../../../utils/toast-config";
 
-import EmptyHistory from '../../../Images/location_search.svg'
+import EmptyHistory from '/assets/location_search.svg';
 
-import api from "../../../services/api";
+import { Editor } from "../../../components/Editor";
 import { useSearch } from "../../../contexts/SearchContext";
+import api from "../../../services/api";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -52,9 +52,11 @@ export function Historico() {
 
   const divRef = useRef<HTMLDivElement>(null);
 
-  const [openFormReply, setOpenFormReply] = useState(false);
+  const [openFormReply, setOpenFormReply] = useState<boolean>(false);
+  const [openPreApprove, setOpenPreApprove] = useState<boolean>(false);
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
+  const [userApprobation, setUserApprobation] = useState<string>('')
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -65,7 +67,6 @@ export function Historico() {
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
-        console.log(response.data.order)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setIsLoading(false)
@@ -78,7 +79,6 @@ export function Historico() {
         } else {
           toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
         }
-        console.error(error)
         setIsLoading(false)
       }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
 
@@ -87,7 +87,18 @@ export function Historico() {
   async function handleReplyHistory(event: React.FormEvent<HTMLFormElement>) {
     event.preventDefault();
     setIsLoading(true)
-    console.log(resultOrderData?.number, userReplyHistory, replyHistory);
+
+    if (userReplyHistory === '') {
+      toast.error('Preencha o campo Usuário Tasy', configToastError)
+      setIsLoading(false)
+      return
+    }
+    if (replyHistory === '') {
+      toast.error('Preencha o campo de resposta ao formulário', configToastError)
+      setIsLoading(false)
+      return
+    }
+
     await api.post('/post/history', {
       nr_order: resultOrderData?.number,
       nm_user: userReplyHistory,
@@ -95,7 +106,6 @@ export function Historico() {
     }).then(response => {
       toast.success('Histórico respondido!', configToastSuccess)
 
-      console.log(response.data)
       setReplyHistory('')
       setUserReplyHistory('')
       setOpenFormReply(false)
@@ -113,31 +123,51 @@ export function Historico() {
       } else {
         toast.error('Não foi possível responder o histórico. Tente novamente mais tarde.', configToastError)
       }
-
-      console.error(error)
       setIsLoading(false)
     })
   }
 
   async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
-    console.info('Aprovou?', hasApprove, '; Nº Ordem:', orderNumber)
-    await api.post('/post/approbation', {
-      nr_order: orderNumber,
-      has_approve: hasApprove,
-    }).then(response => {
-      console.log(response.status, response.data);
-      if (response.status === 201) {
-        if (response.data === 'Ordem de Serviço Aprovada!') {
-          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
-        } else if (response.data === 'Ordem de Serviço Reprovada!') {
+
+    if (hasApprove === 'not') {
+      try {
+        const response = await api.post('/post/approbation', { nr_order: `${orderNumber}`, has_approve: `${hasApprove}` })
+        if (response?.status === 201) {
+          setOpenFormReply(true)
           toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
         }
+        handleSearch(orderNumber)
+      } catch (error) {
+        toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
       }
+    } else if (hasApprove === 'yes') {
+      try {
+        const response = await api.post('/post/approbation', {
+          nr_order: `${orderNumber}`,
+          has_approve: `${hasApprove}`,
+          nm_usuario: `${userApprobation}`
+        })
+        if (response?.status == 201) {
+          setOpenPreApprove(false)
+          setUserApprobation('')
+          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
+        }
+        handleSearch(orderNumber)
+      } catch (error: AxiosError<Error> | any) {
+        if (error?.response?.status === 400) {
+          toast.error('Informe o Usuário do Tasy. Exemplo: nome.sobrenome', configToastError)
+        } else if (error?.response?.status === 404) {
+          toast.error('Usuário não encontrado. Tente novamente.', configToastError)
+        } else {
+          toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
+        }
+      }
+    }
+  }
 
-      handleSearch(orderNumber)
-    }).catch((error: AxiosError) => {
-      toast.error('Não foi possível aprovar a ordem de serviço. Tente novamente mais tarde.', configToastError)
-    })
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    handleApprobation('yes', resultOrderData?.number)
   }
 
   useEffect(() => {
@@ -175,7 +205,7 @@ export function Historico() {
           )}
           <Dialog open={open} setOpen={setOpen}>
             <Content
-              size="lg"
+              size="xl"
               title="Buscar"
               description="Pesquise o número da ordem de serviço para visualizar seus históricos."
             >
@@ -203,43 +233,63 @@ export function Historico() {
                  * Se o tamanho do array for maior que 3 e o index for maior/igual que o tamanho do array -3 (limite de mensagens), 
                  * ele renderizará somente os 3 primeiros elementos do array
                  */
-                if (resultHistoryData.length > 3 && index >= resultHistoryData.length - 3) {
-                  //if (index = resultHistoryData.length - 3) { // No terceiro elemento do array, ele renderiza o botão de ver mais
-                  return (
-                    <Message key={index}>
-                      <span>{history.user}</span>
-                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                      <span>{convertDate(history.date)}</span>
-                    </Message>
-                  )
-                  //}
-                } else {
-                  return (
-                    <Message key={index}>
-                      <span>{history.user}</span>
-                      <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                      <span>{convertDate(history.date)}</span>
-                    </Message>
-                  )
-                }
+                return (
+                  <Message key={index}>
+                    <span>{history.user}</span>
+                    <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
+                    <span>{convertDate(history.date)}</span>
+                  </Message>
+                )
               })
             )}
           </ContainerMessages>
           {resultOrderData?.stage === 'Aguardando Validação' ? (
-            <Btns>
-              <button
-                id="check"
-                onClick={() => handleApprobation('yes', resultOrderData?.number)}
-              >
-                Aprovar
-              </button>
-              <button
-                id="danger"
-                onClick={() => handleApprobation('not', resultOrderData?.number)}
-              >
-                Reprovar
-              </button>
-            </Btns>
+            <>
+              <Btns>
+                <button
+                  className="check"
+                  onClick={() => setOpenPreApprove(true)}
+                >
+                  Aprovar
+                </button>
+
+                <button
+                  className="danger"
+                  onClick={() => handleApprobation('not', resultOrderData?.number)}
+                >
+                  Reprovar
+                </button>
+              </Btns>
+              {/* DIALOG APPROVE */}
+              <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
+                <Content
+                  size="sm"
+                  title="Deseja aprovar?"
+                >
+                  <Form onSubmit={handleSubmit}>
+                    <Label htmlFor="user-approbation">Usuário do Tasy</Label>
+                    <Input
+                      name="user-approbation"
+                      type="text"
+                      placeholder="Ex: nome.sobrenome"
+                      required
+                      value={userApprobation}
+                      onChange={event => setUserApprobation(event.target.value)}
+                    />
+                    <Fieldset>
+                      <Button onClick={() => setOpenPreApprove(false)}>Cancelar</Button>
+                      <Button variant="reply" type="submit">Sim</Button>
+                    </Fieldset>
+                  </Form>
+
+                </Content>
+                <Trigger asChild>
+                  <Button variant='search-icon'>
+                    <Search size={24} color='white' />
+                  </Button>
+                </Trigger>
+              </Dialog>
+            </>
           ) : (
             resultOrderData?.stage !== 'Encerrado' && (
               <Dialog open={openFormReply} setOpen={setOpenFormReply}>
@@ -264,12 +314,11 @@ export function Historico() {
                     </div>
                     <div>
                       <Label htmlFor="history-reply">Texto de resposta</Label>
-                      <Textarea
-                        required
+                      <Editor
                         name="history-reply"
                         value={replyHistory}
-                        onChange={event => setReplyHistory(event.target.value)}
-                        placeholder="Digite uma resposta a esse histórico" cols={15} rows={2}
+                        placeholder="Digite uma resposta a esse histórico"
+                        onChange={event => setReplyHistory(event.currentTarget.innerHTML)}
                       />
                     </div>
                     <div className="action-form">
@@ -277,11 +326,14 @@ export function Historico() {
                     </div>
                   </Form>
                 </Content>
-                <Trigger asChild>
-                  <Btns>
-                    <button id="enviar">Responder</button>
-                  </Btns>
-                </Trigger>
+                {!resultOrderData?.number !== undefined ? (
+                  <Trigger asChild>
+                    <Btns>
+                      <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
+                    </Btns>
+                  </Trigger>
+                ) : null}
+
               </Dialog>
             )
           )}

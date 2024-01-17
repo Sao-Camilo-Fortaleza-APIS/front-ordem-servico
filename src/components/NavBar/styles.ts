@@ -1,5 +1,5 @@
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
 
 export const NavbarContainer = styled.nav`
     height: 2.5rem;
@@ -11,7 +11,7 @@ export const NavbarContainer = styled.nav`
     margin: 1rem 0;
     `;
 
-export const NavItem = styled(Link) < { active: boolean } > `
+export const NavItem = styled(Link) < { active: string } > `
     width: 100%;
     text-align: center;
     text-decoration: none;
@@ -29,7 +29,7 @@ export const NavItem = styled(Link) < { active: boolean } > `
         opacity: 0.8;
     }
 
-    ${(props) => props.active ? `
+    ${(props) => props.active === 'true' ? `
         background-color: #ce2929;
         color: #fff;
 

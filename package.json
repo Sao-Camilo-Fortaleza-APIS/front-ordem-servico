@@ -11,6 +11,10 @@
   },
   "dependencies": {
     "@radix-ui/react-dialog": "^1.0.5",
+    "@tiptap/extension-bubble-menu": "^2.1.12",
+    "@tiptap/pm": "^2.1.12",
+    "@tiptap/react": "^2.1.12",
+    "@tiptap/starter-kit": "^2.1.12",
     "axios": "^1.2.2",
     "dayjs": "^1.11.10",
     "lucide-react": "^0.277.0",

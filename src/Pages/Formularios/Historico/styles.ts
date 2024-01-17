@@ -187,6 +187,8 @@ gap: 0.75rem 0;
   .action-form {
     width: 100%;
     display: flex;
+    align-items: center;
+    gap: 0.5rem;
     justify-content: end;
   }
 `;

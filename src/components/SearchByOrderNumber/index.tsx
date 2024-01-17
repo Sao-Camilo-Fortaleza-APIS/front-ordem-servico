@@ -11,19 +11,19 @@ import { configToastError } from "../../utils/toast-config";
 import api from "../../services/api";
 
 
-export function SearchOrderComponent() {
+export function SearchByOrderNumber() {
   const { setResultHistoryData, setResultOrderData, setOpen, setIsLoading, orderNumber, setOrderNumber } = useSearch()
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
     setOrderNumber('')
-    setOpen(false);
     setIsLoading(true);
 
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
         console.log(response.data.order)
+        setOpen(false)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setIsLoading(false)

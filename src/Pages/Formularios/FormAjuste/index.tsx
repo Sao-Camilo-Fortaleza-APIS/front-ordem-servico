@@ -277,7 +277,7 @@ export function FormAjuste() {
                                 <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
                             </NmItem>
                             <Btns>
-                                <button id="enviar" type="submit">Enviar</button>
+                                <button className="enviar" type="submit">Enviar</button>
                             </Btns>
                         </form>
                     </div>
