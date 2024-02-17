@@ -1,27 +1,39 @@
-import { useState } from 'react'
-import { useFetch } from '../../hooks/useFetch'
-import Table from '../Table'
-import { Input } from '../Input'
-import { Fieldset } from '../Modal/styles'
-import { Button } from '../Button'
 import { Search } from 'lucide-react'
+import { FormEvent, useState } from 'react'
+import { useSearch } from '../../contexts/SearchContext'
+import api from '../../services/api'
+import { Button } from '../Button'
+import { Input } from '../Input'
 import { Label } from '../Label'
+import { Fieldset } from '../Modal/styles'
+import Table from '../Table'
 
 export function SearchByUser() {
+    const { isLoading, setIsLoading } = useSearch()
     const [query, setQuery] = useState<string>('')
-    const [searchMade, setSearchMade] = useState<boolean>(false) // Para mostrar a mensagem de erro caso a busca não retorne nada
-    const { apiData, fetchData, setApiData, isLoading } = useFetch()
+    const [serverError, setServerError] = useState('')
 
-    const handleSearch = (e: any) => {
-        e.preventDefault()
+    const [searchMade, setSearchMade] = useState<boolean>(false) // Para mostrar a mensagem de erro caso a busca não retorne nada
+    const [apiData, setApiData] = useState([]) // Para mostrar a mensagem de erro caso a busca não retorne nada
+    //const { apiData, fetchData, setApiData, isLoading, serverError } = useFetch()
+
+    async function handleSearch(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
         setApiData([])
         setSearchMade(true)
-        fetchData(`/get/order_user/${query}`)
+        //        fetchData(`/get/order_user/${query}`)
+        await api.get(`/get/order_user/${query}`).then(response => {
+            setApiData(response.data)
+            console.log("response", response);
+        }).catch(error => {
+            setServerError(error.response.data.message)
+            console.log("error", error.response.data.message);
+        })
     }
 
     return (
         <div>
-            <form onSubmit={(event) => handleSearch(event)}>
+            <form onSubmit={handleSearch}>
                 <Label htmlFor="user">Usuário do Tasy</Label>
                 <Fieldset>
                     <Input
@@ -43,7 +55,7 @@ export function SearchByUser() {
             {/* {isLoading && <Loader />} */}
             {/* {serverError && <p>Ocorreu um erro: {serverError}</p>} */}
 
-            {apiData && apiData.length > 0 ? ( // Se a busca foi feita e retornou dados, mostra a tabela caso contrário segue para o próximo ternário
+            {apiData.length > 0 ? ( // Se a busca foi feita e retornou dados, mostra a tabela caso contrário segue para o próximo ternário
                 <Table data={apiData} />
             ) : (searchMade && !isLoading) ? ( // Se a busca foi feita e terminou de carregar, mas não retornou dados, mostra a mensagem de erro
                 <div
@@ -58,7 +70,7 @@ export function SearchByUser() {
                     }}
                 >
                     <p style={{ textAlign: 'center', color: '#71717a', fontSize: 14 }}>
-                        Usuário não encontrado. Verifique e tente novamente.
+                        {serverError !== null ? serverError : "Nenhum resultado encontrado."}
                     </p>
                 </div>
             ) : null}
