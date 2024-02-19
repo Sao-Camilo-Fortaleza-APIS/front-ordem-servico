@@ -25,5 +25,9 @@
    ```bash
    npm run dev
    ```
-6. Variáveis de Ambiente: faça uma cópia do arquivo `.env` e altere para `.env.local` e adicione os valores desejados às variáveis
+5. Variáveis de Ambiente: faça uma cópia do arquivo `.env` e altere para `.env.local` e adicione a URL da API.
+
+7. **Observações**:
+- A branch **main** é considerada a branch de **Produção** então muito cuidado ao realizar commits.
+- É importante verificar antes de executar a aplicação se o arquivo **api.ts** aponta para a URL correta de produção assim como verificar se  a porta e o host estão configurados corretamente no script do package.json.
    
