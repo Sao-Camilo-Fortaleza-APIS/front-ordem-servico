@@ -2,6 +2,9 @@
 
 ![image](https://github.com/myguelangello/front-ordem-servico/assets/42946156/93ba09e6-01a4-46d1-9db2-2ab9c8f5b8d5)
 
+## **Observações**:
+- A branch **main** é considerada a branch de **Produção** então muito cuidado ao realizar commits.
+- É importante verificar antes de executar a aplicação se o arquivo **api.ts** aponta para a URL correta de produção assim como verificar se  a porta e o host estão configurados corretamente no script do package.json.
 
 ## Tecnologias Utilizadas
 
@@ -26,8 +29,3 @@
    npm run dev
    ```
 5. Variáveis de Ambiente: faça uma cópia do arquivo `.env` e altere para `.env.local` e adicione a URL da API.
-
-7. **Observações**:
-- A branch **main** é considerada a branch de **Produção** então muito cuidado ao realizar commits.
-- É importante verificar antes de executar a aplicação se o arquivo **api.ts** aponta para a URL correta de produção assim como verificar se  a porta e o host estão configurados corretamente no script do package.json.
-   
