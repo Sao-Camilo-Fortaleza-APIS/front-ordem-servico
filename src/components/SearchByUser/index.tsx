@@ -18,17 +18,20 @@ export function SearchByUser() {
     //const { apiData, fetchData, setApiData, isLoading, serverError } = useFetch()
 
     async function handleSearch(event: FormEvent<HTMLFormElement>) {
+        setIsLoading(true)
         event.preventDefault()
         setApiData([])
         setSearchMade(true)
         //        fetchData(`/get/order_user/${query}`)
-        await api.get(`/get/order_user/${query}`).then(response => {
-            setApiData(response.data)
-            console.log("response", response);
-        }).catch(error => {
-            setServerError(error.response.data.message)
-            console.log("error", error.response.data.message);
-        })
+        await api.get(`/get/order_user/${query}`)
+            .then(response => {
+                setApiData(response.data)
+            })
+            .catch(error => {
+                setServerError(error.response.data.message)
+            })
+            .finally(() => setIsLoading(false))
+
     }
 
     return (
