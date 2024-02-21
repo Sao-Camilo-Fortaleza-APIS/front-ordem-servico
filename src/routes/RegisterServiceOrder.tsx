@@ -206,7 +206,13 @@ export function RegisterServiceOrdem() {
             </NmItem>
             <NmItem>
               <p>Detalhes do defeito: <b>*</b></p>
-              <input name="datalhes_defeito" required type="text" placeholder="Descreva o defeito, ajuste ou problema" value={obs} onChange={e => setObs(e.target.value)} />
+              <textarea
+                name="datalhes_defeito"
+                required
+                placeholder="Descreva o defeito, ajuste ou problema"
+                value={obs}
+                onChange={e => setObs(e.target.value)}
+              />
             </NmItem>
             <NmItem>
               <p>N° Ramal:<b>*</b></p>

@@ -37,6 +37,7 @@ export const Solicitante = styled.div`
         color: #FF0000;
     }
     input{
+        font-family: 'Roboto', sans-serif;
         margin-top: 04px;
         background: none;
         width: 90%;
@@ -74,6 +75,7 @@ export const Solicitante = styled.div`
     @media (max-width:600px){
         height:auto;
         input{
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             margin-top: 1rem;
             height: 40px;
@@ -102,6 +104,7 @@ export const NmItem = styled.div`
         color: #FF0000;
     }
     input{
+        font-family: 'Roboto', sans-serif;
         margin-top: 0.25rem;
         background: none;
         width: 90%;
@@ -113,8 +116,7 @@ export const NmItem = styled.div`
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
-            border-bottom-color: #FF0000;
-            
+            border-bottom-color: #FF0000;    
         }
         :focus{
             display: inline-block;
@@ -132,10 +134,48 @@ export const NmItem = styled.div`
             border-radius: 5px;
             position: relative;
             transition: all 0.25s ease;
-
         }
     }
+
+    textarea {
+        font-family: 'Roboto', sans-serif;
+        margin-top: 0.25rem;
+        background: none;
+        width: 90%;
+        height: 100px;
+        resize: none;
+        padding: 0.5rem;
+        border: solid;
+        border-width: 0;
+        border-bottom-width: 1px;
+        border-color: #CE2929;
+        transition: all 300ms;
+        :hover{
+            border-bottom-width: 2px;
+            border-bottom-color: #FF0000;
+        }
+        :focus{
+            display: inline-block;
+            cursor: pointer;
+            outline: 1px solid #e3e3e4; 
+            border: 1px solid #e3e3e4;
+            border-color: #e3e3e4;
+            border-radius: 0;
+            font-size: 1em;
+            color: black;
+            font-family: 'Roboto', sans-serif;
+            border:2px solid #FF0000;
+            border-left-width: 0;
+            border-top-width: 0;
+            border-right-width: 0;
+            border-radius: 5px;
+            position: relative;
+            transition: all 0.25s ease;
+        }
+    }
+
     select{
+        font-family: 'Roboto', sans-serif;
         border-radius: 5px;
         margin-top: 10px;
         width: 90%;
@@ -146,6 +186,7 @@ export const NmItem = styled.div`
             cursor: pointer;
         }
     }
+    
     #valores{
         margin-top: 1rem;
         display: flex;
@@ -162,6 +203,7 @@ export const NmItem = styled.div`
             margin-left: 10px;
         }
         input{
+            font-family: 'Roboto', sans-serif;
             width: 20px;
             height: 20px;
             :hover{
@@ -172,6 +214,7 @@ export const NmItem = styled.div`
     @media (max-width:600px){
         height:auto ;
         input{
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             margin-top: 1rem;
             height: 40px;
@@ -182,6 +225,7 @@ export const NmItem = styled.div`
             font-size: smaller;
         }
         select{
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             height: 40px;
             font-size: medium;
@@ -206,6 +250,7 @@ export const NmItemNumero = styled.div`
         color: red;
     }
     input{
+        font-family: 'Roboto', sans-serif;
         margin-top: 04px;
         background: none;
         width: 90%;
@@ -240,6 +285,7 @@ export const NmItemNumero = styled.div`
         }
     }
     select{
+        font-family: 'Roboto', sans-serif;
         border-radius: 5px;
         margin-top: 10px;
         width: 90%;
@@ -252,6 +298,7 @@ export const NmItemNumero = styled.div`
     @media (max-width:600px){
         height:160px ;
         input{
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             margin-top: 1rem;
             height: 40px;
@@ -262,6 +309,7 @@ export const NmItemNumero = styled.div`
             font-size: smaller;
         }
         select{
+            font-family: 'Roboto', sans-serif;
             width: 100%;
             height: 40px;
             font-size: medium;
@@ -303,6 +351,7 @@ export const Radios = styled.div`
             margin-top: 10px;
         }   
         input{
+            font-family: 'Roboto', sans-serif;
             margin-top: 10px;
             width: 20px;
             height: 20px;
