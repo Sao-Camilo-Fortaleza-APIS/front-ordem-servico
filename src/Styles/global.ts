@@ -12,6 +12,8 @@ export const GlobalStyles = createGlobalStyle`
           display: flex;
           align-items: center;
           justify-content: center;
+          -webkit-font-smoothing: antialiased;
+          -moz-osx-font-smoothing: grayscale;
      }
      /* Estilo para ocultar as setas internas do input type number */
      input[type="number"]::-webkit-inner-spin-button,
