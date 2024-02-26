@@ -1,8 +1,8 @@
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { GlobalStyles } from './Styles/global'
-import { Header } from './components/Header'
 import { ContainerForm } from './components/ContainerForm'
+import { Header } from './components/Header'
 import { Navbar } from './components/Navbar'
 
 function App() {

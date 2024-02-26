@@ -8,6 +8,14 @@ export const Container = styled.div`
     display: flex;
     //margin: 0.625rem 0 1.875rem 0;
   }
+
+  @media (max-width:600px){
+        width: 95%;
+        height: 100%;
+        h2{
+            font-size: medium;
+        }
+    }
 `;
 
 export const ContainerButton = styled.div`
