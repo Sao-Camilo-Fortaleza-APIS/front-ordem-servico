@@ -1,7 +1,7 @@
 import { Outlet } from 'react-router-dom'
 import { ToastContainer } from 'react-toastify'
 import { GlobalStyles } from './Styles/global'
-import { ContainerForm } from './components/ContainerForm'
+import { ContainerApp } from './components/ContainerApp'
 import { Header } from './components/Header'
 import { Navbar } from './components/Navbar'
 
@@ -20,18 +20,11 @@ function App() {
         draggable
         pauseOnHover
         theme="colored" />
-      {/*  <Router>
-        <Routes> */}
-      {/* Rota principal que exibe as opçoes de formularios  */}
-      {/* <Route path='/' element={<FormAjuste />} />
-          <Route path='/ajuste/success/:nr_seq_os' element={<AjusteOk />} />
-        </Routes>
-      </Router> */}
-      <ContainerForm>
+      <ContainerApp>
         <Header />
         <Navbar />
         <Outlet />
-      </ContainerForm>
+      </ContainerApp>
     </>
   )
 }
