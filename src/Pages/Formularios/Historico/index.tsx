@@ -11,7 +11,7 @@ import SearchForm from "../../../components/SearchForm";
 
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
-import { Btns } from "../../../routes/RegisterServiceOrder.styles";
+import { Btns, CardForm } from "../../../routes/RegisterServiceOrder.styles";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { convertDate } from "../../../utils/convert-date";
@@ -191,33 +191,35 @@ export function Historico() {
 
         <ContainerHeader>
           <h3>Histórico</h3>
-          {resultOrderData && (
-            <HeaderOrder>
-              <div className="number-and-title">
-                <strong>{resultOrderData?.number} - </strong>
-                <span>{resultOrderData?.title}</span>
-              </div>
+          <div className="content-mobile">
+            {resultOrderData && (
+              <HeaderOrder>
+                <div className="number-and-title">
+                  <strong>{resultOrderData?.number}</strong>
+                  <span>{resultOrderData?.title}</span>
+                </div>
 
-              <div className="requester">
-                <span>{resultOrderData?.requester}</span>
-              </div>
-            </HeaderOrder>
-          )}
-          <Dialog open={open} setOpen={setOpen}>
-            <Content
-              size="xl"
-              title="Buscar"
-              description="Pesquise o número da ordem de serviço para visualizar seus históricos."
-            >
-              <SearchForm />
+                <div className="requester">
+                  <span>{resultOrderData?.requester}</span>
+                </div>
+              </HeaderOrder>
+            )}
+            <Dialog open={open} setOpen={setOpen}>
+              <Content
+                size="xl"
+                title="Buscar"
+                description="Pesquise o número da ordem de serviço para visualizar seus históricos."
+              >
+                <SearchForm />
 
-            </Content>
-            <Trigger asChild>
-              <Button variant='search-icon'>
-                <Search size={24} color='white' />
-              </Button>
-            </Trigger>
-          </Dialog>
+              </Content>
+              <Trigger asChild>
+                <Button variant='search-icon'>
+                  <Search size={24} color='white' />
+                </Button>
+              </Trigger>
+            </Dialog>
+          </div>
         </ContainerHeader>
 
         <ContainerChat>
