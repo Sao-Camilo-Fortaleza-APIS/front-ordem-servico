@@ -15,6 +15,7 @@ export const HeaderContainer = styled.header`
     }
     @media (max-width:600px){
         margin-top: 0;
+        border-radius: 0;
         width: 100%;
         height: 140px;
     }
