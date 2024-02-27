@@ -12,7 +12,7 @@ export const NavbarContainer = styled.nav`
 
     @media (max-width: 600px){
         width: 95%;
-        height: 100%;
+        height: auto;
         display: flex;  
         flex-direction: column;
         align-items: center;
