@@ -1,14 +1,14 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
-import 'react-toastify/dist/ReactToastify.min.css';
+import React from 'react';
+import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
+import 'react-toastify/dist/ReactToastify.min.css';
+import App from './App';
 
-import { FormAjuste } from './Pages/Formularios/FormAjuste';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
-import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
+import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
+import { SignIn } from './routes/SignIn';
 
 
 const router = createBrowserRouter([
@@ -28,9 +28,13 @@ const router = createBrowserRouter([
       {
         path: '/historico',
         element: <SearchProvider><Historico /></SearchProvider>,
-      }
+      },
     ],
-  }
+  },
+  {
+    path: '/entrar',
+    element: <SignIn />,
+  },
 ])
 
 
