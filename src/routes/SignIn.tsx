@@ -2,21 +2,23 @@ import { Container, ContainerImage, SignInForm } from "./SignIn.styles";
 
 export function SignIn() {
     return (
-        <Container>
-            <ContainerImage>
-                <img src="/assets/logo_horizontal.png" alt="" />
-            </ContainerImage>
+        <>
+            <Container>
+                <ContainerImage>
+                    <img src="/assets/logo_horizontal.png" alt="" />
+                </ContainerImage>
 
-            <SignInForm>
-                <span>Acesse suas Ordens</span>
+                <SignInForm>
+                    <span>Acesse sua conta</span>
 
-                <form>
-                    <input type="text" placeholder="Usuário" />
+                    <form>
+                        <input name="user-tasy" type="text" placeholder="Usuário do Tasy" required />
 
-                    <button type="submit">Entrar</button>
-                </form>
-            </SignInForm>
+                        <button type="submit">Entrar</button>
+                    </form>
+                </SignInForm>
 
-        </Container>
+            </Container>
+        </>
     )
 }

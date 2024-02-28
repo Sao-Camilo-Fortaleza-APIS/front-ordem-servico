@@ -31,33 +31,39 @@ export const SignInForm = styled.div`
     margin-top: 5rem;
 
     span {
-        font-size: 1rem;
-        font-weight: 500;
+        font-size: 1.25rem;
+        font-weight: 600;
         font-family: 'Roboto', sans-serif;
+        line-height: 160%;
     }
 
     form {
         display: flex;
+        width: 300px;
         flex-direction: column;
         justify-content: center;
         align-items: center;
-        gap: 1rem;
-        padding: 0 1rem;
+        gap: 2rem;
 
         input {
-            width: 300px;
+            width: 100%;
             height: 3.5rem;
             border: 1px solid #ccc;
-            margin: 0 1rem;
             border-radius: 5px;
             font-size: 1rem;
             font-family: 'Roboto', sans-serif;
+
+            ::placeholder {
+                font-size: 1rem;
+                font-family: 'Roboto', sans-serif;
+                padding-left: 1rem;
+            }
         }
 
         button {
-            width: 300px;
+            width: 100%;
             height: 3.5rem;
-            border: none;
+            border: 1px solid #007bff;
             border-radius: 5px;
             background-color: #007bff;
             color: #fff;
