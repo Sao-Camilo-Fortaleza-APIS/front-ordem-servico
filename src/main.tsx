@@ -3,14 +3,13 @@ import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import App from './App';
-
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
-import { GlobalStyles } from './Styles/global';
 import { ViewOrders } from './routes/ViewOrders';
+import { GlobalStyles } from './styles/global';
 
 
 const router = createBrowserRouter([
