@@ -6,6 +6,8 @@ import { Loader } from "../components/Load";
 import api from "../services/api";
 import { configToastError } from "../utils/toast-config";
 import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "./RegisterServiceOrder.styles";
+import { Header } from "../components/Header";
+import { Navbar } from "../components/Navbar";
 
 export function RegisterServiceOrdem() {
   // Estado para o nome do equipamento
@@ -146,7 +148,8 @@ export function RegisterServiceOrdem() {
     <>
 
       {isLoading && <Loader />}
-
+      <Header />
+      <Navbar />
       <CardForm>
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>

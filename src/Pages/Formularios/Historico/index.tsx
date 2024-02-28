@@ -22,6 +22,8 @@ import EmptyHistory from '/assets/location_search.svg';
 import { Editor } from "../../../components/Editor";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
+import { Header } from "../../../components/Header";
+import { Navbar } from "../../../components/Navbar";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -186,9 +188,9 @@ export function Historico() {
   return (
     <>
       {isLoading && <Loader />}
-
+      <Header />
+      <Navbar />
       <Container>
-
         <ContainerHeader>
           <h3>Histórico</h3>
           <div className="content-mobile">
