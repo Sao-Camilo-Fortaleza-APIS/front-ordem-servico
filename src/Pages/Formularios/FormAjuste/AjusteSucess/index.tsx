@@ -1,7 +1,7 @@
 import { useNavigate, useParams } from "react-router-dom";
+import { Btns } from "../../../../Styles/RegisterServiceOrder.styles";
 import { ContainerForm } from "../styles";
-import { BotaoAjuste, Ok } from "./styles";
-import { Btns } from "../../../../routes/RegisterServiceOrder.styles";
+import { Ok } from "./styles";
 
 export function AjusteOk() {
 

@@ -1,5 +1,5 @@
 import { LogOut } from "lucide-react";
-import { Container, Header } from "./ViewOrders.styles";
+import { Container, Header } from "../Styles/ViewOrders.styles";
 import { Button } from "../components/Button";
 
 export function ViewOrders() {

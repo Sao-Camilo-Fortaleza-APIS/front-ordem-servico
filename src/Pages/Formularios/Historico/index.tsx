@@ -11,7 +11,7 @@ import SearchForm from "../../../components/SearchForm";
 
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
-import { Btns, CardForm } from "../../../routes/RegisterServiceOrder.styles";
+import { Btns } from "../../../Styles/RegisterServiceOrder.styles";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { convertDate } from "../../../utils/convert-date";
@@ -20,10 +20,10 @@ import { configToastError, configToastSuccess } from "../../../utils/toast-confi
 import EmptyHistory from '/assets/location_search.svg';
 
 import { Editor } from "../../../components/Editor";
-import { useSearch } from "../../../contexts/SearchContext";
-import api from "../../../services/api";
 import { Header } from "../../../components/Header";
 import { Navbar } from "../../../components/Navbar";
+import { useSearch } from "../../../contexts/SearchContext";
+import api from "../../../services/api";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number

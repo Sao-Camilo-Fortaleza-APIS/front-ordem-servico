@@ -1,4 +1,4 @@
-import { Container, ContainerImage, SignInForm } from "./SignIn.styles";
+import { Container, ContainerImage, SignInForm } from "../Styles/SignIn.styles";
 
 export function SignIn() {
     return (
