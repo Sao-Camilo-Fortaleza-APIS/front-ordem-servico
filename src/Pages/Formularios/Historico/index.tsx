@@ -11,7 +11,7 @@ import SearchForm from "../../../components/SearchForm";
 
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
-import { Btns } from "../../../Styles/RegisterServiceOrder.styles";
+import { Btns } from "../../../styles/RegisterServiceOrder.styles";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { convertDate } from "../../../utils/convert-date";

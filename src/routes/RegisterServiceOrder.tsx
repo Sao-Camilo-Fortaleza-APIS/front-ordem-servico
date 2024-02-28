@@ -2,11 +2,11 @@ import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "../Styles/RegisterServiceOrder.styles";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
 import { Navbar } from "../components/Navbar";
 import api from "../services/api";
+import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
 
 export function RegisterServiceOrdem() {

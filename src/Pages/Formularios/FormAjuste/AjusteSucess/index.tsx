@@ -1,5 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
-import { Btns } from "../../../../Styles/RegisterServiceOrder.styles";
+import { Btns } from "../../../../styles/RegisterServiceOrder.styles";
 import { ContainerForm } from "../styles";
 import { Ok } from "./styles";
 
