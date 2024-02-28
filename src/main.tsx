@@ -9,6 +9,8 @@ import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
+import { GlobalStyles } from './Styles/global';
+import { ViewOrders } from './routes/ViewOrders';
 
 
 const router = createBrowserRouter([
@@ -29,17 +31,22 @@ const router = createBrowserRouter([
         path: '/historico',
         element: <SearchProvider><Historico /></SearchProvider>,
       },
+      {
+        path: '/entrar',
+        element: <SignIn />,
+      },
+      {
+        path: '/ordens',
+        element: <ViewOrders />,
+      },
     ],
-  },
-  {
-    path: '/entrar',
-    element: <SignIn />,
   },
 ])
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
+    <GlobalStyles />
     <RouterProvider router={router} />
   </React.StrictMode>
 )
