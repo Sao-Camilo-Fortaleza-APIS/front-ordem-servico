@@ -13,6 +13,11 @@ export const Container = styled.div`
     justify-content: space-between;
     align-items: center;
     padding: 0 1.5rem;
+
+    .list-orders {
+      width: 100%;
+      margin-top: 2rem;
+    }
   }
 
   .quantidade {
@@ -34,7 +39,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center; 
     justify-content: space-between;
-    gap: 0.5rem;
+    gap: 0.25rem;
     margin-top: 1rem;
 
     button {
