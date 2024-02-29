@@ -10,7 +10,9 @@ import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
 import { ViewOrders } from './routes/ViewOrders';
 import { GlobalStyles } from './styles/global';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -46,6 +48,8 @@ const router = createBrowserRouter([
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
     <GlobalStyles />
-    <RouterProvider router={router} />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+    </QueryClientProvider>
   </React.StrictMode>
 )
