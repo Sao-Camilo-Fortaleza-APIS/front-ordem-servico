@@ -1,32 +1,49 @@
-import { LogOut } from "lucide-react";
-import { Button } from "../components/Button";
-import { Order } from "../components/Order";
-import { Container, Header } from "../styles/ViewOrders.styles";
-import { QueryCache, useQueryClient } from "@tanstack/react-query";
-import { useSearchParams } from "react-router-dom";
 import * as Accordion from "@radix-ui/react-accordion";
+import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import { LogOut } from "lucide-react";
+import { MouseEvent } from "react";
+import { useSearchParams } from "react-router-dom";
+import { Button } from "../components/Button";
+import { Filter } from "../components/Filter";
+import { Order, OrderProps } from "../components/Order";
+import api from "../services/api";
+import { Container, Header } from "../styles/ViewOrders.styles";
 
-export interface OrderResponse {
-  executor: string
-  orders: SingleOrder[]
-}
-
-export interface SingleOrder {
-  damage: string
-  date_order: string
-  location: string
-  number: number
-  requester: string
-}
-
-export type Order = OrderResponse[]
+export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams()
-  const cachedOrdersData = queryClient.getQueryData<Order>(['get-orders', searchParams.get('executor')]); // Access cached data
+  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['get-orders', searchParams.get('executor')]); // Access cached data
 
-  console.log(cachedOrdersData)
+  const user = searchParams.get('executor') ?? ""
+
+  const { data: ordersResponse, refetch, isFetching } = useQuery({
+    queryKey: ["get-orders", user],
+    queryFn: async () => {
+      const response = await api.get(`/get/order_user/executor/${user}`)
+      const data = await response.data
+
+      return data
+    },
+    placeholderData: keepPreviousData,
+    enabled: true, // se false desabilita a pesquisa automática
+  })
+
+  function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+
+    refetch()
+
+    setSearchParams(params => {
+      params.set('executor', user)
+
+      return params
+    })
+  }
+  function filterByPending(event: MouseEvent<HTMLButtonElement>) {
+    event.preventDefault()
+  }
 
   return (
     <Container>
@@ -43,19 +60,19 @@ export function ViewOrders() {
           <span>0</span>
         </div>
         <form className="filter">
-          <Button>EM ATENDIMENTO</Button>
-          <Button>AGUARDANDO</Button>
+          <Filter onClick={filterByExecutor} title="EM ATENDIMENTO" type="byExecutor" />
+          <Button onClick={filterByPending}>AGUARDANDO</Button>
         </form>
 
         <div className="list-orders">
           <Accordion.Root type='single' collapsible>
-            {cachedOrdersData && cachedOrdersData[0].orders.map(({ number, damage, date_order, location, requester }) => {
+            {cachedOrdersData && cachedOrdersData?.map(({ number, damage, date_order, location, requester }) => {
               return (
                 <Order
                   key={number}
                   number={number}
                   damage={number + ' ' + damage}
-                  date={date_order}
+                  date_order={date_order}
                   location={location}
                   requester={requester}
                 />
