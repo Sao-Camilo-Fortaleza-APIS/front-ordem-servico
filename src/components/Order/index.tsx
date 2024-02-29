@@ -1,13 +1,16 @@
 import * as Accordion from '@radix-ui/react-accordion';
 import { Clock, Hourglass, MapPin } from 'lucide-react';
+import { convertDate } from '../../utils/convert-date';
+import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
 import { AccordionContent, AccordionTrigger, Container } from './styles';
 
 export interface OrderProps {
     damage: string
-    date: string
+    date_order: string
     location: string
     number: number
     requester: string
+    contact?: string
 }
 
 export function Order(props: OrderProps) {
@@ -18,12 +21,12 @@ export function Order(props: OrderProps) {
                     <div>
                         <span className='title'>{props.damage}</span>
                         <span className='infos'>
-                            <Clock size={16} color='#a1a1aa' />
-                            {props.date}
+                            <MapPin size={16} color='#a1a1aa' />
+                            {capitalizeFirstLetterOfWords(props.location)}
                         </span>
                         <span className='infos'>
-                            <MapPin size={16} color='#a1a1aa' />
-                            {props.location}
+                            <Clock size={16} color='#a1a1aa' />
+                            {convertDate(props.date_order)}
                         </span>
                     </div>
                     <div className='icon-card'>

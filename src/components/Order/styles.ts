@@ -44,6 +44,7 @@ export const AccordionTrigger = styled(Accordion.Trigger)`
             align-items: center;
             gap: 0.125rem;
             color: #a1a1aa;
+            text-align: left;
         }
     }
         .icon-card {
