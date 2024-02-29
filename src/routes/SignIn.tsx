@@ -1,8 +1,9 @@
-import { useQuery, keepPreviousData } from "@tanstack/react-query";
-import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
-import { FormEvent, useEffect, useState } from "react";
+import { keepPreviousData, useQuery } from "@tanstack/react-query";
+import { FormEvent, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import useDebounceValue from "../hooks/useDebounceValue";
+import api from "../services/api";
+import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
 
 export function SignIn() {
     const navigate = useNavigate();
@@ -14,8 +15,8 @@ export function SignIn() {
     const { data: ordersResponse, refetch, isFetching } = useQuery({
         queryKey: ["get-orders", debouncedUser],
         queryFn: async () => {
-            const response = await fetch(`http://localhost:4322/executors?executor=${debouncedUser}`)
-            const data = await response.json()
+            const response = await api.get(`/get/order_user/executor/${debouncedUser}`)
+            const data = await response.data
 
             return data
         },
