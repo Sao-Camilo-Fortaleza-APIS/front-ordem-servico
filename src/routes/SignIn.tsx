@@ -1,6 +1,34 @@
+import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
+import { FormEvent, useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
+import useDebounceValue from "../hooks/useDebounceValue";
 
 export function SignIn() {
+    const navigate = useNavigate();
+    const [user, setUser] = useState("")
+
+    const debouncedUser = useDebounceValue(user, 500);
+
+    const { data: ordersResponse, refetch, isPending, isFetching } = useQuery({
+        queryKey: ["get-orders", debouncedUser],
+        queryFn: async () => {
+            const response = await fetch(`http://localhost:4322/executors?executor=${debouncedUser}`)
+            const data = await response.json()
+
+            return data
+        },
+        placeholderData: keepPreviousData,
+        enabled: false, // se false desabilita a pesquisa automática
+    })
+
+    async function handleSignIn(event: FormEvent<HTMLFormElement>) {
+        event.preventDefault()
+        refetch().then(() => {
+            navigate('/ordens')
+        })
+    }
+
     return (
         <>
             <Container>
@@ -11,10 +39,20 @@ export function SignIn() {
                 <SignInForm>
                     <span>Acesse sua conta</span>
 
-                    <form>
-                        <input name="user-tasy" type="text" placeholder="Usuário do Tasy" required />
+                    <form onSubmit={handleSignIn}>
+                        <input
+                            name="user-tasy"
+                            type="text"
+                            placeholder="Usuário do Tasy"
+                            onChange={e => setUser(e.target.value)}
+                            value={user}
+                            required
+                        />
 
-                        <button type="submit">Entrar</button>
+                        <button type="submit" disabled={isFetching}>
+                            {isFetching && 'Carregando...'}
+                            {!isFetching && 'Entrar'}
+                        </button>
                     </form>
                 </SignInForm>
 
