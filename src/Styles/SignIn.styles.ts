@@ -76,6 +76,11 @@ export const SignInForm = styled.div`
             &:hover {
                 background-color: #0056b3;
             }
+
+            &:disabled {
+                background-color: #3b82f6;
+                cursor: not-allowed;
+            }
         }
     }
 `;
