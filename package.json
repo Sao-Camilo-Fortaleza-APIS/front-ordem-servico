@@ -7,7 +7,8 @@
     "dev": "vite --host=0.0.0.0 --port=5177",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint"
+    "lint": "eslint",
+    "server": "json-server server.json --port 4322"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.1.2",
@@ -38,6 +39,7 @@
     "@types/styled-components": "^5.1.26",
     "@vitejs/plugin-react": "^2.2.0",
     "eslint": "^8.52.0",
+    "json-server": "^1.0.0-alpha.23",
     "prettier-plugin-tailwindcss": "^0.5.6",
     "typescript": "^4.6.4",
     "vite": "^3.2.3"
