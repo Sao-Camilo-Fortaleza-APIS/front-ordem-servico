@@ -1,16 +1,17 @@
 import { useQuery, keepPreviousData } from "@tanstack/react-query";
 import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
 import { FormEvent, useEffect, useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import useDebounceValue from "../hooks/useDebounceValue";
 
 export function SignIn() {
     const navigate = useNavigate();
+    const [searchParams, setSearchParams] = useSearchParams()
     const [user, setUser] = useState("")
 
     const debouncedUser = useDebounceValue(user, 500);
 
-    const { data: ordersResponse, refetch, isPending, isFetching } = useQuery({
+    const { data: ordersResponse, refetch, isFetching } = useQuery({
         queryKey: ["get-orders", debouncedUser],
         queryFn: async () => {
             const response = await fetch(`http://localhost:4322/executors?executor=${debouncedUser}`)
@@ -24,8 +25,15 @@ export function SignIn() {
 
     async function handleSignIn(event: FormEvent<HTMLFormElement>) {
         event.preventDefault()
+
+        setSearchParams(params => {
+            params.set('executor', debouncedUser)
+
+            return params
+        })
+
         refetch().then(() => {
-            navigate('/ordens')
+            navigate(`/ordens?executor=${debouncedUser}`)
         })
     }
 
