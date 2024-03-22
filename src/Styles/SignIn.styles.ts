@@ -3,7 +3,7 @@ import styled from "styled-components";
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    justify-content: start;
+    justify-content: center;
     align-items: center;
     height: 100vh;
     width: auto;
@@ -14,7 +14,6 @@ export const ContainerImage = styled.div`
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 6rem;
 
     img {
         width: 212px;
@@ -28,7 +27,6 @@ export const SignInForm = styled.div`
     justify-content: center;
     align-items: center;
     gap: 1.5rem;
-    margin-top: 5rem;
 
     span {
         font-size: 1.25rem;
@@ -51,12 +49,13 @@ export const SignInForm = styled.div`
             border: 1px solid #ccc;
             border-radius: 5px;
             font-size: 1rem;
+            padding-left: 1rem;
             font-family: 'Roboto', sans-serif;
+            margin-top: 0.5rem;
 
             ::placeholder {
-                font-size: 1rem;
+                font-size: 0.875rem;
                 font-family: 'Roboto', sans-serif;
-                padding-left: 1rem;
             }
         }
 
@@ -81,6 +80,19 @@ export const SignInForm = styled.div`
                 background-color: #3b82f6;
                 cursor: not-allowed;
             }
+        }
+    }
+
+    .animate-spin {
+        animation: spin 1s linear infinite;
+
+        @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
         }
     }
 `;
