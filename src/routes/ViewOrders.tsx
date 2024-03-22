@@ -14,12 +14,12 @@ export type OrderResponse = OrderProps[]
 export function ViewOrders() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams()
-  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['get-orders', searchParams.get('executor')]); // Access cached data
+  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', searchParams.get('executor')]); // Access cached data
 
   const user = searchParams.get('executor') ?? ""
 
   const { data: ordersResponse, refetch, isFetching } = useQuery({
-    queryKey: ["get-orders", user],
+    queryKey: ['user', user],
     queryFn: async () => {
       const response = await api.get(`/get/order_user/executor/${user}`)
       const data = await response.data
