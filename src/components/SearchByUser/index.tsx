@@ -22,8 +22,8 @@ export function SearchByUser() {
         event.preventDefault()
         setApiData([])
         setSearchMade(true)
-        //        fetchData(`/get/order_user/${query}`)
-        await api.get(`/get/order_user/${query}`)
+        //        fetchData(`/get/order_user/executor/${query}`)
+        await api.get(`/get/order_user/executor/${query}`)
             .then(response => {
                 setApiData(response.data)
             })
