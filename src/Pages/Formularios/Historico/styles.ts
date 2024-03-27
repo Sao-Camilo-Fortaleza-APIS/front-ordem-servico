@@ -89,11 +89,14 @@ export const HeaderOrder = styled.div`
   color: white;
 
   .number-and-title {
+    font-size: 0.875rem;
     max-width: 100%;
     width: 70%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: flex;
+    gap: 0.5rem;
   }
 
   .requester {
@@ -102,6 +105,7 @@ export const HeaderOrder = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 0.875rem;
   }
 
   @media (max-width: 600px) {
@@ -119,31 +123,11 @@ export const HeaderOrder = styled.div`
       align-items: start;
       gap: 0.5rem;
       width: 100%;
-
-      strong{
-        font-weight: normal;
-        ::before {
-          content: 'Nº ';
-        }
-      }
-
-      span {
-        font-size: 0.875rem;
-        color: #fff;
-
-        ::before {
-          content: '| ';
-        }
-      }
     }
       
     .requester {
       width: auto;
       font-size: 0.875rem;
-
-     /*  ::before {
-        content: 'Solicitante: ';
-      } */
     }
   }
 

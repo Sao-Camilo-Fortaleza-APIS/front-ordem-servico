@@ -197,8 +197,8 @@ export function Historico() {
             {resultOrderData && (
               <HeaderOrder>
                 <div className="number-and-title">
-                  <strong>{resultOrderData?.number}</strong>
-                  <span>{resultOrderData?.title}</span>
+                  <span>{resultOrderData?.number && `Nº ${resultOrderData?.number}`}</span>
+                  <span>{resultOrderData?.title && `${resultOrderData?.title}`}</span>
                 </div>
 
                 <div className="requester">

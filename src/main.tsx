@@ -14,11 +14,14 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Login } from './routes/Login';
 import { useUser } from './hooks/useUser';
+import Cookies from 'js-cookie';
+import { jwtDecode } from 'jwt-decode';
 
 const queryClient = new QueryClient()
 
 function ProtectedRoute({ children }: PropsWithChildren) {
-  const { user } = useUser();
+  const access_token = Cookies.get('access_token') ?? ''
+  const { sub: user } = jwtDecode(access_token)
   if (!user) return <Navigate to="/login" replace />
 
   return <>{children}</>

@@ -8,15 +8,16 @@ import { Filter } from "../components/Filter";
 import { Order, OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
+import Cookies from "js-cookie";
 
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
   const queryClient = useQueryClient();
   const [searchParams, setSearchParams] = useSearchParams()
-  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', searchParams.get('executor')]); // Access cached data
+  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', Cookies.get('user')]); // Access cached data
 
-  const user = searchParams.get('executor') ?? ""
+  const user = Cookies.get('user') ?? ""
 
   const { data: ordersResponse, refetch, isFetching } = useQuery({
     queryKey: ['user', user],
@@ -32,14 +33,7 @@ export function ViewOrders() {
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-
     refetch()
-
-    setSearchParams(params => {
-      params.set('executor', user)
-
-      return params
-    })
   }
   function filterByPending(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()

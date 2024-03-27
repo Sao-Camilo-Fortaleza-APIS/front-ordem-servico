@@ -14,6 +14,10 @@ interface TableProps {
     data: ApiDataProps[]
 }
 
+/**
+ * TODO: Verificar como está a estrutura da resposta da API (não está vindo o titulo da ordem)
+ */
+
 export default function Table({ data }: TableProps) {
     const {
         setResultHistoryData,
