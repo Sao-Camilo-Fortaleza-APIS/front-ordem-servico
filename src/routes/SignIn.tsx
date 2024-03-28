@@ -1,21 +1,16 @@
-import { useMutation } from "@tanstack/react-query";
-import { BaseSyntheticEvent, FormEvent, useEffect, useState } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
-import useDebounceValue from "../hooks/useDebounceValue";
-import { set, useForm } from "react-hook-form";
+import { BaseSyntheticEvent, useEffect } from "react";
+import { useForm } from "react-hook-form";
 import { z } from 'zod'
 import { zodResolver } from '@hookform/resolvers/zod'
-import api from "../services/api";
 import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
 import { Button } from "../components/Button";
 import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
-import { saveUser } from "../hooks/userCookies";
-import Cookies from "js-cookie";
 import { JwtPayload, jwtDecode } from "jwt-decode";
-import { compareDate } from "../utils/convert-date";
 import { useSignIn } from "../hooks/useSignIn";
 import { queryClient } from "../services/react-query";
+import { getUser, saveUser } from "../hooks/userCookies";
+import { useNavigate } from "react-router-dom";
 
 // Essa constante é um schema de validação para os campos do formulário
 const signInForm = z.object({
@@ -34,30 +29,41 @@ type SignInResponse = {
 }
 
 export function SignIn() {
+    const navigate = useNavigate()
     const { register, handleSubmit, formState } = useForm<SignInForm>({
         resolver: zodResolver(signInForm), // Aqui passamos o schema de validação para o useForm
     });
 
-    const navigate = useNavigate();
     const signInMutation = useSignIn()
 
 
     async function handleSignIn(data: SignInForm, event?: BaseSyntheticEvent | undefined) {
         event?.preventDefault()
         try {
-            const { message, user } = await signInMutation({ user: data.user, password: data.password })
-            if (user) {
-                queryClient.setQueryData(['user_logged'], user)
+            const { token, user } = await signInMutation({ user: data.user, password: data.password })
+            if (token && user) {
+                saveUser({ token, user })
+                toast.success("Logado com sucesso!")
+                navigate(`/ordens`)
+            } else {
+                throw new Error('Token ou usuário não informado')
             }
-
-            toast.success(`${message}`)
-            navigate(`/ordens`)
         } catch (error: any) {
             console.error(error);
 
             toast.error(error.response)
         }
     }
+
+    useEffect(() => {
+        // verificar se usuário já está logado
+        const token = getUser()?.token
+        console.log(token);
+
+        if (token) {
+            navigate('/ordens')
+        }
+    }, [])
 
     return (
         <Container>

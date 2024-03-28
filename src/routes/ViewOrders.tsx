@@ -1,23 +1,25 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import { LogOut } from "lucide-react";
-import { MouseEvent } from "react";
-import { useSearchParams } from "react-router-dom";
+import { MouseEvent, useEffect } from "react";
+import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/Button";
 import { Filter } from "../components/Filter";
 import { Order, OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 import Cookies from "js-cookie";
+import { getUser } from "../hooks/userCookies";
 
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
   const queryClient = useQueryClient();
+  const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams()
-  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', Cookies.get('user')]); // Access cached data
+  const user = getUser()?.user
+  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', user]); // Access cached data
 
-  const user = Cookies.get('user') ?? ""
 
   const { data: ordersResponse, refetch, isFetching } = useQuery({
     queryKey: ['user', user],
@@ -38,6 +40,14 @@ export function ViewOrders() {
   function filterByPending(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
   }
+
+  useEffect(() => {
+    const token = getUser()?.token
+    if (token) {
+      navigate('/ordens')
+    }
+  }
+    , [])
 
   return (
     <Container>
