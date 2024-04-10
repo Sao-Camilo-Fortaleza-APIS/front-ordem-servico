@@ -10,21 +10,25 @@ import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 import Cookies from "js-cookie";
 import { getUser } from "../hooks/userCookies";
+import { Loader } from "../components/Load";
 
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
+  const token = Cookies.get('exec.token')
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams()
-  const user = getUser()?.user
+  const user = Cookies.get('user')
   const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', user]); // Access cached data
 
+  const filtro = searchParams.get('filtro') ? Number(searchParams.get('filtro')) : 1
 
-  const { data: ordersResponse, refetch, isFetching } = useQuery({
+
+  const { data: ordersResponse, refetch, isFetching } = useQuery<OrderResponse>({
     queryKey: ['user', user],
     queryFn: async () => {
-      const response = await api.get(`/get/order_user/executor/${user}`)
+      const response = await api.get(`/get/order_user/executor/${user}?filtro=${filtro}`)
       const data = await response.data
 
       return data
@@ -41,10 +45,16 @@ export function ViewOrders() {
     event.preventDefault()
   }
 
+  function logOut() {
+    Cookies.remove('exec.token')
+    Cookies.remove('user')
+    queryClient.clear()
+    navigate('/entrar')
+  }
+
   useEffect(() => {
-    const token = getUser()?.token
-    if (token) {
-      navigate('/ordens')
+    if (!token) {
+      navigate('/entrar')
     }
   }
     , [])
@@ -54,36 +64,38 @@ export function ViewOrders() {
       <Header>
         <img src="./assets/logo_horizontal.svg" alt="Logo São Camilo" />
 
-        <LogOut className="icon" size={26} />
+        <LogOut onClick={logOut} className="icon" size={26} />
       </Header>
 
       <div className="wrapper">
         <div className="quantidade">
           <span>Solicitações</span>
 
-          <span>0</span>
+          <span>{ordersResponse ? ordersResponse.length : 0}</span>
         </div>
         <form className="filter">
           <Filter onClick={filterByExecutor} title="EM ATENDIMENTO" type="byExecutor" />
           <Button onClick={filterByPending}>AGUARDANDO</Button>
         </form>
 
-        <div className="list-orders">
-          <Accordion.Root type='single' collapsible>
-            {cachedOrdersData && cachedOrdersData?.map(({ number, damage, date_order, location, requester }) => {
-              return (
-                <Order
-                  key={number}
-                  number={number}
-                  damage={number + ' ' + damage}
-                  date_order={date_order}
-                  location={location}
-                  requester={requester}
-                />
-              )
-            })}
-          </Accordion.Root>
-        </div>
+        {isFetching ? (<Loader />) : (
+          <div className="list-orders">
+            <Accordion.Root type='single' collapsible>
+              {ordersResponse && ordersResponse?.map(({ number, damage, date_order, location, requester }) => {
+                return (
+                  <Order
+                    key={number}
+                    number={number}
+                    damage={number + ' ' + damage}
+                    date_order={date_order}
+                    location={location}
+                    requester={requester}
+                  />
+                )
+              })}
+            </Accordion.Root>
+          </div>
+        )}
       </div>
     </Container>
   )
