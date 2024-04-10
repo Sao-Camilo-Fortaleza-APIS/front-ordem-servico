@@ -14,14 +14,12 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
 import { Login } from './routes/Login';
 import Cookies from 'js-cookie';
-import { USER_COOKIE_KEY, getUser } from './hooks/userCookies';
-import { User, useUser } from './hooks/useUser';
 
 const queryClient = new QueryClient()
 
 function ProtectedRoute({ children }: PropsWithChildren) {
-  const { user } = useUser();
-  if (!user) return <Navigate to="/entrar" replace />
+  const token = Cookies.get('exec.token')
+  if (token) return <Navigate to="/entrar" replace />
 
   return <>{children}</>
 }
