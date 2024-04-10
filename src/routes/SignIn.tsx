@@ -11,6 +11,9 @@ import { useSignIn } from "../hooks/useSignIn";
 import { queryClient } from "../services/react-query";
 import { getUser, saveUser } from "../hooks/userCookies";
 import { useNavigate } from "react-router-dom";
+import Cookies from "js-cookie";
+import { useMutation } from "@tanstack/react-query";
+import api from "../services/api";
 
 // Essa constante é um schema de validação para os campos do formulário
 const signInForm = z.object({
@@ -29,20 +32,30 @@ type SignInResponse = {
 }
 
 export function SignIn() {
+    const token = Cookies.get('exec.token')
     const navigate = useNavigate()
     const { register, handleSubmit, formState } = useForm<SignInForm>({
         resolver: zodResolver(signInForm), // Aqui passamos o schema de validação para o useForm
     });
 
-    const signInMutation = useSignIn()
+    async function signIn({ user, password }: SignInForm) {
+        const response = await api.post('/login', { user, password })
+        return response.data
+    }
+
+    const { mutateAsync: authenticate } = useMutation({
+        mutationFn: signIn,
+        mutationKey: ['user'],
+    })
 
 
     async function handleSignIn(data: SignInForm, event?: BaseSyntheticEvent | undefined) {
         event?.preventDefault()
         try {
-            const { token, user } = await signInMutation({ user: data.user, password: data.password })
+            const { token, user } = await authenticate({ user: data.user, password: data.password })
             if (token && user) {
-                saveUser({ token, user })
+                Cookies.set('exec.token', token)
+                Cookies.set('user', user)
                 toast.success("Logado com sucesso!")
                 navigate(`/ordens`)
             } else {
@@ -50,14 +63,12 @@ export function SignIn() {
             }
         } catch (error: any) {
             console.error(error);
-
             toast.error(error.response)
         }
     }
 
     useEffect(() => {
         // verificar se usuário já está logado
-        const token = getUser()?.token
         console.log(token);
 
         if (token) {
