@@ -6,14 +6,11 @@ import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
 import { Button } from "../components/Button";
 import { Loader } from "lucide-react";
 import { toast } from "react-toastify";
-import { JwtPayload, jwtDecode } from "jwt-decode";
-import { useSignIn } from "../hooks/useSignIn";
-import { queryClient } from "../services/react-query";
-import { getUser, saveUser } from "../hooks/userCookies";
 import { useNavigate } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useMutation } from "@tanstack/react-query";
 import api from "../services/api";
+import { queryClient } from "../services/react-query";
 
 // Essa constante é um schema de validação para os campos do formulário
 const signInForm = z.object({
@@ -26,13 +23,7 @@ const signInForm = z.object({
  */
 export type SignInForm = z.infer<typeof signInForm>
 
-type SignInResponse = {
-    access_token: string
-    user: string
-}
-
 export function SignIn() {
-    const token = Cookies.get('exec.token')
     const navigate = useNavigate()
     const { register, handleSubmit, formState } = useForm<SignInForm>({
         resolver: zodResolver(signInForm), // Aqui passamos o schema de validação para o useForm
@@ -45,9 +36,8 @@ export function SignIn() {
 
     const { mutateAsync: authenticate } = useMutation({
         mutationFn: signIn,
-        mutationKey: ['user'],
+        mutationKey: ['authenticate'],
     })
-
 
     async function handleSignIn(data: SignInForm, event?: BaseSyntheticEvent | undefined) {
         event?.preventDefault()
@@ -69,8 +59,7 @@ export function SignIn() {
 
     useEffect(() => {
         // verificar se usuário já está logado
-        console.log(token);
-
+        const token = Cookies.get('exec.token')
         if (token) {
             navigate('/ordens')
         }
