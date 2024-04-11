@@ -19,13 +19,21 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
   border-radius: ${props => {
     switch (props.variant) {
       case 'search-icon':
-        return '9999px';
+        return '50%';
       case 'search':
         return '0 0.5rem 0.5rem 0';
       default:
         return '0.5rem';
     }
   }};
+
+  /* search-icon */
+    @media (max-width: 600px) {
+      ${props => props.variant === 'search-icon' && `
+      position:  inherit;
+      border-radius: 999px;
+      `}
+    }
 
   /* reply */
   ${props => props.variant === 'reply' && `

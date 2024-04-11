@@ -1,5 +1,5 @@
-import styled, { keyframes } from "styled-components";
 import * as Dialog from '@radix-ui/react-dialog';
+import styled, { keyframes } from "styled-components";
 
 export const overlayShow = keyframes`
   from {
@@ -65,8 +65,15 @@ export const DialogContent = styled(Dialog.Content) <{
         return 'translate(-50%, -50%)';
     }
   }};
-  max-width: 36rem;
-  max-height: 85vh;
+  max-width: 37.5rem;
+  /* max-height: 85vh; */
+  @media (max-width: 600px) {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    inset: 0;
+    transform: none;
+  }
   width: ${props => {
     switch (props.size) {
       case 'xl':

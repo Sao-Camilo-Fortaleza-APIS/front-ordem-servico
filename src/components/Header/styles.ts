@@ -4,6 +4,7 @@ export const HeaderContainer = styled.header`
     display: flex;
     background: white;
     align-items: center;
+    justify-content: center;
     border-radius: 10px;
     width: 40.625rem;
     margin-top: 1rem;
@@ -14,6 +15,7 @@ export const HeaderContainer = styled.header`
     }
     @media (max-width:600px){
         margin-top: 0;
+        border-radius: 0;
         width: 100%;
         height: 140px;
     }
@@ -27,7 +29,6 @@ export const Logo = styled.div`
     justify-content: center;
     @media (max-width:600px){
         width: 300px;
-        margin-left: 3rem;
     }
 `
 export const ImageBanner = styled.div`

@@ -1,13 +1,18 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
-  width: 40.625rem;
-  height: 100%;
-
-  > div {
-    display: flex;
-    //margin: 0.625rem 0 1.875rem 0;
-  }
+    width: 40.625rem;
+    height: 100%;
+    @media (max-width:600px){
+        width: 95%;
+        height: 100%;
+        h2{
+            font-size: medium;
+        }
+    }
+    @media (max-width: 360px) {
+        padding: 0 1rem;
+    }
 `;
 
 export const ContainerButton = styled.div`
@@ -45,17 +50,26 @@ export const ContainerButton = styled.div`
 `;
 
 export const ContainerHeader = styled.div`
-  display: flexbox;
+  display: flex;
   flex-direction: column;
   width: 100%;
   margin-bottom: 0.5rem;
 
   /* para alinhar button com icone de pesquisa */
   position: relative;
+
+  @media (max-width: 600px){
+    .content-mobile {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+    }
+  }
 `;
 
 export const ContainerChat = styled.div`
-  display: flexbox;
+  display: flex;
   flex-direction: column;
   width: 100%;
   height: fit-content;
@@ -64,26 +78,25 @@ export const ContainerChat = styled.div`
 `
 
 export const HeaderOrder = styled.div`
-
   display: flex;
   justify-content: space-between;
-  //grid-template-columns: 3fr 1fr;
   align-items: center;
   gap: 0 1rem;
   height: 2rem;
-
   padding: 0.25rem 0.75rem;
   border-radius: 0.5rem;
-  
   background-color: #ce2929;
   color: white;
 
   .number-and-title {
+    font-size: 0.875rem;
     max-width: 100%;
     width: 70%;
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    display: flex;
+    gap: 0.5rem;
   }
 
   .requester {
@@ -92,7 +105,32 @@ export const HeaderOrder = styled.div`
     overflow: hidden;
     white-space: nowrap;
     text-overflow: ellipsis;
+    font-size: 0.875rem;
   }
+
+  @media (max-width: 600px) {
+    display: flex;
+    height: fit-content;
+    width: 80vw;
+    flex-direction: column;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: 0.5rem;
+
+    .number-and-title {
+      display: flex;
+      flex-direction: row;
+      align-items: start;
+      gap: 0.5rem;
+      width: 100%;
+    }
+      
+    .requester {
+      width: auto;
+      font-size: 0.875rem;
+    }
+  }
+
 `;
 
 export const ContainerMessages = styled.div`

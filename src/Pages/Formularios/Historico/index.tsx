@@ -11,7 +11,7 @@ import SearchForm from "../../../components/SearchForm";
 
 import { Search } from "lucide-react";
 import { toast } from "react-toastify";
-import { Btns } from "../../../routes/RegisterServiceOrder.styles";
+import { Btns } from "../../../styles/RegisterServiceOrder.styles";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { convertDate } from "../../../utils/convert-date";
@@ -20,6 +20,8 @@ import { configToastError, configToastSuccess } from "../../../utils/toast-confi
 import EmptyHistory from '/assets/location_search.svg';
 
 import { Editor } from "../../../components/Editor";
+import { Header } from "../../../components/Header";
+import { Navbar } from "../../../components/Navbar";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
 
@@ -186,38 +188,40 @@ export function Historico() {
   return (
     <>
       {isLoading && <Loader />}
-
+      <Header />
+      <Navbar />
       <Container>
-
         <ContainerHeader>
           <h3>Histórico</h3>
-          {resultOrderData && (
-            <HeaderOrder>
-              <div className="number-and-title">
-                <strong>{resultOrderData?.number} - </strong>
-                <span>{resultOrderData?.title}</span>
-              </div>
+          <div className="content-mobile">
+            {resultOrderData && (
+              <HeaderOrder>
+                <div className="number-and-title">
+                  <span>{resultOrderData?.number && `Nº ${resultOrderData?.number}`}</span>
+                  <span>{resultOrderData?.title && `${resultOrderData?.title}`}</span>
+                </div>
 
-              <div className="requester">
-                <span>{resultOrderData?.requester}</span>
-              </div>
-            </HeaderOrder>
-          )}
-          <Dialog open={open} setOpen={setOpen}>
-            <Content
-              size="xl"
-              title="Buscar"
-              description="Pesquise o número da ordem de serviço para visualizar seus históricos."
-            >
-              <SearchForm />
+                <div className="requester">
+                  <span>{resultOrderData?.requester}</span>
+                </div>
+              </HeaderOrder>
+            )}
+            <Dialog open={open} setOpen={setOpen}>
+              <Content
+                size="xl"
+                title="Buscar"
+                description="Pesquise o número da ordem de serviço para visualizar seus históricos."
+              >
+                <SearchForm />
 
-            </Content>
-            <Trigger asChild>
-              <Button variant='search-icon'>
-                <Search size={24} color='white' />
-              </Button>
-            </Trigger>
-          </Dialog>
+              </Content>
+              <Trigger asChild>
+                <Button variant='search-icon'>
+                  <Search size={24} color='white' />
+                </Button>
+              </Trigger>
+            </Dialog>
+          </div>
         </ContainerHeader>
 
         <ContainerChat>

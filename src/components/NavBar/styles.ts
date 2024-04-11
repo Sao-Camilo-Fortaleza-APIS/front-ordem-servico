@@ -9,7 +9,17 @@ export const NavbarContainer = styled.nav`
     justify-content: space-evenly;
     gap: 1.5rem;
     margin: 1rem 0;
-    `;
+
+    @media (max-width: 600px){
+        width: 95%;
+        height: auto;
+        display: flex;  
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        gap: 0.5rem;
+    }
+`;
 
 export const NavItem = styled(Link) < { active: string } > `
     width: 100%;

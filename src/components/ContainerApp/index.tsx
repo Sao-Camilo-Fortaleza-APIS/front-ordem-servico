@@ -6,7 +6,7 @@ interface ContainerFormProps extends HTMLAttributes<HTMLDivElement> {
 }
 
 
-export function ContainerForm({ children }: ContainerFormProps) {
+export function ContainerApp({ children }: ContainerFormProps) {
   return (
     <StyledContainerForm>
       {children}

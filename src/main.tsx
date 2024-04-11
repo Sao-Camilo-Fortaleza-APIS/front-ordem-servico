@@ -1,15 +1,20 @@
-import React from 'react'
-import ReactDOM from 'react-dom/client'
-import App from './App'
+import React, { PropsWithChildren } from 'react';
+import ReactDOM from 'react-dom/client';
+import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
-import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-
-import { FormAjuste } from './Pages/Formularios/FormAjuste';
+import App from './App';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
-import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
+import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
+import { SignIn } from './routes/SignIn';
+import { ViewOrders } from './routes/ViewOrders';
+import { GlobalStyles } from './styles/global';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
+import { Login } from './routes/Login';
 
+const queryClient = new QueryClient()
 
 const router = createBrowserRouter([
   {
@@ -28,14 +33,32 @@ const router = createBrowserRouter([
       {
         path: '/historico',
         element: <SearchProvider><Historico /></SearchProvider>,
-      }
+      },
+      {
+        path: '/entrar',
+        element: <SignIn />,
+      },
+      {
+        path: '/login',
+        element: <Login />,
+      },
+      {
+        path: '/ordens',
+        element:
+          <ViewOrders />,
+      },
     ],
-  }
+  },
 ])
 
 
 ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
   <React.StrictMode>
-    <RouterProvider router={router} />
+    <GlobalStyles />
+    <QueryClientProvider client={queryClient}>
+      <RouterProvider router={router} />
+
+      <ReactQueryDevtools initialIsOpen={false} />
+    </QueryClientProvider>
   </React.StrictMode>
 )
