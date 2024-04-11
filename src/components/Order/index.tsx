@@ -29,8 +29,8 @@ export function Order(props: OrderProps) {
                             {convertDate(props.date_order)}
                         </span>
                     </div>
-                    <div className='icon-card'>
-                        <Hourglass size={24} color='#0EA5E9' />
+                    <div className='icon'>
+                        <Hourglass size={24} color='#f59e0b' />
                     </div>
                 </AccordionTrigger>
                 <AccordionContent>

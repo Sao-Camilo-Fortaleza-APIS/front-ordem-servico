@@ -8,19 +8,20 @@ export const Container = styled.div`
     gap: 1rem;
 `;
 export const AccordionTrigger = styled(Accordion.Trigger)`
+    background-color: #f4f4f5;
     display: flex;
-    width: 100%;
+   width: 100%;
     height: 5.5rem;
     flex-direction: row;
-    align-items: start;
-    border-radius: 0.313rem;
+    align-items: center;
     justify-content: space-between;
     padding: 0.5rem 1rem;
+    margin-bottom: 0.5rem;
     border: none;
-    border-left: 0.5rem solid #0EA5E9;
+    border-radius: 0.313rem;
+    border-left: 0.5rem solid #f59e0b;
     overflow: hidden;
     cursor: pointer;
-    background-color: #f4f4f5;
 
     div {
         display: flex;
@@ -28,8 +29,6 @@ export const AccordionTrigger = styled(Accordion.Trigger)`
         align-items: start;
         justify-content: center;
         gap: 0.1rem;
-        width: 80%;
-        /* background-color: #0EA5E9; */
 
         .title {
             font-size: 1rem;
@@ -47,17 +46,18 @@ export const AccordionTrigger = styled(Accordion.Trigger)`
             text-align: left;
         }
     }
-        .icon-card {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            height: 100%;
-            width: 20%;
-            
-            :first-child {
-                background-color: #0EA5E9;
-            }
+
+    .icon {
+        background-color: #fafafa;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0.5rem;
+        border-radius: 99990px; 
+        > {
+            background-color: #f59e0b;
         }
+    }
 `
 
 export const AccordionContent = styled(Accordion.Content)`
