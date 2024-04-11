@@ -5,6 +5,12 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100vw;
+  overflow-x: hidden;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 
   .wrapper{
     display: flex;
@@ -32,6 +38,19 @@ export const Container = styled.div`
     span:first-child {
       color: #a1a1aa;
     }
+
+    .animate-spin {
+        animation: spin 1s linear infinite;
+
+        @keyframes spin {
+        from {
+            transform: rotate(0deg);
+        }
+        to {
+            transform: rotate(360deg);
+        }
+        }
+    }
   }
 
   .filter {
@@ -49,7 +68,7 @@ export const Container = styled.div`
       font-family: inherit;
       border-radius: 4px;
       background: #d4d4d8;
-      border: 1px solid #d4d4d8;
+      border: 2px solid #d4d4d8;
     }
   }
 `;

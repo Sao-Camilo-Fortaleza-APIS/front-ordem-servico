@@ -1,6 +1,6 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
-import { LogOut } from "lucide-react";
+import { Loader, LogOut } from "lucide-react";
 import { MouseEvent, useEffect } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { Button } from "../components/Button";
@@ -10,25 +10,31 @@ import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 import Cookies from "js-cookie";
 import { getUser } from "../hooks/userCookies";
-import { Loader } from "../components/Load";
+import { toast } from "react-toastify";
 
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
-  const token = Cookies.get('exec.token')
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const [searchParams, setSearchParams] = useSearchParams()
-  const user = Cookies.get('user')
+  const user = Cookies.get('user') ?? ''
   const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', user]); // Access cached data
 
-  const filtro = searchParams.get('filtro') ? Number(searchParams.get('filtro')) : 1
+  const filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
 
 
   const { data: ordersResponse, refetch, isFetching } = useQuery<OrderResponse>({
-    queryKey: ['user', user],
+    queryKey: ['user', filtro, user],
     queryFn: async () => {
       const response = await api.get(`/get/order_user/executor/${user}?filtro=${filtro}`)
+
+      if (response.status === 401) {
+        toast.error('Sessão expirada, faça login novamente')
+        Cookies.remove('exec.token')
+        Cookies.remove('user')
+        navigate('/entrar')
+      }
       const data = await response.data
 
       return data
@@ -39,10 +45,17 @@ export function ViewOrders() {
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    refetch()
+    setSearchParams(params => {
+      params.set('filtro', 'do-executor')
+      return params
+    })
   }
   function filterByPending(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
+    setSearchParams(params => {
+      params.set('filtro', 'sem-executor')
+      return params
+    })
   }
 
   function logOut() {
@@ -52,12 +65,12 @@ export function ViewOrders() {
     navigate('/entrar')
   }
 
-  useEffect(() => {
-    if (!token) {
-      navigate('/entrar')
-    }
-  }
-    , [])
+  /*  useEffect(() => {
+     const token = Cookies.get('exec.token')
+     if (!token) {
+       navigate('/entrar')
+     }
+   }, []) */
 
   return (
     <Container>
@@ -69,17 +82,28 @@ export function ViewOrders() {
 
       <div className="wrapper">
         <div className="quantidade">
-          <span>Solicitações</span>
+          <span>Solicitações {isFetching && <Loader size={18} className="animate-spin" />}</span>
 
           <span>{ordersResponse ? ordersResponse.length : 0}</span>
         </div>
-        <form className="filter">
-          <Filter onClick={filterByExecutor} title="EM ATENDIMENTO" type="byExecutor" />
-          <Button onClick={filterByPending}>AGUARDANDO</Button>
-        </form>
+        <div className="filter">
+          <Filter
+            title="EM ATENDIMENTO"
+            type="do-executor"
+            onClick={filterByExecutor}
+            isActive={filtro === 'do-executor'}
+          />
 
-        {isFetching ? (<Loader />) : (
-          <div className="list-orders">
+          <Filter
+            title="AGUARDANDO"
+            type="sem-executor"
+            onClick={filterByPending}
+            isActive={filtro === 'sem-executor'}
+          />
+        </div>
+
+        <div className="list-orders">
+          {filtro === 'do-executor' ? (
             <Accordion.Root type='single' collapsible>
               {ordersResponse && ordersResponse?.map(({ number, damage, date_order, location, requester }) => {
                 return (
@@ -94,8 +118,21 @@ export function ViewOrders() {
                 )
               })}
             </Accordion.Root>
-          </div>
-        )}
+          ) : (
+            <Accordion.Root type='single' collapsible>
+              {Array.from({ length: 10 }).map((_, index) => (
+                <Order
+                  key={index}
+                  number={index}
+                  damage={`Damage ${index}`}
+                  date_order={new Date().toISOString()}
+                  location="Location"
+                  requester="Requester"
+                />
+              ))}
+            </Accordion.Root>
+          )}
+        </div>
       </div>
     </Container>
   )
