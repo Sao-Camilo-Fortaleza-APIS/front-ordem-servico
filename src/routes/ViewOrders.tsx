@@ -1,15 +1,14 @@
 import * as Accordion from "@radix-ui/react-accordion";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
+import Cookies from "js-cookie";
 import { Loader, LogOut } from "lucide-react";
-import { MouseEvent, useEffect } from "react";
+import { MouseEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
-import { Button } from "../components/Button";
+import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
 import { Order, OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
-import Cookies from "js-cookie";
-import { toast } from "react-toastify";
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
@@ -90,29 +89,21 @@ export function ViewOrders() {
       </Header>
 
       <div className="wrapper">
-        <div className="quantidade">
-          <select
-            name="groups"
-            id="groups"
-            onChange={(e) => {
-              setSearchParams(params => {
-                params.set('group', e.target.value)
-                return params
-              })
-            }}
-          >
-            {responseQueries?.groups && responseQueries?.groups.map((group: any) => {
-              return <option key={group.code} value={group.code}>{group.describe}</option>
-            })}
-          </select>
-          <div>
-            <span>
-              {isFetching && <Loader size={18} className="animate-spin" />}
-              {responseQueries?.orders ? responseQueries?.orders.length : 0}
-            </span>
-            <span> Solicitações</span>
-          </div>
-        </div>
+        <select
+          className="select-group"
+          name="groups"
+          id="groups"
+          onChange={(e) => {
+            setSearchParams(params => {
+              params.set('group', e.target.value)
+              return params
+            })
+          }}
+        >
+          {responseQueries?.groups && responseQueries?.groups.map((group: any) => {
+            return <option key={group.code} value={group.code}>{group.describe}</option>
+          })}
+        </select>
         <div className="filter">
           <Filter
             title="EM ATENDIMENTO"
@@ -127,6 +118,16 @@ export function ViewOrders() {
             onClick={filterByPending}
             isActive={filtro === 'sem-executor'}
           />
+        </div>
+
+        <div className="quantidade">
+          <span>
+            Solicitações {' '}
+          </span>
+          <span>
+            {responseQueries?.orders ? responseQueries?.orders.length : 0} {' '}
+            {isFetching && <Loader size={16} className="animate-spin" />}
+          </span>
         </div>
 
         <div className="list-orders">
