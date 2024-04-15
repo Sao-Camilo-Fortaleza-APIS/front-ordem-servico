@@ -5,12 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100vw;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+ 
 
   .wrapper{
     display: flex;
@@ -34,9 +29,9 @@ export const Container = styled.div`
     margin-top: 1rem;
     font-size: 1.25rem;
     font-weight: 600;
-    color: #71717a;
+    color: #a1a1aa;
     span:first-child {
-      color: #a1a1aa;
+      color: #71717a;
     }
 
     .animate-spin {
@@ -75,7 +70,7 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  height: 6rem;
+  height: 4.5rem;
   width: 100;
   justify-content: space-between;
   align-items: center;

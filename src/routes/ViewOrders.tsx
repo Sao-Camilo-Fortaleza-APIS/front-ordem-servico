@@ -9,9 +9,7 @@ import { Order, OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 import Cookies from "js-cookie";
-import { getUser } from "../hooks/userCookies";
 import { toast } from "react-toastify";
-
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
@@ -24,19 +22,30 @@ export function ViewOrders() {
   const filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
 
 
-  const { data: ordersResponse, refetch, isFetching } = useQuery<OrderResponse>({
+  const { data: responseQueries, isFetching } = useQuery({
     queryKey: ['user', filtro, user],
     queryFn: async () => {
-      const response = await api.get(`/get/order_user/executor/${user}?filtro=${filtro}`)
+      // use promise.all to fetch multiple queries
+      const [ordernsWithExecutor, userWorkgroups] = await Promise.all([
+        api.get(`/get/order_user/executor/${user}?filtro=${filtro}`),
+        api.get(`/get/workgroup/user`),
+      ])
 
-      if (response.status === 401) {
+
+      if (ordernsWithExecutor.status === 401 || userWorkgroups.status === 401) {
         toast.error('Sessão expirada, faça login novamente')
         Cookies.remove('exec.token')
         Cookies.remove('user')
         navigate('/entrar')
       }
-      const data = await response.data
-
+      // Handle each response individually
+      const orders = await ordernsWithExecutor.data;
+      const groups = await userWorkgroups.data;
+      // Combine the data as needed
+      const data = {
+        "orders": orders as OrderResponse,
+        "groups": groups
+      }
       return data
     },
     placeholderData: keepPreviousData,
@@ -82,9 +91,27 @@ export function ViewOrders() {
 
       <div className="wrapper">
         <div className="quantidade">
-          <span>Solicitações {isFetching && <Loader size={18} className="animate-spin" />}</span>
-
-          <span>{ordersResponse ? ordersResponse.length : 0}</span>
+          <select
+            name="groups"
+            id="groups"
+            onChange={(e) => {
+              setSearchParams(params => {
+                params.set('group', e.target.value)
+                return params
+              })
+            }}
+          >
+            {responseQueries?.groups && responseQueries?.groups.map((group: any) => {
+              return <option key={group.code} value={group.code}>{group.describe}</option>
+            })}
+          </select>
+          <div>
+            <span>
+              {isFetching && <Loader size={18} className="animate-spin" />}
+              {responseQueries?.orders ? responseQueries?.orders.length : 0}
+            </span>
+            <span> Solicitações</span>
+          </div>
         </div>
         <div className="filter">
           <Filter
@@ -105,18 +132,17 @@ export function ViewOrders() {
         <div className="list-orders">
           {filtro === 'do-executor' ? (
             <Accordion.Root type='single' collapsible>
-              {ordersResponse && ordersResponse?.map(({ number, damage, date_order, location, requester }) => {
-                return (
-                  <Order
-                    key={number}
-                    number={number}
-                    damage={number + ' ' + damage}
-                    date_order={date_order}
-                    location={location}
-                    requester={requester}
-                  />
-                )
-              })}
+              {responseQueries?.orders && responseQueries?.orders.map((order) => (
+                <Order
+                  key={order.number}
+                  number={order.number}
+                  damage={order.number + ' ' + order.damage}
+                  date_order={order.date_order}
+                  location={order.location}
+                  requester={order.requester}
+                  contact={order.contact}
+                />
+              ))}
             </Accordion.Root>
           ) : (
             <Accordion.Root type='single' collapsible>
