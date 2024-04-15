@@ -11,6 +11,7 @@ import Cookies from "js-cookie";
 import { useMutation } from "@tanstack/react-query";
 import api from "../services/api";
 import { queryClient } from "../services/react-query";
+import { AxiosError } from "axios";
 
 // Essa constante é um schema de validação para os campos do formulário
 const signInForm = z.object({
@@ -30,31 +31,41 @@ export function SignIn() {
     });
 
     async function signIn({ user, password }: SignInForm) {
-        const response = await api.post('/login', { user, password })
+        const response = await api.post('/login', { user, password }, {
+            timeout: 5000,
+        })
         return response.data
     }
 
     const { mutateAsync: authenticate } = useMutation({
         mutationFn: signIn,
         mutationKey: ['authenticate'],
+        onSuccess: ({ token, user }) => {
+            alert({ token, user })
+            try {
+                Cookies.set('exec.token', token)
+                Cookies.set('user', user)
+            } catch (error) {
+                toast.error('Erro ao salvar informações de autenticação')
+            }
+            navigate('/ordens?filtro=do-executor')
+        },
+        onError: (error: AxiosError) => {
+            console.error(error);
+            if (error.code === 'ECONNABORTED') {
+                toast.error('O servidor demorou muito para responder, tente novamente mais tarde')
+                toast.error(`${error.cause}`)
+                return
+            } if (error.response?.status === 401) {
+                toast.error('Usuário ou senha inválidos')
+                return
+            }
+        },
     })
 
     async function handleSignIn(data: SignInForm, event?: BaseSyntheticEvent | undefined) {
         event?.preventDefault()
-        try {
-            const { token, user } = await authenticate({ user: data.user, password: data.password })
-            if (token && user) {
-                Cookies.set('exec.token', token)
-                Cookies.set('user', user)
-                toast.success("Logado com sucesso!")
-                navigate(`/ordens`)
-            } else {
-                throw new Error('Token ou usuário não informado')
-            }
-        } catch (error: any) {
-            console.error(error);
-            toast.error(error.response)
-        }
+        await authenticate({ user: data.user, password: data.password })
     }
 
     useEffect(() => {
@@ -83,6 +94,8 @@ export function SignIn() {
                             type="text"
                             placeholder="Usuário do Tasy"
                             required
+                            autoComplete="off"
+                            autoFocus
                         />
                         {formState.errors.user && <span>{formState.errors.user.message}</span>}
 
