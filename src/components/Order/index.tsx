@@ -2,7 +2,7 @@ import * as Accordion from '@radix-ui/react-accordion';
 import { Clock, Hourglass, MapPin } from 'lucide-react';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
-import { AccordionContent, AccordionTrigger, Container } from './styles';
+import { AccordionContent, AccordionItem, AccordionTrigger, Container } from './styles';
 
 export interface OrderProps {
     damage: string
@@ -11,12 +11,13 @@ export interface OrderProps {
     number: number
     requester: string
     contact?: string
+    group: number
 }
 
 export function Order(props: OrderProps) {
     return (
         <Container>
-            <Accordion.Item value={props.number.toString()}>
+            <AccordionItem value={props.number.toString()}>
                 <AccordionTrigger>
                     <div>
                         <span className='title'>{props.damage}</span>
@@ -33,15 +34,13 @@ export function Order(props: OrderProps) {
                         <Hourglass size={24} color='#f59e0b' />
                     </div>
                 </AccordionTrigger>
-                <AccordionContent>
-                    <p>
-                        {props.damage}
-                    </p>
-                    <span>
-                        {props.requester}
-                    </span>
+                <AccordionContent aria-hidden>
+                    <p><strong>Dano:</strong> {props.damage}</p>
+                    <p>{props.requester}</p>
+                    <p><strong>Número:</strong> {props.number}</p>
+                    <p><strong>Contato:</strong> {props.contact}</p>
                 </AccordionContent>
-            </Accordion.Item>
+            </AccordionItem>
         </Container>
     )
 }
