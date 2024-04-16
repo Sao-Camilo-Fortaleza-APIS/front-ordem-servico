@@ -12,6 +12,7 @@ import { useMutation } from "@tanstack/react-query";
 import api from "../services/api";
 import { queryClient } from "../services/react-query";
 import { AxiosError } from "axios";
+import { configToastError } from "../utils/toast-config";
 
 // Essa constante é um schema de validação para os campos do formulário
 const signInForm = z.object({
@@ -41,23 +42,21 @@ export function SignIn() {
         mutationFn: signIn,
         mutationKey: ['authenticate'],
         onSuccess: ({ token, user }) => {
-            alert({ token, user })
             try {
                 Cookies.set('exec.token', token)
                 Cookies.set('user', user)
             } catch (error) {
-                toast.error('Erro ao salvar informações de autenticação')
+                toast.error('Erro ao salvar informações de autenticação', configToastError)
             }
             navigate('/ordens?filtro=do-executor')
         },
         onError: (error: AxiosError) => {
             console.error(error);
             if (error.code === 'ECONNABORTED') {
-                toast.error('O servidor demorou muito para responder, tente novamente mais tarde')
-                toast.error(`${error.cause}`)
+                toast.error('O servidor demorou muito para responder, tente novamente mais tarde', configToastError)
                 return
             } if (error.response?.status === 401) {
-                toast.error('Usuário ou senha inválidos')
+                toast.error('Usuário ou senha inválidos', configToastError)
                 return
             }
         },
