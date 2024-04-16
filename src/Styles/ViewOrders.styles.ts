@@ -17,7 +17,10 @@ export const Container = styled.div`
 
     .list-orders {
       width: 100%;
-      margin-top: 0.5rem;
+      //margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
   }
 
@@ -41,7 +44,7 @@ export const Container = styled.div`
     gap: 0.25rem;
     margin-top: 1rem;
     font-size: 1.125rem;
-    font-weight: 600;
+    font-weight: 500;
     color: #a1a1aa;
     // color: #71717a;
 

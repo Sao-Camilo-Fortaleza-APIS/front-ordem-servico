@@ -2,13 +2,14 @@ import * as Accordion from "@radix-ui/react-accordion";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { Loader, LogOut } from "lucide-react";
-import { MouseEvent } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
 import { Order, OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
+import { ListOrdersWithExecutor } from "../components/ListOrdersWithExecutor";
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
@@ -18,15 +19,15 @@ export function ViewOrders() {
   const user = Cookies.get('user') ?? ''
   const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', user]); // Access cached data
 
-  const filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
-
+  let filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
+  let group: string = searchParams.get('group') ?? '';
 
   const { data: responseQueries, isFetching } = useQuery({
     queryKey: ['user', filtro, user],
     queryFn: async () => {
       // use promise.all to fetch multiple queries
       const [ordernsWithExecutor, userWorkgroups] = await Promise.all([
-        api.get(`/get/order_user/executor/${user}?filtro=${filtro}`),
+        api.get(`/get/order_user/executor/${user}`),
         api.get(`/get/workgroup/user`),
       ])
 
@@ -51,6 +52,8 @@ export function ViewOrders() {
     enabled: true, // se false desabilita a pesquisa automática
   })
 
+  let quantidade = group ? responseQueries?.orders.filter(order => order.group === Number(group)).length : responseQueries?.orders.length
+
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     setSearchParams(params => {
@@ -72,6 +75,7 @@ export function ViewOrders() {
     queryClient.clear()
     navigate('/entrar')
   }
+
 
   /*  useEffect(() => {
      const token = Cookies.get('exec.token')
@@ -99,7 +103,9 @@ export function ViewOrders() {
               return params
             })
           }}
+          value={group ? group : ''}
         >
+          <option value="">Todos os grupos</option>
           {responseQueries?.groups && responseQueries?.groups.map((group: any) => {
             return <option key={group.code} value={group.code}>{group.describe}</option>
           })}
@@ -121,44 +127,14 @@ export function ViewOrders() {
         </div>
 
         <div className="quantidade">
-          <span>
-            Solicitações {' '}
-          </span>
-          <span>
-            {responseQueries?.orders ? responseQueries?.orders.length : 0} {' '}
-            {isFetching && <Loader size={16} className="animate-spin" />}
-          </span>
+          {quantidade === 0 && <span>Nenhum solicitação encontrada</span>}
+          {quantidade === 1 && <span>1 solicitação encontrada</span>}
+          {quantidade && quantidade > 1 && <span>{quantidade} solicitações encontradas</span>}
+          <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
         </div>
 
         <div className="list-orders">
-          {filtro === 'do-executor' ? (
-            <Accordion.Root type='single' collapsible>
-              {responseQueries?.orders && responseQueries?.orders.map((order) => (
-                <Order
-                  key={order.number}
-                  number={order.number}
-                  damage={order.number + ' ' + order.damage}
-                  date_order={order.date_order}
-                  location={order.location}
-                  requester={order.requester}
-                  contact={order.contact}
-                />
-              ))}
-            </Accordion.Root>
-          ) : (
-            <Accordion.Root type='single' collapsible>
-              {Array.from({ length: 10 }).map((_, index) => (
-                <Order
-                  key={index}
-                  number={index}
-                  damage={`Damage ${index}`}
-                  date_order={new Date().toISOString()}
-                  location="Location"
-                  requester="Requester"
-                />
-              ))}
-            </Accordion.Root>
-          )}
+          {filtro === 'do-executor' && <ListOrdersWithExecutor group={group} orders={responseQueries?.orders ?? []} />}
         </div>
       </div>
     </Container>
