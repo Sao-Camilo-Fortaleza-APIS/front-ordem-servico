@@ -1,15 +1,15 @@
-import * as Accordion from "@radix-ui/react-accordion";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { Loader, LogOut } from "lucide-react";
-import { MouseEvent, useState } from "react";
+import { MouseEvent } from "react";
 import { useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
-import { Order, OrderProps } from "../components/Order";
+import { ListOrdersWithExecutor } from "../components/ListOrdersWithExecutor";
+import { ListOrdersWithoutExecutor } from "../components/ListOrdersWithoutExecutor";
+import { OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
-import { ListOrdersWithExecutor } from "../components/ListOrdersWithExecutor";
 export type OrderResponse = OrderProps[]
 
 export function ViewOrders() {
@@ -135,6 +135,8 @@ export function ViewOrders() {
 
         <div className="list-orders">
           {filtro === 'do-executor' && <ListOrdersWithExecutor group={group} orders={responseQueries?.orders ?? []} />}
+
+          {filtro === 'sem-executor' && <ListOrdersWithoutExecutor group={group} orders={responseQueries?.orders ?? []} />}
         </div>
       </div>
     </Container>
