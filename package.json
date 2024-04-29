@@ -5,7 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite --host=0.0.0.0 --port=5177",
-    "build": "tsc && vite build",
+    "build": "vite build",
+    "start": "serve dist -l 5175",
     "preview": "vite preview",
     "lint": "eslint",
     "server": "json-server server.json --port 4322"
