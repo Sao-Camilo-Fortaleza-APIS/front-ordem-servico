@@ -23,7 +23,7 @@ export function SearchByUser() {
         setApiData([])
         setSearchMade(true)
         //        fetchData(`/get/order_user/executor/${query}`)
-        await api.get(`/get/order_user/executor/${query}`)
+        await api.get(`/get/order_user/solicitante/${query}`)
             .then(response => {
                 setApiData(response.data)
             })

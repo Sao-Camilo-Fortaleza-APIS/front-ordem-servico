@@ -1,5 +1,5 @@
-import * as Accordion from '@radix-ui/react-accordion';
-import { Clock, Hourglass, MapPin } from 'lucide-react';
+import { BellDot, Clock, MapPin, Settings } from 'lucide-react';
+import { useSearchParams } from 'react-router-dom';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
 import { AccordionContent, AccordionItem, AccordionTrigger, Container } from './styles';
@@ -15,10 +15,14 @@ export interface OrderProps {
 }
 
 export function Order(props: OrderProps) {
+    const [searchParams, setSearchParams] = useSearchParams()
+    let filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
+    let colorType = filtro === 'do-executor' ? '#f59e0b' : '#60a5fa';
+
     return (
         <Container>
             <AccordionItem value={props.number.toString()}>
-                <AccordionTrigger>
+                <AccordionTrigger color={filtro || 'do-executor'}>
                     <div>
                         <span className='title'>{props.damage}</span>
                         <span className='infos'>
@@ -31,10 +35,10 @@ export function Order(props: OrderProps) {
                         </span>
                     </div>
                     <div className='icon'>
-                        <Hourglass size={24} color='#f59e0b' />
+                        {filtro === 'do-executor' ? <Settings size={24} color={colorType} /> : <BellDot size={24} color='#60a5fa' />}
                     </div>
                 </AccordionTrigger>
-                <AccordionContent aria-hidden>
+                <AccordionContent color={filtro || 'do-executor'} aria-hidden>
                     <p><strong>Dano:</strong> {props.damage}</p>
                     <p>{props.requester}</p>
                     <p><strong>Número:</strong> {props.number}</p>

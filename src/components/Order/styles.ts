@@ -25,7 +25,7 @@ export const AccordionItem = styled(Accordion.Item)`
 `;
 
 
-export const AccordionTrigger = styled(Accordion.Trigger)`
+export const AccordionTrigger = styled(Accordion.Trigger) <{ color: string }>`
     background-color: #f4f4f5;
     display: flex;
     width: 100%;
@@ -37,7 +37,8 @@ export const AccordionTrigger = styled(Accordion.Trigger)`
     margin-top: 0.5rem;
     border: none;
     border-radius: 0.313rem;
-    border-left: 0.5rem solid #f59e0b;
+    border-left: 0.5rem solid;
+    border-left-color: ${props => props.color === 'do-executor' ? '#f59e0b' : '#60a5fa'};
     overflow: hidden;
     cursor: pointer;
 
@@ -73,12 +74,12 @@ export const AccordionTrigger = styled(Accordion.Trigger)`
         padding: 0.5rem;
         border-radius: 99990px; 
         > {
-            background-color: #f59e0b;
+            background-color: ${props => props.color === 'do-executor' ? '#f59e0b' : '#60a5fa'};
         }
     }
 `
 
-export const AccordionContent = styled(Accordion.Content)`
+export const AccordionContent = styled(Accordion.Content) <{ color: string }>`
     &[data-state="open"] {
         display: flex;
         flex-direction: column;
@@ -90,7 +91,8 @@ export const AccordionContent = styled(Accordion.Content)`
         padding: 0.5rem 1rem;
         margin-left: 0.5rem;
         border-radius: 0.313rem;
-        border-left: 5px solid #f59e0b;
+        border-left: 5px solid;
+        border-left-color: ${props => props.color === 'do-executor' ? '#f59e0b' : '#60a5fa'};
         border-top: 1px solid #e1e1e6;
     }
 
