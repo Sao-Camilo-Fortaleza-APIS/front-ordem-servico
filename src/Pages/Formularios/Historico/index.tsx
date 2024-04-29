@@ -17,11 +17,10 @@ import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Hea
 import { convertDate } from "../../../utils/convert-date";
 import { configToastError, configToastSuccess } from "../../../utils/toast-config";
 
-import EmptyHistory from '/assets/location_search.svg';
-
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
 import { Navbar } from "../../../components/Navbar";
+import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
 
@@ -228,7 +227,7 @@ export function Historico() {
           <ContainerMessages ref={divRef}>
             {resultHistoryData.length === 0 ? (
               <div className="div-image">
-                <img className="image" src={EmptyHistory} alt="Não há histórico" />
+                <EmptyHistory className="image" />
                 <span>Pesquise o número da ordem de serviço para visualizar seus históricos...</span>
               </div>
             ) : (
