@@ -36,13 +36,13 @@ export const ContainerButton = styled.div`
 
           font-weight: 500;
           color: #fff;
-          background-color: #10b981;
+          background-color: #ef4444;
           border-radius: 0.625rem;
-          border: 1px solid #10b981;
+          border: 1px solid #ef4444;
           
           transition: all 0.25s ease;
           :hover {
-            background-color: #10b981;
+            background-color: #ef4444;
             opacity: 0.9;
             color: #fff;
           }

@@ -8,7 +8,7 @@ interface Props extends HTMLAttributes<HTMLButtonElement> {
 };
 
 export function Filter({ title, type, isActive = false, ...rest }: Props) {
-    const colorType = type === 'do-executor' ? '#f59e0b' : '#60a5fa';
+    const colorType = type === 'do-executor' ? '#60a5fa' : '#ef4444';
     return (
         <Button
             {...rest}

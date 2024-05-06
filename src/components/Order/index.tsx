@@ -17,7 +17,7 @@ export interface OrderProps {
 export function Order(props: OrderProps) {
     const [searchParams, setSearchParams] = useSearchParams()
     let filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
-    let colorType = filtro === 'do-executor' ? '#f59e0b' : '#60a5fa';
+    let colorType = filtro === 'do-executor' ? '#60a5fa' : '#ef4444';
 
     return (
         <Container>
@@ -35,7 +35,7 @@ export function Order(props: OrderProps) {
                         </span>
                     </div>
                     <div className='icon'>
-                        {filtro === 'do-executor' ? <Settings size={24} color={colorType} /> : <BellDot size={24} color='#60a5fa' />}
+                        {filtro === 'do-executor' ? <Settings size={24} color={colorType} /> : <BellDot size={24} color={colorType} />}
                     </div>
                 </AccordionTrigger>
                 <AccordionContent color={filtro || 'do-executor'} aria-hidden>
