@@ -115,7 +115,14 @@ export function RegisterServiceOrdem() {
       setIsLoading(true)
       window.scrollTo(0, 0)
       try {
-        const dataOficial = dt_inicio_desejado.toLocaleDateString('pt-BR', options)
+        const dataOficial = dt_inicio_desejado.toLocaleDateString('pt-BR', {
+          day: '2-digit',
+          month: '2-digit',
+          year: 'numeric',
+          hour: '2-digit',
+          minute: '2-digit',
+          second: '2-digit'
+        })
         // console.log({ user: userMaiusculo, ajuste: ajuste, obs: obs, ramal: ramal, parado: parado, prioridade: ie_prioridade, dt: dataOficial, slec: selectedValue, seqEquipamento: seqEquipamento, equipamento: equipamento, grupoPlanejamento: grupoPlanejamento, grupoTrabalho: grupoTrabalho })
         const response = await api.post('/form/ajuste', {
           nm_usuario: `${userMaiusculo}`,
@@ -162,7 +169,10 @@ export function RegisterServiceOrdem() {
             <NmItem>
               <p>Qual o seu setor? <b>*</b></p>
               <select value={selectedValue} onChange={handleChange}>
-                {opcoes.map((option, index) => (
+                {opcoes.map((option:{
+                  nr_sequencia: string,
+                  ds_localizacao: string
+                }, index) => (
                   <option key={index} value={option.nr_sequencia} >
                     {option.ds_localizacao}
                   </option>
