@@ -1,74 +1,47 @@
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { Loader, LogOut } from "lucide-react";
+import { LogOut } from "lucide-react";
 import { MouseEvent } from "react";
-import { useNavigate, useSearchParams } from "react-router-dom";
+import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
-import { ListOrdersWithExecutor } from "../components/ListOrdersWithExecutor";
-import { ListOrdersWithoutExecutor } from "../components/ListOrdersWithoutExecutor";
-import { OrderProps } from "../components/Order";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
-export type OrderResponse = OrderProps[]
+
 
 export function ViewOrders() {
+  const [searchParams, setSearchParams] = useSearchParams()
+  const { pathname: location } = useLocation()
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const [searchParams, setSearchParams] = useSearchParams()
-  const user = Cookies.get('user') ?? ''
-  const cachedOrdersData = queryClient.getQueryData<OrderResponse>(['user', user]); // Access cached data
 
-  let filtro = searchParams.get('filtro') ? (searchParams.get('filtro')) : 'sem-executor'
   let group: string = searchParams.get('group') ?? '';
 
-  const { data: responseQueries, isFetching } = useQuery({
-    queryKey: ['user', filtro, user],
+  const { data: groups, isFetching } = useQuery({
+    queryKey: ['get-groups'],
     queryFn: async () => {
-      // use promise.all to fetch multiple queries
-      const [ordernsWithExecutor, userWorkgroups] = await Promise.all([
-        api.get(`/get/order_user/executor/${user}`),
-        api.get(`/get/workgroup/user`),
-      ])
+      const response = await api.get(`/get/workgroup/user`)
 
-
-      if (ordernsWithExecutor.status === 401 || userWorkgroups.status === 401) {
+      if (response.status === 401) {
         toast.error('Sessão expirada, faça login novamente')
         Cookies.remove('exec.token')
         Cookies.remove('user')
         navigate('/entrar')
       }
-      // Handle each response individually
-      const orders = await ordernsWithExecutor.data;
-      const groups = await userWorkgroups.data;
-      // Combine the data as needed
-      const data = {
-        "orders": orders as OrderResponse,
-        "groups": groups
-      }
-      return data
+      return response.data
     },
     placeholderData: keepPreviousData,
-    enabled: true, // se false desabilita a pesquisa automática
+    enabled: true, // se false desabilita a nova busca automática
   })
-
-  let quantidade = group ? responseQueries?.orders.filter(order => order.group === Number(group)).length : responseQueries?.orders.length
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    setSearchParams(params => {
-      params.set('filtro', 'do-executor')
-      return params
-    })
+    navigate('/ordens/minhas')
   }
   function filterByPending(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
-    setSearchParams(params => {
-      params.set('filtro', 'sem-executor')
-      return params
-    })
+    navigate('/ordens/pendentes')
   }
-
   function logOut() {
     Cookies.remove('exec.token')
     Cookies.remove('user')
@@ -87,12 +60,25 @@ export function ViewOrders() {
   return (
     <Container>
       <Header>
-        <img src="./assets/logo_horizontal.svg" alt="Logo São Camilo" />
+        <img src="../assets/logo_horizontal.svg" alt="Logo São Camilo" />
 
         <LogOut onClick={logOut} className="icon" size={26} />
       </Header>
-
       <div className="wrapper">
+        <div className="filter">
+          <Filter
+            title="MINHAS OS's"
+            onClick={filterByExecutor}
+            isActive={location === '/ordens/minhas'}
+          />
+
+          <Filter
+            title="PENDENTES"
+            onClick={filterByPending}
+            isActive={location === '/ordens/pendentes'}
+          />
+        </div>
+
         <select
           className="select-group"
           name="groups"
@@ -106,39 +92,13 @@ export function ViewOrders() {
           value={group ? group : ''}
         >
           <option value="">Todos os grupos</option>
-          {responseQueries?.groups && responseQueries?.groups.map((group: any) => {
+          {groups && groups.map((group: any) => {
             return <option key={group.code} value={group.code}>{group.describe}</option>
           })}
         </select>
-        <div className="filter">
-          <Filter
-            title="EM ATENDIMENTO"
-            type="do-executor"
-            onClick={filterByExecutor}
-            isActive={filtro === 'do-executor'}
-          />
-
-          <Filter
-            title="AGUARDANDO"
-            type="sem-executor"
-            onClick={filterByPending}
-            isActive={filtro === 'sem-executor'}
-          />
-        </div>
-
-        <div className="quantidade">
-          {quantidade === 0 && <span>Nenhum solicitação encontrada</span>}
-          {quantidade === 1 && <span>1 solicitação encontrada</span>}
-          {quantidade && quantidade > 1 && <span>{quantidade} solicitações encontradas</span>}
-          <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
-        </div>
-
-        <div className="list-orders">
-          {filtro === 'do-executor' && <ListOrdersWithExecutor group={group} orders={responseQueries?.orders ?? []} />}
-
-          {filtro === 'sem-executor' && <ListOrdersWithoutExecutor group={group} orders={responseQueries?.orders ?? []} />}
-        </div>
       </div>
+
+      <Outlet />
     </Container>
   )
 }
