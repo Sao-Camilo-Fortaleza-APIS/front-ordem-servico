@@ -2,7 +2,7 @@ import { BellDot, Clock, MapPin, Settings } from 'lucide-react';
 import { useSearchParams } from 'react-router-dom';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
-import { AccordionContent, AccordionItem, AccordionTrigger, Container } from './styles';
+import { Container, OrderDetails } from './styles';
 
 export interface OrderProps {
     damage: string
@@ -21,30 +21,22 @@ export function Order(props: OrderProps) {
 
     return (
         <Container>
-            <AccordionItem value={props.number.toString()}>
-                <AccordionTrigger color={filtro || 'do-executor'}>
-                    <div>
-                        <span className='title'>{props.damage}</span>
-                        <span className='infos'>
-                            <MapPin size={16} color='#a1a1aa' />
-                            {capitalizeFirstLetterOfWords(props.location)}
-                        </span>
-                        <span className='infos'>
-                            <Clock size={16} color='#a1a1aa' />
-                            {convertDate(props.date_order)}
-                        </span>
-                    </div>
-                    <div className='icon'>
-                        {filtro === 'do-executor' ? <Settings size={24} color={colorType} /> : <BellDot size={24} color={colorType} />}
-                    </div>
-                </AccordionTrigger>
-                <AccordionContent color={filtro || 'do-executor'} aria-hidden>
-                    <p><strong>Dano:</strong> {props.damage}</p>
-                    <p>{props.requester}</p>
-                    <p><strong>Número:</strong> {props.number}</p>
-                    <p><strong>Contato:</strong> {props.contact}</p>
-                </AccordionContent>
-            </AccordionItem>
+            <OrderDetails color={filtro || 'do-executor'}>
+                <div>
+                    <span className='title'>{props.damage}</span>
+                    <span className='infos'>
+                        <MapPin size={16} color='#a1a1aa' />
+                        {capitalizeFirstLetterOfWords(props.location)}
+                    </span>
+                    <span className='infos'>
+                        <Clock size={16} color='#a1a1aa' />
+                        {convertDate(props.date_order)}
+                    </span>
+                </div>
+                <div className='icon'>
+                    {filtro === 'do-executor' ? <Settings size={24} color={colorType} /> : <BellDot size={24} color={colorType} />}
+                </div>
+            </OrderDetails>
         </Container>
     )
 }

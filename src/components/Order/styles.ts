@@ -1,4 +1,3 @@
-import * as Accordion from '@radix-ui/react-accordion';
 import styled from 'styled-components';
 
 
@@ -7,9 +6,10 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: space-between;
     gap: 1rem;
+    margin: 0.5rem 0;
 `;
 
-export const AccordionItem = styled(Accordion.Item)`
+export const OrderDetails = styled.div<{ color: string }>`
     overflow: hidden;
     margin-top: 1rem;
     &:first-child {
@@ -21,11 +21,7 @@ export const AccordionItem = styled(Accordion.Item)`
     &:last-child {
         border-bottom-left-radius: 4px;
         border-bottom-right-radius: 4px;
-    }   
-`;
-
-
-export const AccordionTrigger = styled(Accordion.Trigger) <{ color: string }>`
+    } 
     background-color: #f4f4f5;
     display: flex;
     width: 100%;
@@ -78,25 +74,3 @@ export const AccordionTrigger = styled(Accordion.Trigger) <{ color: string }>`
         }
     }
 `
-
-export const AccordionContent = styled(Accordion.Content) <{ color: string }>`
-    &[data-state="open"] {
-        display: flex;
-        flex-direction: column;
-        row-gap: 0.25rem;
-        background-color: #f4f4f5;
-        font-size: 0.875rem;
-        color: #71717a;
-        text-align: left;
-        padding: 0.5rem 1rem;
-        margin-left: 0.5rem;
-        border-radius: 0.313rem;
-        border-left: 5px solid;
-        border-left-color: ${props => props.color === 'do-executor' ? '#60a5fa' : '#ef4444'};
-        border-top: 1px solid #e1e1e6;
-    }
-
-    &[data-state="closed"] {
-        display: none;
-    }
-`;
