@@ -1,3 +1,4 @@
+import * as Dialog from '@radix-ui/react-dialog';
 import styled from 'styled-components';
 
 
@@ -7,6 +8,22 @@ export const Container = styled.div`
     justify-content: space-between;
     gap: 1rem;
     margin: 0.5rem 0;
+`;
+
+export const DialogContent = styled(Dialog.Overlay)`
+    right: 0;
+    top: 0;
+    bottom: 0;
+    padding: 2.5rem; /* equivalente a p-10 do Tailwind */
+    height: 100vh; /* equivalente a h-screen do Tailwind */
+    min-width: 320px; /* equivalente a min-w-[320px] do Tailwind */
+    z-index: 10;
+    background-color: #1f2937; /* substitua pela cor zinc-950 do Tailwind */
+    border-left: 1px solid #4b5563; /* substitua pela cor border-zinc-900 do Tailwind */
+`;
+
+export const DialogTitle = styled(Dialog.Title)`
+
 `;
 
 export const OrderDetails = styled.div<{ color: string }>`
@@ -34,7 +51,7 @@ export const OrderDetails = styled.div<{ color: string }>`
     border: none;
     border-radius: 0.313rem;
     border-left: 0.5rem solid;
-    border-left-color: ${props => props.color === 'do-executor' ? '#60a5fa' : '#ef4444'};
+    border-left-color: ${props => props.color};
     overflow: hidden;
     cursor: pointer;
 
@@ -70,7 +87,7 @@ export const OrderDetails = styled.div<{ color: string }>`
         padding: 0.5rem;
         border-radius: 99990px; 
         > {
-            background-color: ${props => props.color === 'do-executor' ? '#60a5fa' : '#ef4444'};
+            background-color: ${props => props.color};
         }
     }
 `
