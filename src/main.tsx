@@ -9,6 +9,8 @@ import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
 import { Login } from './routes/Login';
+import { MyOrders } from './routes/MyOrders';
+import { PendingOrders } from './routes/PendingOrders';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
 import { ViewOrders } from './routes/ViewOrders';
@@ -43,8 +45,18 @@ const router = createBrowserRouter([
       },
       {
         path: '/ordens',
-        element:
-          <ViewOrders />,
+        element: <ViewOrders />,
+        children: [
+          {
+            path: '/ordens/minhas',
+            element: <MyOrders />,
+            index: true
+          },
+          {
+            path: '/ordens/pendentes',
+            element: <PendingOrders />,
+          }
+        ],
       },
     ],
   },
