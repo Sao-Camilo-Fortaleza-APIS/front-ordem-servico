@@ -1,17 +1,16 @@
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useMutation } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import Cookies from "js-cookie";
+import { Loader } from "lucide-react";
 import { BaseSyntheticEvent, useEffect } from "react";
 import { useForm } from "react-hook-form";
-import { z } from 'zod'
-import { zodResolver } from '@hookform/resolvers/zod'
-import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
-import { Button } from "../components/Button";
-import { Loader } from "lucide-react";
-import { toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
-import Cookies from "js-cookie";
-import { useMutation } from "@tanstack/react-query";
+import { toast } from "react-toastify";
+import { z } from 'zod';
+import { Button } from "../components/Button";
 import api from "../services/api";
-import { queryClient } from "../services/react-query";
-import { AxiosError } from "axios";
+import { Container, ContainerImage, SignInForm } from "../styles/SignIn.styles";
 import { configToastError } from "../utils/toast-config";
 
 // Essa constante é um schema de validação para os campos do formulário
@@ -48,7 +47,7 @@ export function SignIn() {
             } catch (error) {
                 toast.error('Erro ao salvar informações de autenticação', configToastError)
             }
-            navigate('/ordens?filtro=do-executor')
+            navigate('/ordens/pendentes')
         },
         onError: (error: AxiosError) => {
             console.error(error);
