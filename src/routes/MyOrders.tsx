@@ -50,7 +50,7 @@ export function MyOrders() {
         <Container>
             <div className="wrapper">
                 <div className="quantidade">
-                    {quantidade === 0 && <span>Nenhum solicitação encontrada</span>}
+                    {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
                     {quantidade === 1 && <span>1 solicitação encontrada</span>}
                     {quantidade && quantidade > 1 && <span>{quantidade} solicitações encontradas</span>}
                     <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>

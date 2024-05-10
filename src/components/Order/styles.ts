@@ -11,19 +11,46 @@ export const Container = styled.div`
 `;
 
 export const DialogContent = styled(Dialog.Overlay)`
+    max-width: 100%;
+    position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
-    padding: 2.5rem; /* equivalente a p-10 do Tailwind */
-    height: 100vh; /* equivalente a h-screen do Tailwind */
-    min-width: 320px; /* equivalente a min-w-[320px] do Tailwind */
+    left: 0;
+    padding: 2.5rem; 
+    height: 100vh; 
+    background-color: #f4f4f5; 
     z-index: 10;
-    background-color: #1f2937; /* substitua pela cor zinc-950 do Tailwind */
-    border-left: 1px solid #4b5563; /* substitua pela cor border-zinc-900 do Tailwind */
+    min-width: 320px;
+    border-left: 1px solid #4b5563;
 `;
 
 export const DialogTitle = styled(Dialog.Title)`
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #71717a;
+    margin-bottom: 0.5rem;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
 
+export const DialogDescription = styled(Dialog.Description)`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    gap: 0.5rem;
+
+    div {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
+        justify-content: start;
+    }
 `;
 
 export const OrderDetails = styled.div<{ color: string }>`
