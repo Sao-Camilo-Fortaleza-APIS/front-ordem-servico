@@ -5,12 +5,11 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../services/api";
 import { Button } from "../Button";
-import { Label } from "../Label";
 import { FormStyled } from "./styles";
 
 
 export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
-  const [selectedOption, setSelectedOption] = useState<string>('')
+  const [selectedOption, setSelectedOption] = useState<string>('retorno')
   const [historyValue, setHistoryValue] = useState<string>('')
   const navigate = useNavigate()
 
@@ -44,7 +43,6 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           nm_user: user,
           history: historyValue
         })
-
         if (response.status === 201) {
           toast.success('Histórico de retorno enviado!', {
             position: 'top-center'
@@ -52,14 +50,23 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           return
         }
       } else if (selectedOption === 'solucao') {
-        const response = await api.post('/post/approbation', {
+        const response = await api.post('/post/history/solution', {
           nr_order: numberOrder,
-          has_approve: "yes",
-          nm_usuario: user,
+          nm_user: user,
+          history: historyValue
         })
+        if (response.status === 201) {
+          toast.success('Histórico de retorno enviado!', {
+            position: 'top-center'
+          })
+          return
+        }
       }
 
     } catch (error) {
+      toast.error('Erro ao enviar histórico', {
+        position: 'top-center'
+      })
       console.error(error)
     }
   }
@@ -69,8 +76,34 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   };
   return (
     <FormStyled onSubmit={handleSendOrderReply}>
+      <div className="radio-group">
+        <label htmlFor="type">Tipo de histórico</label>
+        <div className="radio-item">
+          <input
+            type="radio"
+            name="retorno"
+            id="retorno"
+            value="retorno"
+            checked={selectedOption === 'retorno'}
+            onChange={() => handleOptionChange('retorno')}
+          />
+          <label htmlFor="retorno">Retorno</label>
+        </div>
+        <div className="radio-item">
+          <input
+            type="radio"
+            name="solucao"
+            id="solucao"
+            value="solucao"
+            checked={selectedOption === 'solucao'}
+            onChange={() => handleOptionChange('solucao')}
+          />
+          <label htmlFor="solucao">Solução</label>
+        </div>
+      </div>
+
       <div>
-        <Label htmlFor="reply">Histórico</Label>
+        <label htmlFor="reply">Histórico</label>
         <textarea
           name="reply"
           id="reply"
@@ -80,35 +113,6 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           value={historyValue}
           onChange={e => setHistoryValue(e.target.value)}
         />
-      </div>
-
-      <div>
-        <Label htmlFor="">Tipo de histórico</Label>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'start', gap: '0.25rem' }}>
-          <input
-            type="radio"
-            name="retorno"
-            id="retorno"
-            value="retorno"
-            checked={selectedOption === 'retorno'}
-            onChange={() => handleOptionChange('retorno')}
-            style={{ width: '1rem', height: '1rem' }}
-          />
-          <Label htmlFor="retorno">Retorno</Label>
-        </div>
-        <div style={{ display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'start', gap: '0.25rem' }}>
-          <input
-            disabled
-            type="radio"
-            name="solucao"
-            id="solucao"
-            value="solucao"
-            checked={selectedOption === 'solucao'}
-            onChange={() => handleOptionChange('solucao')}
-            style={{ width: '1rem', height: '1rem' }}
-          />
-          <Label htmlFor="solucao">Solução</Label>
-        </div>
       </div>
 
       <div className="action-form">

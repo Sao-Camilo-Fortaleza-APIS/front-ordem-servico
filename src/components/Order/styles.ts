@@ -11,13 +11,13 @@ export const Container = styled.div`
 `;
 
 export const DialogContent = styled(Dialog.Overlay)`
-    max-width: 100%;
+    width: 100vw;
     position: fixed;
     right: 0;
     top: 0;
     bottom: 0;
     left: 0;
-    padding: 2.5rem; 
+    padding: 1rem; 
     height: 100vh; 
     background-color: #f4f4f5; 
     z-index: 10;

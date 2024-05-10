@@ -36,7 +36,7 @@ export const Container = styled.div`
     background: #f4f4f5;
   }
 
-  .quantidade {
+  .quantidade, .label-groups {
     width: 100%;
     display: flex;
     align-items: center; 

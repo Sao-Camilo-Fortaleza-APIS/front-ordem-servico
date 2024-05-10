@@ -1,14 +1,13 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
-import { useState } from "react";
 import { useNavigate } from "react-router-dom";
+import { toast } from "react-toastify";
+import api from "../../services/api";
 import { Button } from "../Button";
 import { FormStyled } from "./styles";
 
 
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
-  const [selectedOption, setSelectedOption] = useState<string>('')
-  const [historyValue, setHistoryValue] = useState<string>('')
   const navigate = useNavigate()
 
   let user = Cookies.get('user') ?? ''
@@ -18,20 +17,33 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 
     try {
       console.log('enviando resposta');
+      if (!user || user === '') {
+        Cookies.remove('user')
+        Cookies.remove('exec.token')
+        navigate('/signin')
+      } else if (!numberOrder) {
+        toast.error('Número da Ordem de Serviço não encontrado')
+        return
+      }
+      await api.post('/post/takeon', {
+        nr_order: numberOrder,
+        nm_user: user
+      })
+      window.location.reload()
 
+      toast.success('Ordem de Serviço assumida')
     } catch (error) {
+      toast.error('Erro ao assumir Ordem de Serviço')
       console.error(error)
     }
   }
 
-  const handleOptionChange = (value: string) => {
-    setSelectedOption(value);
-  };
   return (
     <FormStyled onSubmit={handleSendOrderReply}>
-      <h3>Deseja assumir essa Ordem de Serviço?</h3>
-
-
+      <div className="content-form">
+        <h3>Deseja assumir a Ordem de Serviço?</h3>
+        <p>Ordem de Serviço: {numberOrder}</p>
+      </div>
       <div className="action-form">
         <Dialog.Close asChild>
           <Button>Não</Button>

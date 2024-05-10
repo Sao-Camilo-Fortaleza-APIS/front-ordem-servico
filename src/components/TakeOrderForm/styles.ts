@@ -12,7 +12,13 @@ export const FormStyled = styled.form`
   border-top: 1px solid #d1d5db;
   padding-top: 1rem;
 
-  .action-form{
+  .content-form {
+    display: flex;
+    flex-direction: column;
+    justify-content: end;
+  }
+
+  .action-form {
     display: flex;
     flex-direction: row;
     justify-content: end;

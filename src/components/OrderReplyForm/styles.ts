@@ -9,16 +9,24 @@ export const FormStyled = styled.form`
   border-top: 1px solid #d1d5db;
   padding-top: 1rem;
 
+  label{
+    font-family: 'Roboto', sans-serif;
+    font-weight: 500;
+    font-size: 1rem;
+    color: #71717a;
+  }
+
   textarea {
     resize: none;
     width: 100%;
     font-family: 'Roboto', sans-serif;
-    font-size: 0.875rem;
+    font-size: 1.125rem;
     line-height: 1;
     padding: 0.5rem;
     margin-bottom: 0.5rem;
-    height: 8rem;
+    height: 12rem;
     border-radius: 0.5rem;
+    color: #71717a;
     
     ::placeholder {
       color: #a1a1aa;
@@ -36,17 +44,23 @@ export const FormStyled = styled.form`
     flex-direction: row;
     justify-content: end;
   }
-`;
 
-export const RadioItem = styled.div`
-  display: flex;
-  align-items: center;
-  gap: 0.5rem;
-  flex-direction: row;
-  justify-content: end;
+  .radio-group {
+    display: flex;
+    flex-direction: row;
+    gap: 0.5rem;
 
-  input {
-    width: 1rem;
-    height: 1rem;
+    .radio-item {
+      display: flex; 
+      flex-direction: row;
+      align-items: center; 
+      justify-content: start;
+      gap: 0.25rem;
+
+      input {
+        width: 1.5rem;
+        height: 1.5rem;
+      }
+    }
   }
 `;

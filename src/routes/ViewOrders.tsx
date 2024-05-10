@@ -79,6 +79,9 @@ export function ViewOrders() {
           />
         </div>
 
+        <div className="label-groups">
+          <span>Grupo de trabalho</span>
+        </div>
         <select
           className="select-group"
           name="groups"
@@ -91,7 +94,8 @@ export function ViewOrders() {
           }}
           value={group ? group : ''}
         >
-          <option value="">Todos os grupos</option>
+          {location === '/ordens/minhas' && <option value="">Todos os grupos</option>}
+          {location === '/ordens/pendentes' && <option disabled value="">Selecione um grupo</option>}
           {groups && groups.map((group: any) => {
             return <option key={group.code} value={group.code}>{group.describe}</option>
           })}

@@ -35,24 +35,27 @@ export function PendingOrders() {
         placeholderData: keepPreviousData,
         enabled: true, // se false desabilita a pesquisa automática
     })
-    console.log(responsePendingOrders);
-
-
-    let quantidade =
-        group
-            ? responsePendingOrders?.filter(order => order.group === Number(group)).length
-            : responsePendingOrders?.length
+    let quantidade = responsePendingOrders?.length
 
     useEffect(() => {
         refetch()
     }, [group])
+    useEffect(() => {
+        //verificar se usuário está logado
+        if (!user || user === '') {
+            toast.error('Sessão expirada, faça login novamente')
+            Cookies.remove('exec.token')
+            Cookies.remove('user')
+            navigate('/entrar')
+        }
+    }, [user])
     return (
         <Container>
             <div className="wrapper">
                 <div className="quantidade">
                     {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
                     {quantidade === 1 && <span>1 solicitação encontrada</span>}
-                    {quantidade && quantidade > 1 && <span>{quantidade} solicitações encontradas</span>}
+                    {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
                     <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
                 </div>
 

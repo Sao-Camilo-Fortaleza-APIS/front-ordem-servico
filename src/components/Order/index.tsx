@@ -67,6 +67,10 @@ export function Order(props: OrderProps) {
                                 <>
                                     <div>
                                         <span className='infos'>
+                                            <User size={16} color='#a1a1aa' />
+                                            {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
+                                        </span>
+                                        <span className='infos'>
                                             <MapPin size={16} color='#a1a1aa' />
                                             {capitalizeFirstLetterOfWords(props.location)}
                                         </span>
@@ -82,7 +86,7 @@ export function Order(props: OrderProps) {
                             {location === '/ordens/pendentes' && (
                                 <>
                                     <div>
-                                        <span>
+                                        <span className='infos'>
                                             <User size={16} color='#a1a1aa' />
                                             {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
                                         </span>
@@ -98,10 +102,7 @@ export function Order(props: OrderProps) {
                                     <TakeOrderForm numberOrder={props.number} />
                                 </>
                             )}
-
-
                         </DialogDescription>
-
                     </DialogContent>
                 </Dialog.Portal>
             </Dialog.Root>

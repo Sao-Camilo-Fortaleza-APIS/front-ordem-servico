@@ -18,6 +18,7 @@ export function Filter({ title, isActive = false, ...rest }: Props) {
                 borderColor: colorType,
                 borderWidth: isActive ? 2 : 0,
                 color: isActive ? colorType : '#71717A',
+                fontWeight: 'bold',
             }}
 
         >

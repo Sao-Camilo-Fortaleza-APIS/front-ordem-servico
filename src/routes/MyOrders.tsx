@@ -1,6 +1,7 @@
 import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import Cookies from "js-cookie"
 import { Loader } from "lucide-react"
+import { useEffect } from "react"
 import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Order, OrderProps } from "../components/Order"
@@ -46,13 +47,22 @@ export function MyOrders() {
             ? responseOrders?.filter(order => order.group === Number(group)).length
             : responseOrders?.length
 
+    useEffect(() => {
+        //verificar se usuário está logado
+        if (!user || user === '') {
+            toast.error('Sessão expirada, faça login novamente')
+            Cookies.remove('exec.token')
+            Cookies.remove('user')
+            navigate('/entrar')
+        }
+    }, [user])
     return (
         <Container>
             <div className="wrapper">
                 <div className="quantidade">
                     {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
                     {quantidade === 1 && <span>1 solicitação encontrada</span>}
-                    {quantidade && quantidade > 1 && <span>{quantidade} solicitações encontradas</span>}
+                    {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
                     <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
                 </div>
 
