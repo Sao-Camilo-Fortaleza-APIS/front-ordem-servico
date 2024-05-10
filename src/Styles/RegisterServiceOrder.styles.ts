@@ -421,9 +421,9 @@ export const Btns = styled.div`
           width: 100%;
           font-weight: 500;
           color: #fff;
-          background-color: #ef4444;
+          background-color: #10b981;
           border-radius: 0.75rem;
-          border: 1px solid #ef4444;  
+          border: 1px solid #10b981;  
           transition: all 0.25s ease;
           :hover {
             background-color: #059669;
