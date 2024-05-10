@@ -32,7 +32,7 @@ export function SignIn() {
 
     async function signIn({ user, password }: SignInForm) {
         const response = await api.post('/login', { user, password }, {
-            timeout: 5000,
+            timeout: 60000, // 1 minuto em ms
         })
         return response.data
     }
@@ -47,7 +47,7 @@ export function SignIn() {
             } catch (error) {
                 toast.error('Erro ao salvar informações de autenticação', configToastError)
             }
-            navigate('/ordens/pendentes')
+            navigate('/ordens/minhas')
         },
         onError: (error: AxiosError) => {
             console.error(error);
@@ -70,7 +70,7 @@ export function SignIn() {
         // verificar se usuário já está logado
         const token = Cookies.get('exec.token')
         if (token) {
-            navigate('/ordens')
+            navigate('/ordens/minhas')
         }
     }, [])
 
