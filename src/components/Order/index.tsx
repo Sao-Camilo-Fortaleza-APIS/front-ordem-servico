@@ -28,18 +28,18 @@ export function Order(props: OrderProps) {
                     <OrderDetails color={colorType}>
                         <div>
                             <span className='title'>{props.damage}</span>
-                            <span className='infos'>
-                                <MapPin size={16} color='#a1a1aa' />
-                                {capitalizeFirstLetterOfWords(props.location)}
-                            </span>
-                            <span className='infos'>
-                                <Clock size={16} color='#a1a1aa' />
-                                {convertDate(props.date_order)}
-                            </span>
-                            <span className='infos'>
+                            <div className='infos'>
                                 <User size={16} color='#a1a1aa' />
-                                {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
-                            </span>
+                                <span>{capitalizeFirstLetterOfWords(props.requester)} - {props.contact}</span>
+                            </div>
+                            <div className='infos'>
+                                <MapPin size={16} color='#a1a1aa' />
+                                <span>{capitalizeFirstLetterOfWords(props.location)}</span>
+                            </div>
+                            <div className='infos'>
+                                <Clock size={16} color='#a1a1aa' />
+                                <span>{convertDate(props.date_order)}</span>
+                            </div>
                         </div>
                         <div className='icon'>
                             {location === '/ordens/minhas' ? <UserCheck size={24} color={colorType} /> : <UserPlus size={24} color={colorType} />}
