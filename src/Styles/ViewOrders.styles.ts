@@ -24,6 +24,12 @@ export const Container = styled.div`
     }
   }
 
+  @media (max-width: 426px) {
+    .wrapper {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+
   .select-group {
     width: 100%;
     height: 2.5rem;
