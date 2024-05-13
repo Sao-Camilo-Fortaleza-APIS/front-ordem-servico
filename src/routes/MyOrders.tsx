@@ -6,7 +6,6 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Order, OrderProps } from "../components/Order"
 import api from "../services/api"
-import { Container } from "../styles/ViewOrders.styles"
 
 export type OrderResponse = OrderProps[]
 
@@ -28,6 +27,7 @@ export function MyOrders() {
                 Cookies.remove('exec.token')
                 Cookies.remove('user')
                 navigate('/entrar')
+                return
             }
             return response.data
         },
@@ -57,35 +57,32 @@ export function MyOrders() {
         }
     }, [user])
     return (
-        <Container>
-            <div className="wrapper">
-                <div className="quantidade">
-                    {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
-                    {quantidade === 1 && <span>1 solicitação encontrada</span>}
-                    {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
-                    <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
-                </div>
+        <div className="wrapper">
+            <div className="quantidade">
+                {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
+                {quantidade === 1 && <span>1 solicitação encontrada</span>}
+                {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
+                <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
+            </div>
 
-                <div className="list-orders">
-                    <div>
-                        {filterOrdersByGroup(group)?.map((order) => {
-                            return (
-                                <Order
-                                    key={order.number}
-                                    number={order.number}
-                                    damage={order.number + ' ' + order.damage}
-                                    date_order={order.date_order}
-                                    location={order.location}
-                                    requester={order.requester}
-                                    contact={order.contact}
-                                    group={order.group}
-                                />
-                            )
-                        })}
-                    </div>
-                    {/* {<ListOrdersWithExecutor group={group} orders={responseOrders ?? []} />} */}
+            <div className="list-orders">
+                <div>
+                    {filterOrdersByGroup(group)?.map((order) => {
+                        return (
+                            <Order
+                                key={order.number}
+                                number={order.number}
+                                damage={order.number + ' ' + order.damage}
+                                date_order={order.date_order}
+                                location={order.location}
+                                requester={order.requester}
+                                contact={order.contact}
+                                group={order.group}
+                            />
+                        )
+                    })}
                 </div>
             </div>
-        </Container>
+        </div>
     )
 }
