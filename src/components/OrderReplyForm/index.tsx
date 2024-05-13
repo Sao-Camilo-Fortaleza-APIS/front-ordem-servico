@@ -1,6 +1,6 @@
 import * as Dialog from "@radix-ui/react-dialog";
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../services/api";
@@ -15,65 +15,78 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
 
   let user = Cookies.get('user') ?? ''
 
-  async function handleSendOrderReply(event: any) {
-    event.preventDefault()
+  async function handleSendOrderReply(event?: BaseSyntheticEvent) {
+    event?.preventDefault()
+    if (selectedOption === 'retorno') {
+      await sendHistoryReturn()
+    }
+    if (selectedOption === 'solucao') {
+      await sendHistorySoluction()
+    }
+  }
 
-    try {
-      if (user === '') {
-        toast.error('Sessão expirada, faça login novamente', {
-          position: 'top-center'
-        })
+  async function sendHistoryReturn() {
+    await api.post('/post/history', {
+      nr_order: numberOrder,
+      nm_user: user,
+      history: historyValue
+    }).then(response => {
+      if (response.status === 201) {
+        toast.success('Histórico de retorno enviado!', { position: 'top-center' })
+        setHistoryValue('')
+      }
+    }).catch(error => {
+      console.error(error.response)
+      if (error.response.status === 401) {
+        toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
         Cookies.remove('exec.token')
         Cookies.remove('user')
-        navigate('/entrar')
-        return
-      } else if (historyValue === '') {
-        toast.error('Preencha o histórico', {
-          position: 'top-center'
-        })
-        return
-      } else if (selectedOption === '') {
-        toast.error('Selecione o tipo de histórico', {
-          position: 'top-center'
-        })
-        return
-      } else if (selectedOption === 'retorno') {
-        const response = await api.post('/post/history', {
-          nr_order: numberOrder,
-          nm_user: user,
-          history: historyValue
-        })
-        if (response.status === 201) {
-          toast.success('Histórico de retorno enviado!', {
-            position: 'top-center'
-          })
-          return
-        }
-      } else if (selectedOption === 'solucao') {
-        const response = await api.post('/post/history/solution', {
-          nr_order: numberOrder,
-          nm_user: user,
-          history: historyValue
-        })
-        if (response.status === 201) {
-          toast.success('Histórico de retorno enviado!', {
-            position: 'top-center'
-          })
-          return
-        }
+        return navigate('/entrar')
       }
-
-    } catch (error) {
-      toast.error('Erro ao enviar histórico', {
-        position: 'top-center'
-      })
       console.error(error)
+      toast.error('Erro ao enviar histórico de retorno', { position: 'top-center' })
     }
+    )
+  }
+
+  async function sendHistorySoluction() {
+    await api.post('/post/history/solution', {
+      nr_order: numberOrder,
+      nm_user: user,
+      history: historyValue
+    }).then(response => {
+      if (response.status === 201) {
+        toast.success('Histórico de retorno enviado!', { position: 'top-center' })
+        setHistoryValue('')
+      }
+    }).catch(error => {
+      console.error(error.response)
+      if (error.response.status === 401) {
+        toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
+        Cookies.remove('exec.token')
+        Cookies.remove('user')
+        return navigate('/entrar')
+      }
+      console.error(error)
+      toast.error('Erro ao enviar histórico de solução', { position: 'top-center' })
+    }
+    )
   }
 
   const handleOptionChange = (value: string) => {
     setSelectedOption(value);
   };
+
+
+  useEffect(() => {
+    if (user === '') {
+      toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
+      Cookies.remove('exec.token')
+      Cookies.remove('user')
+      return navigate('/entrar')
+    }
+  }, [user])
+
   return (
     <FormStyled onSubmit={handleSendOrderReply}>
       <div className="radio-group">
@@ -105,6 +118,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
       <div>
         <label htmlFor="reply">Histórico</label>
         <textarea
+          required
           name="reply"
           id="reply"
           cols={30}
