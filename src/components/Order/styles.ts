@@ -11,6 +11,7 @@ export const Container = styled.div`
 `;
 
 export const DialogContent = styled(Dialog.Overlay)`
+    overflow: scroll;
     width: 100vw;
     position: fixed;
     right: 0;

@@ -15,6 +15,7 @@ export interface OrderProps {
     requester: string
     contact?: string
     group: number
+    describe: string
 }
 
 export function Order(props: OrderProps) {
@@ -66,6 +67,9 @@ export function Order(props: OrderProps) {
                             {location === '/ordens/minhas' && (
                                 <>
                                     <div>
+                                        <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
+                                            {props.describe}
+                                        </span>
                                         <span className='infos'>
                                             <User size={16} color='#a1a1aa' />
                                             {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
@@ -86,6 +90,9 @@ export function Order(props: OrderProps) {
                             {location === '/ordens/pendentes' && (
                                 <>
                                     <div>
+                                        <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
+                                            {props.describe}
+                                        </span>
                                         <span className='infos'>
                                             <User size={16} color='#a1a1aa' />
                                             {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}

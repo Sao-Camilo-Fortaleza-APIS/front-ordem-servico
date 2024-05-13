@@ -70,6 +70,7 @@ export function PendingOrders() {
                                 requester={order.requester}
                                 contact={order.contact}
                                 group={order.group}
+                                describe={order.describe}
                             />
                         )
                     })}
