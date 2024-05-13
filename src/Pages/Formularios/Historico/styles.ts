@@ -42,7 +42,7 @@ export const ContainerButton = styled.div`
           
           transition: all 0.25s ease;
           :hover {
-            background-color: #10b981;
+            background-color: #059669;
             opacity: 0.9;
             color: #fff;
           }

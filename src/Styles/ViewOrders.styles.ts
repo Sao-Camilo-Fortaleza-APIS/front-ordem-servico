@@ -5,12 +5,7 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100vw;
-  overflow-x: hidden;
-  overflow-y: auto;
-  -webkit-overflow-scrolling: touch;
-  &::-webkit-scrollbar {
-    display: none;
-  }
+ 
 
   .wrapper{
     display: flex;
@@ -18,25 +13,50 @@ export const Container = styled.div`
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 0 1.5rem;
+    padding: 0.5rem 1.5rem;
 
     .list-orders {
       width: 100%;
-      margin-top: 2rem;
+      //margin-top: 0.5rem;
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
     }
   }
 
-  .quantidade {
+  @media (max-width: 426px) {
+    .wrapper {
+      padding: 0.5rem 0.75rem;
+    }
+  }
+
+  .select-group {
+    width: 100%;
+    height: 2.5rem;
+    padding: 0.5rem;
+    font-size: 1rem;
+    font-weight: 500;
+    color: #71717a;
+    border: 1px solid #d4d4d8;
+    border-radius: 4px;
+    background: #f4f4f5;
+  }
+
+  .quantidade, .label-groups {
     width: 100%;
     display: flex;
     align-items: center; 
-    justify-content: space-between;
+    justify-content: start;
+    gap: 0.25rem;
     margin-top: 1rem;
-    font-size: 1.25rem;
-    font-weight: 600;
-    color: #71717a;
-    span:first-child {
-      color: #a1a1aa;
+    font-size: 1.125rem;
+    font-weight: 500;
+    color: #a1a1aa;
+    // color: #71717a;
+
+    span{
+      display: flex;
+      align-items: center;
     }
 
     .animate-spin {
@@ -75,7 +95,7 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  height: 6rem;
+  height: 4.5rem;
   width: 100;
   justify-content: space-between;
   align-items: center;

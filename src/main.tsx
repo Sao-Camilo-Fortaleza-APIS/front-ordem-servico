@@ -1,18 +1,19 @@
-import React, { PropsWithChildren } from 'react';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import React from 'react';
 import ReactDOM from 'react-dom/client';
-import { Navigate, RouterProvider, createBrowserRouter } from 'react-router-dom';
+import { RouterProvider, createBrowserRouter } from 'react-router-dom';
 import 'react-toastify/dist/ReactToastify.min.css';
 import App from './App';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
+import { Login } from './routes/Login';
+import { MyOrders } from './routes/MyOrders';
+import { PendingOrders } from './routes/PendingOrders';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
 import { ViewOrders } from './routes/ViewOrders';
 import { GlobalStyles } from './styles/global';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { ReactQueryDevtools } from '@tanstack/react-query-devtools'
-import { Login } from './routes/Login';
 
 const queryClient = new QueryClient()
 
@@ -24,7 +25,6 @@ const router = createBrowserRouter([
       {
         path: '/',
         element: <RegisterServiceOrdem />,
-        index: true,
       },
       {
         path: '/ajuste/success/:nr_seq_os',
@@ -44,8 +44,18 @@ const router = createBrowserRouter([
       },
       {
         path: '/ordens',
-        element:
-          <ViewOrders />,
+        element: <ViewOrders />,
+        children: [
+          {
+            path: '/ordens/minhas',
+            element: <MyOrders />,
+            index: true
+          },
+          {
+            path: '/ordens/pendentes',
+            element: <PendingOrders />,
+          }
+        ],
       },
     ],
   },
@@ -58,7 +68,7 @@ ReactDOM.createRoot(document.getElementById('root') as HTMLElement).render(
     <QueryClientProvider client={queryClient}>
       <RouterProvider router={router} />
 
-      <ReactQueryDevtools initialIsOpen={false} />
+      {/* <ReactQueryDevtools initialIsOpen={false} /> */}
     </QueryClientProvider>
   </React.StrictMode>
 )

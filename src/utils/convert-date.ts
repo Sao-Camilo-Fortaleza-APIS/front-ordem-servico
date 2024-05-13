@@ -5,7 +5,7 @@ dayjs.locale('pt-br');
 
 export function convertDate(date: string) {
     // estou adicionando 3 horas para compensar o fuso horário GMT-3 (Brasília)
-    return dayjs(date).add(3, 'hour').locale('pt-br').format('ddd, DD [de] MMM. [de] YYYY [às] HH[h]mm');
+    return dayjs(date).add(3, 'hour').locale('pt-br').format('DD[/]MM[/]YYYY [às] HH[h]mm');
 }
 
 // COMPARAR DATA ATUAL COM A EXPIRAÇÃO DO TOKEN

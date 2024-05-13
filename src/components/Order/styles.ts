@@ -1,65 +1,127 @@
-import * as Accordion from '@radix-ui/react-accordion';
+import * as Dialog from '@radix-ui/react-dialog';
 import styled from 'styled-components';
 
 
 export const Container = styled.div`
     display: flex;
     flex-direction: column;
-    gap: 1rem;
-`;
-export const AccordionTrigger = styled(Accordion.Trigger)`
-    background-color: #f4f4f5;
-    display: flex;
-   width: 100%;
-    height: 5.5rem;
-    flex-direction: row;
-    align-items: center;
     justify-content: space-between;
-    padding: 0.5rem 1rem;
+    gap: 1rem;
+    margin: 0.5rem 0;
+`;
+
+export const DialogContent = styled(Dialog.Overlay)`
+    overflow: scroll;
+    width: 100vw;
+    position: fixed;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    padding: 1rem; 
+    height: 100vh; 
+    background-color: #f4f4f5; 
+    z-index: 10;
+    min-width: 320px;
+    border-left: 1px solid #4b5563;
+`;
+
+export const DialogTitle = styled(Dialog.Title)`
+    font-size: 1.5rem;
+    font-weight: 600;
+    color: #71717a;
     margin-bottom: 0.5rem;
-    border: none;
-    border-radius: 0.313rem;
-    border-left: 0.5rem solid #f59e0b;
-    overflow: hidden;
-    cursor: pointer;
+    text-align: left;
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+`;
+
+export const DialogDescription = styled(Dialog.Description)`
+    display: flex;
+    flex-direction: column;
+    align-items: start;
+    justify-content: start;
+    font-size: 0.875rem;
+    color: #9ca3af;
+    gap: 0.5rem;
 
     div {
         display: flex;
         flex-direction: column;
         align-items: start;
+        justify-content: start;
+    }
+`;
+
+export const OrderDetails = styled.div<{ color: string }>`
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0.5rem 1rem;
+    
+    background-color: #f4f4f5;
+    border: none;
+    border-radius: 0.313rem;
+    border-left: 0.5rem solid;
+    border-left-color: ${props => props.color};
+
+    cursor: pointer;
+
+    div:first-child {
+        display: flex;
+        flex-direction: column;
+        align-items: start;
         justify-content: center;
         gap: 0.1rem;
+        overflow: hidden;
 
         .title {
             font-size: 1rem;
             font-weight: 600;
             color: #71717a;
             text-align: left;
+            white-space: normal;
+            overflow: hidden;
         }
 
         .infos {
-            font-size: 0.875rem;
+             font-size: 0.875rem;
             display: flex;
             align-items: center;
+            justify-content: start;
             gap: 0.125rem;
             color: #a1a1aa;
-            text-align: left;
+            span{
+                text-align: left;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
         }
     }
+    div.icon {
+        margin-left: 0.5rem;
+    }
+    // media queries smarthphone medium
+    @media (max-width: 426px) {
+        width: 100%;
+        padding: 0.5rem 0.5rem;
+        div {
+            .title {
+                font-size: 0.875rem;
+                font-weight: 400;
+            }
+            .infos span{
+                overflow: hidden;
+                white-space: nowrap;
+                text-overflow: ellipsis;
+            }
+        }
+        div.icon {
+            margin-left: 0.5rem;
+            margin-right: 0;
 
-    .icon {
-        background-color: #fafafa;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        padding: 0.5rem;
-        border-radius: 99990px; 
-        > {
-            background-color: #f59e0b;
         }
     }
 `
-
-export const AccordionContent = styled(Accordion.Content)`
-    padding: 0 1rem;
-`;

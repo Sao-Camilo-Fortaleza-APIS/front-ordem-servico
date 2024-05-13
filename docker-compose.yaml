@@ -1,0 +1,17 @@
+version: '3.7'
+
+services:
+  web-chamados:
+    image: api-chamados:v2
+    container_name: api-chamados
+    ports:
+      - 5175:5175
+    restart: always
+    environment:
+      - VITE_BASE_URL_PRD=http://10.10.200.101:4321
+    networks:
+      - chamados-net
+
+networks:
+  chamados-net:
+    driver: bridge

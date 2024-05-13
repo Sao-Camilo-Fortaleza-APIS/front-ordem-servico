@@ -43,3 +43,11 @@ Se aparecer a versão do node e do git, significa que estão instalados corretam
 #### 4. Variáveis de Ambiente: faça uma cópia do arquivo `.env` e altere para `.env.local` e adicione a URL da API.
 
 #### 5. Como executar em modo de desenvolvimento: `npm run dev`
+
+#### 6. Como executar em modo de produção:
+Para fazer isso você precisa ter o docker instalado na sua máquina. Se não tiver, você pode baixar [aqui](https://www.docker.com/products/docker-desktop)
+
+   ```bash
+   docker build -t api-chamados:v2 . # Construir a imagem
+   docker-compose up -d # Subir o container
+   ```

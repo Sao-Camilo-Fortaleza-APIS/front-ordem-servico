@@ -1,7 +1,7 @@
 import { useQuery } from '@tanstack/react-query';
 import { useEffect } from 'react';
-import * as userCookies from './userCookies';
 import api from '../services/api';
+import * as userCookies from './userCookies';
 
 export interface User {
   token: string;
@@ -14,7 +14,7 @@ interface IUseUser {
 
 async function getUser(user: User | null | undefined): Promise<User | null> {
   if (!user) return null;
-  const response = await api.get(`/get/order_user/executor/${user.user}`, {
+  const response = await api.get(`/get/orders/executor/${user.user}`, {
     headers: {
       Authorization: `Bearer ${user.token}`
     }
