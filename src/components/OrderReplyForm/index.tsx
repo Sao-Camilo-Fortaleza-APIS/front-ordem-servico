@@ -26,7 +26,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   }
 
   async function sendHistoryReturn() {
-    await api.post('/post/history', {
+    await api.post('/post/history/return', {
       nr_order: numberOrder,
       nm_user: user,
       history: historyValue

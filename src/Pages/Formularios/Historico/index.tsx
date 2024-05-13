@@ -100,7 +100,7 @@ export function Historico() {
       return
     }
 
-    await api.post('/post/history', {
+    await api.post('/post/history/return', {
       nr_order: resultOrderData?.number,
       nm_user: userReplyHistory,
       history: replyHistory

@@ -20,7 +20,7 @@ export function MyOrders() {
     const { data: responseOrders, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
         queryFn: async () => {
-            const response = await api.get(`/get/order_user/executor/${user}`)
+            const response = await api.get(`/get/orders/executor/${user}`)
 
             if (response.status === 401) {
                 toast.error('Sessão expirada, faça login novamente')
