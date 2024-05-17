@@ -8,6 +8,13 @@ import { Filter } from "../components/Filter";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 
+export interface GroupProps {
+  code: number,
+  describe: string
+}
+
+export type GroupResponse = GroupProps[]
+
 
 export function ViewOrders() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -17,7 +24,7 @@ export function ViewOrders() {
 
   let group: string = searchParams.get('group') ?? '';
 
-  const { data: groups, isFetching } = useQuery({
+  const { data: groups, isFetching } = useQuery<GroupResponse>({
     queryKey: ['get-groups'],
     queryFn: async () => {
       const response = await api.get(`/get/workgroup/user`)
@@ -96,7 +103,7 @@ export function ViewOrders() {
         >
           {location === '/ordens/minhas' && <option value="">Todos os grupos</option>}
           {location === '/ordens/pendentes' && <option disabled value="">Selecione um grupo</option>}
-          {groups && groups.map((group: any) => {
+          {groups && groups?.map((group: GroupProps) => {
             return <option key={group.code} value={group.code}>{group.describe}</option>
           })}
         </select>
