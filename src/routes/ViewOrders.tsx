@@ -12,9 +12,7 @@ export interface GroupProps {
   code: number,
   describe: string
 }
-
 export type GroupResponse = GroupProps[]
-
 
 export function ViewOrders() {
   const [searchParams, setSearchParams] = useSearchParams()

@@ -1,4 +1,4 @@
-import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query"
+import { keepPreviousData, useQuery } from "@tanstack/react-query"
 import Cookies from "js-cookie"
 import { Loader } from "lucide-react"
 import { useEffect } from "react"
@@ -6,19 +6,17 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { Order, OrderProps } from "../components/Order"
 import api from "../services/api"
-import { GroupResponse } from "./ViewOrders"
 
 export type OrderResponse = OrderProps[]
 
 export function MyOrders() {
     const [searchParams, setSearchParams] = useSearchParams()
     const { pathname: location } = useLocation()
-    const queryClient = useQueryClient()
     const navigate = useNavigate();
 
     const user = Cookies.get('user') ?? ''
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
-    let group = searchParams.get('group') ?? ''
+    let group: number = Number(searchParams.get('group')) ?? 0
 
     const { data: responseOrders, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
@@ -37,25 +35,20 @@ export function MyOrders() {
         placeholderData: keepPreviousData,
         enabled: true, // se false desabilita a pesquisa automática
     })
-    const groups = queryClient.getQueryData<GroupResponse>(["get-groups"])
 
-    function filterOrdersByGroup(group: string) {
-        const groupNumber = Number(group)
-        if (isNaN(groupNumber)) {
-            return responseOrders
-        }
-
-        if (groups?.includes(groupNumber)) {
+    function filterOrdersByGroup(group: number) {
+        if (group === 0) {
             return responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")
         }
-        let ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
+        const ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
         return ordersByGroup?.filter((order: OrderProps) => order.awaiting_validate === "Não")
     }
 
     let quantidade =
         group
-            ? responseOrders?.filter(order => order.group === Number(group)).length
-            : responseOrders?.length
+            ? responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")?.filter(order => order.group === Number(group)).length
+            : responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não").length
+
 
     useEffect(() => {
         //verificar se usuário está logado
