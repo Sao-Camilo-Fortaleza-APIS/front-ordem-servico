@@ -5,6 +5,8 @@ export const Container = styled.div`
   flex-direction: column;
   height: 100%;
   width: 100vw;
+  overflow: hidden;
+  overflow-Y: scroll;
  
 
   .wrapper{
@@ -96,7 +98,7 @@ export const Container = styled.div`
 export const Header = styled.header`
   display: flex;
   height: 4.5rem;
-  width: 100;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   padding: 0 2rem;
