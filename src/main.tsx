@@ -7,7 +7,6 @@ import App from './App';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
-import { Login } from './routes/Login';
 import { MyOrders } from './routes/MyOrders';
 import { PendingOrders } from './routes/PendingOrders';
 import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
@@ -37,10 +36,6 @@ const router = createBrowserRouter([
       {
         path: '/entrar',
         element: <SignIn />,
-      },
-      {
-        path: '/login',
-        element: <Login />,
       },
       {
         path: '/ordens',
