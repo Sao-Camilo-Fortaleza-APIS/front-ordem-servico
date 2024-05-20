@@ -8,6 +8,7 @@ export const Container = styled.div`
     justify-content: space-between;
     gap: 1rem;
     margin: 0.5rem 0;
+    width: 100%;
 `;
 
 export const DialogContent = styled(Dialog.Overlay)`
