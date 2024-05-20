@@ -13,9 +13,10 @@ export function MyOrders() {
     const [searchParams, setSearchParams] = useSearchParams()
     const { pathname: location } = useLocation()
     const navigate = useNavigate();
+
     const user = Cookies.get('user') ?? ''
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
-    let group: string = searchParams.get('group') ?? '';
+    let group: number = Number(searchParams.get('group')) ?? 0
 
     const { data: responseOrders, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
@@ -35,17 +36,19 @@ export function MyOrders() {
         enabled: true, // se false desabilita a pesquisa automática
     })
 
-    function filterOrdersByGroup(group: string) {
-        if (group === '') return responseOrders
-        return responseOrders?.filter((order: OrderProps) => order.group === Number(group))
-        /*  const listOrders = orders.filter(order => order.group === Number(group))
-         return listOrders */
+    function filterOrdersByGroup(group: number) {
+        if (group === 0) {
+            return responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+        }
+        const ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
+        return ordersByGroup?.filter((order: OrderProps) => order.awaiting_validate === "Não")
     }
 
     let quantidade =
         group
-            ? responseOrders?.filter(order => order.group === Number(group)).length
-            : responseOrders?.length
+            ? responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")?.filter(order => order.group === Number(group)).length
+            : responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não").length
+
 
     useEffect(() => {
         //verificar se usuário está logado
@@ -79,6 +82,7 @@ export function MyOrders() {
                                 contact={order.contact}
                                 group={order.group}
                                 describe={order.describe}
+                                awaiting_validate={order.awaiting_validate}
                             />
                         )
                     })}
