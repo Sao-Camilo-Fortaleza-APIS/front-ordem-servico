@@ -7,7 +7,7 @@ export const configToastError: ToastOptions<{}> = {
   pauseOnHover: true,
   draggable: true,
   progress: undefined,
-  theme: "colored"
+  theme: "light"
 }
 
 export const configToastSuccess: ToastOptions<{}> = {
@@ -17,5 +17,5 @@ export const configToastSuccess: ToastOptions<{}> = {
   pauseOnHover: false,
   draggable: true,
   progress: undefined,
-  theme: "colored"
+  theme: "light"
 }

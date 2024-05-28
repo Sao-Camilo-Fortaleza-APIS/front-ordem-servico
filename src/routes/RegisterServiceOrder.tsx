@@ -108,7 +108,7 @@ export function RegisterServiceOrdem() {
         pauseOnHover: true,
         draggable: true,
         progress: undefined,
-        theme: "colored"
+        theme: "light"
       });
     }
     else {
@@ -169,7 +169,7 @@ export function RegisterServiceOrdem() {
             <NmItem>
               <p>Qual o seu setor? <b>*</b></p>
               <select value={selectedValue} onChange={handleChange}>
-                {opcoes.map((option:{
+                {opcoes.map((option: {
                   nr_sequencia: string,
                   ds_localizacao: string
                 }, index) => (
