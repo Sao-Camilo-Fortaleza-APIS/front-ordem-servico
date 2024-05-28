@@ -18,7 +18,7 @@ export function MyOrders() {
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
     let group: number = Number(searchParams.get('group')) ?? 0
 
-    const { data: responseOrders, isFetching } = useQuery<OrderResponse>({
+    const { data: responseOrders, isLoading, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
         queryFn: async () => {
             const response = await api.get(`/get/orders/executor/${user}`)
@@ -33,8 +33,8 @@ export function MyOrders() {
             return response.data
         },
         placeholderData: keepPreviousData,
-        enabled: true, // se false desabilita a pesquisa automática
     })
+    //enabled: true, // se false desabilita a pesquisa automática
 
     function filterOrdersByGroup(group: number) {
         if (group === 0) {
@@ -59,6 +59,11 @@ export function MyOrders() {
             navigate('/entrar')
         }
     }, [user])
+
+    if (isLoading) {
+        return null
+    }
+
     return (
         <div className="wrapper">
             <div className="quantidade">

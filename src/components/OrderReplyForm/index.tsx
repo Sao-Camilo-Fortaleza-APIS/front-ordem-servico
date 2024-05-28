@@ -8,6 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import api from "../../services/api";
+import { verifyToken } from "../../utils/verify-token";
 import { Button } from "../Button";
 import { FormStyled } from "./styles";
 
@@ -33,37 +34,29 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
 
   const { mutateAsync } = useMutation({
     mutationFn: async ({ history, typeHistory }: SchemaReplyForm) => {
+      await new Promise(resolve => {
+        setTimeout(resolve, 1000)
+        const verify = verifyToken()
+        if (!verify) {
+          Cookies.remove('exec.token')
+          Cookies.remove('user')
+
+          throw new Error("Erro ao enviar histórico", { cause: 'Sessão expirada, faça login novamente' })
+        }
+      })
+
       if (typeHistory === 'retorno') {
-        const response = await api.post('/post/history/return', {
+        await api.post('/post/history/return', {
           nr_order: numberOrder,
           nm_user: user,
           history,
         })
-        if (response.status === 401) {
-          toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-          return navigate('/entrar')
-        }
-
-        //toast.error('Erro ao enviar histórico de retorno', { position: 'top-center' })
-
       }
       if (typeHistory === 'solucao') {
         await api.post('/post/history/solution', {
           nr_order: numberOrder,
           nm_user: user,
           history
-        }).catch(error => {
-          console.error(error.response)
-          if (error.response.status === 401) {
-            toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
-            Cookies.remove('exec.token')
-            Cookies.remove('user')
-            return navigate('/entrar')
-          }
-          console.error(error)
-          toast.error('Erro ao enviar histórico de retorno', { position: 'top-center' })
         })
       }
     },
@@ -75,67 +68,14 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
 
       toast.success(`Histórico enviado!`, { position: 'top-center' })
     },
-    onError: () => {
-      toast.error('Erro ao enviar histórico de retorno', { position: 'top-center' })
+    onError: (error) => {
+      toast.error(`${error.message}`, { position: 'top-center' })
     },
   })
 
   async function handleSendOrderReply({ history, typeHistory }: SchemaReplyForm) {
     await mutateAsync({ history, typeHistory })
   }
-  /* 
-    async function sendHistoryReturn() {
-      await api.post('/post/history/return', {
-        nr_order: numberOrder,
-        nm_user: user,
-        history: historyValue
-      }).then(response => {
-        if (response.status === 201) {
-          toast.success('Histórico de retorno enviado!', { position: 'top-center' })
-          setHistoryValue('')
-        }
-      }).catch(error => {
-        console.error(error.response)
-        if (error.response.status === 401) {
-          toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-          return navigate('/entrar')
-        }
-        console.error(error)
-        toast.error('Erro ao enviar histórico de retorno', { position: 'top-center' })
-      }
-      )
-    }
-  
-    async function sendHistorySoluction() {
-      await api.post('/post/history/solution', {
-        nr_order: numberOrder,
-        nm_user: user,
-        history: historyValue
-      }).then(response => {
-        if (response.status === 201) {
-          toast.success('Histórico de retorno enviado!', { position: 'top-center' })
-          setHistoryValue('')
-        }
-      }).catch(error => {
-        console.error(error.response)
-        if (error.response.status === 401) {
-          toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-          return navigate('/entrar')
-        }
-        console.error(error)
-        toast.error('Erro ao enviar histórico de solução', { position: 'top-center' })
-      }
-      )
-    }
-  
-    const handleOptionChange = (value: string) => {
-      setSelectedOption(value);
-    };
-   */
 
   useEffect(() => {
     if (user === '') {
