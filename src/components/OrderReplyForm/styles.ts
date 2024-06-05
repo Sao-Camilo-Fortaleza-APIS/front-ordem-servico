@@ -1,3 +1,4 @@
+import * as SwitchPrimitive from '@radix-ui/react-switch';
 import styled from "styled-components";
 
 export const FormStyled = styled.form`
@@ -49,6 +50,7 @@ export const FormStyled = styled.form`
     display: flex;
     flex-direction: row;
     gap: 0.5rem;
+    align-items: center;
 
     .radio-item {
       display: flex; 
@@ -63,4 +65,44 @@ export const FormStyled = styled.form`
       }
     }
   }
+
+  .switch-item {
+    display: flex;
+    flex-direction: row;
+    gap: 1rem;
+    align-items: center;
+    justify-content: start;
+  }
 `;
+
+export const SwitchThumb = styled(SwitchPrimitive.Thumb)`
+    display: block;
+    width: 26px;
+    height: 26px;
+    background-color: white;
+    border-radius: 9999px;
+    transition: transform 100ms;
+    transform: translateX(2px);
+    will-change: transform;
+    
+    &[data-state='checked'] {
+         transform: translateX(18px);
+    };
+`
+
+export const SwitchRoot = styled(SwitchPrimitive.Root)`
+    display: flex;
+    width: 48px;
+    height: 31px;
+    align-items: center;
+    justify-content: space-between;
+    background-color: #f2f2f2;
+    border-radius: 9999px;
+    transition: background-color 0.3s ease;
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    border: 1px solid #d1d5db;
+
+    &[data-state='checked'] {
+        background-color: #10b981;
+    }
+`

@@ -3,18 +3,19 @@ import * as Dialog from "@radix-ui/react-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import api from "../../services/api";
 import { verifyToken } from "../../utils/verify-token";
 import { Button } from "../Button";
-import { FormStyled } from "./styles";
+import { FormStyled, SwitchRoot, SwitchThumb } from "./styles";
 
 const schemareplyform = z.object({
   history: z.string().min(3, 'Histórico muito curto'),
-  typeHistory: z.string()
+  typeHistory: z.string(),
+  close: z.boolean()
 })
 type SchemaReplyForm = z.infer<typeof schemareplyform>
 
@@ -23,7 +24,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const { register, handleSubmit, resetField, formState: { errors, isSubmitting } } = useForm<SchemaReplyForm>({
+  const { register, handleSubmit, control, resetField, formState: { errors, isSubmitting }, getValues } = useForm<SchemaReplyForm>({
     resolver: zodResolver(schemareplyform),
     defaultValues: {
       typeHistory: 'retorno'
@@ -33,7 +34,9 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   let user = Cookies.get('user') ?? ''
 
   const { mutateAsync } = useMutation({
-    mutationFn: async ({ history, typeHistory }: SchemaReplyForm) => {
+    mutationFn: async ({ history, typeHistory, close }: SchemaReplyForm) => {
+      console.log({ history, typeHistory, close });
+
       await new Promise(resolve => {
         setTimeout(resolve, 1000)
         const verify = verifyToken()
@@ -53,7 +56,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
         })
       }
       if (typeHistory === 'solucao') {
-        await api.post('/post/history/solution', {
+        await api.post(`/post/history/solution?closed=${close}`, {
           nr_order: numberOrder,
           nm_user: user,
           history
@@ -73,8 +76,8 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
     },
   })
 
-  async function handleSendOrderReply({ history, typeHistory }: SchemaReplyForm) {
-    await mutateAsync({ history, typeHistory })
+  async function handleSendOrderReply({ history, typeHistory, close }: SchemaReplyForm) {
+    await mutateAsync({ history, typeHistory, close })
   }
 
   useEffect(() => {
@@ -88,6 +91,8 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
 
   return (
     <FormStyled onSubmit={handleSubmit(handleSendOrderReply)}>
+
+      {/* Tipos de histórico */}
       <div className="radio-group">
         <label htmlFor="type">Tipo de histórico</label>
 
@@ -116,6 +121,24 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
         {errors.typeHistory?.message && <span style={{ color: '#ef4444' }}>{errors.typeHistory.message}</span>}
       </div>
 
+      <div className="switch-item">
+        <label htmlFor="close">Encerrar Ordem de Serviço</label>
+        <Controller
+          control={control}
+          name="close"
+          render={({ field }) => (
+            <SwitchRoot
+              disabled={getValues('typeHistory') !== 'solucao' || isSubmitting}
+              id="close"
+              checked={field.value}
+              onCheckedChange={field.onChange}
+            >
+              <SwitchThumb />
+            </SwitchRoot>
+          )} />
+      </div>
+
+      {/* Texto de histórico */}
       <div>
         <label htmlFor="reply">Histórico</label>
         <textarea
