@@ -24,7 +24,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const { register, handleSubmit, control, resetField, formState: { errors, isSubmitting }, getValues } = useForm<SchemaReplyForm>({
+  const { register, handleSubmit, control, resetField, watch, formState: { errors, isSubmitting }, setValue } = useForm<SchemaReplyForm>({
     resolver: zodResolver(schemareplyform),
     defaultValues: {
       typeHistory: 'retorno'
@@ -32,10 +32,11 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   })
 
   let user = Cookies.get('user') ?? ''
+  let isDisabled: boolean = watch('typeHistory') === 'retorno' ? true : false
 
   const { mutateAsync } = useMutation({
     mutationFn: async ({ history, typeHistory, close }: SchemaReplyForm) => {
-      console.log({ history, typeHistory, close });
+      console.log({ history, typeHistory, close, isDisabled });
 
       await new Promise(resolve => {
         setTimeout(resolve, 1000)
@@ -128,9 +129,9 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           name="close"
           render={({ field }) => (
             <SwitchRoot
-              disabled={getValues('typeHistory') !== 'solucao' || isSubmitting}
+              disabled={isDisabled || isSubmitting}
               id="close"
-              checked={field.value}
+              checked={isDisabled ? false : field.value}
               onCheckedChange={field.onChange}
             >
               <SwitchThumb />

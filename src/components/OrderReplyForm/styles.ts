@@ -73,6 +73,11 @@ export const FormStyled = styled.form`
     align-items: center;
     justify-content: start;
   }
+
+  .switch-item:has(#close:disabled) {
+    opacity: 0.5;
+    pointer-events: none;
+  }
 `;
 
 export const SwitchThumb = styled(SwitchPrimitive.Thumb)`
