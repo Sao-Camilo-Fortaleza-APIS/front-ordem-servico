@@ -16,7 +16,6 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
     event.preventDefault()
 
     try {
-      console.log('enviando resposta');
       if (!user || user === '') {
         Cookies.remove('user')
         Cookies.remove('exec.token')
