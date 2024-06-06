@@ -27,7 +27,8 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   const { register, handleSubmit, control, resetField, watch, formState: { errors, isSubmitting }, setValue } = useForm<SchemaReplyForm>({
     resolver: zodResolver(schemareplyform),
     defaultValues: {
-      typeHistory: 'retorno'
+      typeHistory: 'retorno',
+      close: false,
     }
   })
 
