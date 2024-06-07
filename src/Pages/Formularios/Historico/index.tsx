@@ -1,6 +1,8 @@
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 
+import { Search } from "lucide-react";
+import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Label } from "../../../components/Label";
@@ -8,14 +10,10 @@ import { Loader } from "../../../components/Load";
 import { Content, Dialog, Trigger } from "../../../components/Modal";
 import { Fieldset } from "../../../components/Modal/styles";
 import SearchForm from "../../../components/SearchForm";
-
-import { Search } from "lucide-react";
-import { toast } from "react-toastify";
 import { Btns } from "../../../styles/RegisterServiceOrder.styles";
-import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
-
 import { convertDate } from "../../../utils/convert-date";
 import { configToastError, configToastSuccess } from "../../../utils/toast-config";
+import { AccordionItem, AccordionRoot, Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
 
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
@@ -29,6 +27,13 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   requester: string
   title: string
   stage: string;
+  contact?: string
+  damage: string
+  date_order: string
+  location: string
+  group: number
+  describe: string
+  awaiting_validate: string
 }
 
 export interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
@@ -195,14 +200,11 @@ export function Historico() {
           <div className="content-mobile">
             {resultOrderData && (
               <HeaderOrder>
-                <div className="number-and-title">
-                  <span>{resultOrderData?.number && `Nº ${resultOrderData?.number}`}</span>
-                  <span>{resultOrderData?.title && `${resultOrderData?.title}`}</span>
-                </div>
+                <AccordionRoot collapsible>
+                  <AccordionItem>
 
-                <div className="requester">
-                  <span>{resultOrderData?.requester}</span>
-                </div>
+                  </AccordionItem>
+                </AccordionRoot>
               </HeaderOrder>
             )}
             <Dialog open={open} setOpen={setOpen}>
