@@ -32,7 +32,6 @@ export function PendingOrders() {
             return response.data
         },
         placeholderData: keepPreviousData,
-        enabled: true, // se false desabilita a pesquisa automática
     })
     let quantidade = responsePendingOrders?.length
 
@@ -71,6 +70,7 @@ export function PendingOrders() {
                                 contact={order.contact}
                                 group={order.group}
                                 describe={order.describe}
+                                awaiting_validate={order.awaiting_validate}
                             />
                         )
                     })}

@@ -36,7 +36,8 @@ export function ViewOrders() {
       return response.data
     },
     placeholderData: keepPreviousData,
-    enabled: true, // se false desabilita a nova busca automática
+    //enabled: true, // se false desabilita a nova busca automática
+    refetchOnWindowFocus: true,
   })
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {

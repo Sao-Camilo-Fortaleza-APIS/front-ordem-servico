@@ -203,6 +203,7 @@ export const Message = styled.div`
     border-radius: 0.625rem;
     border: 1px solid #a1a1aa;
     transition: all 0.25s ease;
+    -webkit-font-smoothing: antialiased;
 
     span img {
       max-width: 100%;

@@ -1,6 +1,8 @@
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 
+import { Clock, MapPin, Phone, Search, User } from "lucide-react";
+import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
 import { Label } from "../../../components/Label";
@@ -8,27 +10,32 @@ import { Loader } from "../../../components/Load";
 import { Content, Dialog, Trigger } from "../../../components/Modal";
 import { Fieldset } from "../../../components/Modal/styles";
 import SearchForm from "../../../components/SearchForm";
-
-import { Search } from "lucide-react";
-import { toast } from "react-toastify";
 import { Btns } from "../../../styles/RegisterServiceOrder.styles";
-import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, HeaderOrder, Message } from "./styles"; // Importação dos estilos
-
 import { convertDate } from "../../../utils/convert-date";
 import { configToastError, configToastSuccess } from "../../../utils/toast-config";
+import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Message } from "./styles"; // Importação dos estilos
 
+import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../components/Accordion";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
 import { Navbar } from "../../../components/Navbar";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
+import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
   requester: string
   title: string
   stage: string;
+  contact?: string
+  damage: string
+  date_order: string
+  location: string
+  group: number
+  describe: string
+  awaiting_validate: string
 }
 
 export interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
@@ -193,18 +200,46 @@ export function Historico() {
         <ContainerHeader>
           <h3>Histórico</h3>
           <div className="content-mobile">
-            {resultOrderData && (
-              <HeaderOrder>
-                <div className="number-and-title">
-                  <span>{resultOrderData?.number && `Nº ${resultOrderData?.number}`}</span>
-                  <span>{resultOrderData?.title && `${resultOrderData?.title}`}</span>
-                </div>
+            {resultOrderData?.number && (
+              <Accordion type="single" collapsible>
+                <AccordionItem value={`${resultOrderData?.number}`}>
+                  <AccordionTrigger>
+                    <div className="number-and-title">
+                      <span>{resultOrderData?.number}</span>
+                      <span>{resultOrderData?.damage}</span>
+                    </div>
+                  </AccordionTrigger>
 
-                <div className="requester">
-                  <span>{resultOrderData?.requester}</span>
-                </div>
-              </HeaderOrder>
+                  <AccordionContent>
+                    <div>
+                      <span className='title'>{resultOrderData?.damage}</span>
+                      <span className='infos'>{resultOrderData?.describe}</span>
+
+                      <span className='infos'>
+                        <User size={18} color='#6b7280' />
+                        {capitalizeFirstLetterOfWords(resultOrderData?.requester)}
+                      </span>
+
+                      <span className='infos'>
+                        <MapPin size={18} color='#6b7280' />
+                        {capitalizeFirstLetterOfWords(resultOrderData?.location)}
+                      </span>
+
+                      <span className='infos'>
+                        <Clock size={18} color='#6b7280' />
+                        {convertDate(resultOrderData?.date_order)}
+                      </span>
+
+                      <span className='infos'>
+                        <Phone size={18} color='#6b7280' />
+                        {resultOrderData?.contact}
+                      </span>
+                    </div>
+                  </AccordionContent>
+                </AccordionItem>
+              </Accordion>
             )}
+
             <Dialog open={open} setOpen={setOpen}>
               <Content
                 size="xl"
