@@ -1,4 +1,3 @@
-import * as Accordion from '@radix-ui/react-accordion';
 import styled from "styled-components";
 
 export const Container = styled.div`
@@ -134,24 +133,6 @@ export const HeaderOrder = styled.div`
 
 `;
 
-export const AccordionRoot = styled(Accordion.Root)`
-  display: flex;
-  flex-direction: column;
-  gap: 0.5rem;
-  width: 100%;
-`
-
-export const AccordionItem = styled(Accordion.Item)`
-  overflow: hidden;
-  margin-top: 1rem;
-
-  &:first-child {
-    margin-top: 0;
-    border-top-left-radius: 4rem;
-    border-top-right-radius: 4rem;
-  }
-`
-
 export const ContainerMessages = styled.div`
   background-color: #fff;
   width: 100%;
@@ -222,6 +203,7 @@ export const Message = styled.div`
     border-radius: 0.625rem;
     border: 1px solid #a1a1aa;
     transition: all 0.25s ease;
+    -webkit-font-smoothing: antialiased;
 
     span img {
       max-width: 100%;
