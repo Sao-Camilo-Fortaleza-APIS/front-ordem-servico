@@ -21,7 +21,15 @@ export interface OrderProps {
 
 export function Order(props: OrderProps) {
     const { pathname: location } = useLocation()
-    let colorType = location === '/ordens/minhas' ? '#60a5fa' : '#ef4444';
+    let colorType =
+        location === '/ordens/pendentes'
+            ? '#ef4444'
+            : (
+                (location === '/ordens/minhas') && (props.awaiting_validate === "Não")
+                    // tom de laranja e verde
+                    ? '#10b981'
+                    : '#3b82f6'
+            )
 
     return (
         <Container>
