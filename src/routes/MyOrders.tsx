@@ -71,6 +71,13 @@ export function MyOrders() {
                 {quantidade === 1 && <span>1 solicitação encontrada</span>}
                 {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
                 <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
+                <div>
+                    {/* criar uma legenda onde verde é aguardando validação, e azul é em atendimento */}
+                    <span className="legend">Legenda: </span>
+                    <span className="legend" style={{ color: '#3b82f6' }}>Em atendimento</span>
+                    <span className="legend" style={{ color: '#f59e0b' }}>Aguardando validação</span>
+
+                </div>
             </div>
 
             <div className="list-orders">
