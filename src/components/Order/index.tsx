@@ -27,9 +27,9 @@ export function Order(props: OrderProps) {
             : (
                 (location === '/ordens/minhas') && (props.awaiting_validate === "Não")
                     // tom de laranja e verde
-                    ? '#10b981'
+                    ? '#f2c259'
                     : '#3b82f6'
-            )
+            ) //#10b981
 
     return (
         <Container>
