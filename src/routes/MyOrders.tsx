@@ -38,10 +38,10 @@ export function MyOrders() {
 
     function filterOrdersByGroup(group: number) {
         if (group === 0) {
-            return responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+            return responseOrders //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
         }
         const ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
-        return ordersByGroup?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+        return ordersByGroup //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
     }
 
     let quantidade =
