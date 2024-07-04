@@ -36,6 +36,7 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   group: number
   describe: string
   awaiting_validate: string
+  executor: string
 }
 
 export interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
@@ -214,6 +215,10 @@ export function Historico() {
                     <div>
                       <span className='title'>{resultOrderData?.damage}</span>
                       <span className='infos'>{resultOrderData?.describe}</span>
+                      <div style={{ width: '100%', textAlign: 'right' }} >
+                        <span style={{ marginRight: '0.25rem' }} className='badge'>{resultOrderData?.stage}</span>
+                        <span className='badge'>{resultOrderData?.executor}</span>
+                      </div>
 
                       <span className='infos'>
                         <User size={18} color='#6b7280' />
