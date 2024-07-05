@@ -103,22 +103,45 @@ export const Container = styled.div`
 
 export const Header = styled.header`
   display: flex;
-  height: 4.5rem;
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding: 0 2rem;
+  padding-right: 1rem;
   background-color: #fff;
   border-bottom: 1px solid #f4f4f5;
   img {
-    height: 5rem;
+    height: 4rem;
+    width: 6rem;
   }
 
-  .icon{
-    color: #a1a1aa;
+  .hero {
+    display: flex;
+    align-items: center;
+    gap: 0.875rem;
+    font-size: 1rem;
+    color: #71717a;
 
-    :hover {
+    .user-name {
+      display: flex;
+      font-weight: 400;
+      font-size: 0.875rem;
+      border-right: 1px solid #a1a1aa;
+      padding: 0.5rem 0.875rem 0.5rem 0;
+    }
+    
+    .logout {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 0.25rem;
+      color: #a1a1aa;
+      font-size: 0.875rem;
+      font-weight: 400;
       cursor: pointer;
+
+      :hover {
+        color: #71717a;
+      }
     }
   }
 `;
