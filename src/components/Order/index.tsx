@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Check, Clock, MapPin, User, UserCheck, UserPlus, X } from 'lucide-react';
+import { Clock, MapPin, User, UserCheck, UserPlus, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
@@ -91,11 +91,11 @@ export function Order(props: OrderProps) {
                                             <Clock size={16} color='#a1a1aa' />
                                             {convertDate(props.date_order)}
                                         </span>
-                                        <span>
-                                            {
-                                                props.awaiting_validate === "Sim" && <Check size={16} color={'#a1a1aa'} />
-                                            }
-                                        </span>
+                                        {
+                                            props.awaiting_validate === "Sim"
+                                                ? <span className='badge'>Aguardando validação</span>
+                                                : <span className='badge'>Em atendimento</span>
+                                        }
                                     </div>
                                     <OrderReplyForm numberOrder={props.number} />
                                 </>
