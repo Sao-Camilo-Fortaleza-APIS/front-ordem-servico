@@ -44,10 +44,7 @@ export function MyOrders() {
         return ordersByGroup //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
     }
 
-    let quantidade =
-        group
-            ? responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não")?.filter(order => order.group === Number(group)).length
-            : responseOrders?.filter((order: OrderProps) => order.awaiting_validate === "Não").length
+    let quantidade = group === 0 ? responseOrders?.length : responseOrders?.filter(order => order.group === group).length
 
 
     useEffect(() => {
@@ -66,6 +63,21 @@ export function MyOrders() {
 
     return (
         <div className="wrapper">
+            <div style={{ width: '100%', color: '#A1A1AA', margin: '0.25rem 0 0.5rem 0' }}>
+                <span style={{ color: '#A1A1AA' }}>Legenda:</span>
+
+                <div className="legend">
+                    <div style={{ backgroundColor: '#3b82f6', width: '1rem', height: '1rem', borderRadius: '999px' }}>
+                    </div>
+                    <span>Ordens aguardando validação</span>
+                </div>
+
+                <div className="legend">
+                    <div style={{ backgroundColor: '#fbbf24', width: '1rem', height: '1rem', borderRadius: '999px' }}></div>
+                    <span>Ordens em atendimento</span>
+                </div>
+            </div>
+
             <div className="quantidade">
                 {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
                 {quantidade === 1 && <span>1 solicitação encontrada</span>}
@@ -73,19 +85,6 @@ export function MyOrders() {
                 <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
             </div>
 
-            <div style={{ width: '100%', color: '#71717a', margin: '1rem 0' }}>
-                <span style={{ color: '#A1A1AA' }}>Legenda:</span>
-
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <div style={{ backgroundColor: '#3b82f6', width: '1rem', height: '1rem', borderRadius: '999px' }}></div>
-                    <span>Aguardando validação</span>
-                </div>
-
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <div style={{ backgroundColor: '#f2c259', width: '1rem', height: '1rem', borderRadius: '999px' }}></div>
-                    <span>Em atendimento</span>
-                </div>
-            </div>
 
             <div className="list-orders">
                 <div>

@@ -9,7 +9,7 @@ export const Container = styled.div`
   overflow-Y: scroll;
  
 
-  .wrapper{
+  .wrapper {
     display: flex;
     width: 100%;
     flex-direction: column;
@@ -25,6 +25,12 @@ export const Container = styled.div`
       gap: 1rem;
     }
   }
+
+  .legend {
+      display: flex;
+      gap: 0.5rem;
+      align-items: center;
+    }
 
   @media (max-width: 426px) {
     .wrapper {
