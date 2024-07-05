@@ -78,6 +78,16 @@ export const DialogDescription = styled(Dialog.Description)`
                 text-overflow: ellipsis;
             }
         }
+
+        .badge{
+          border-radius: 0.5rem;
+          padding: 0.25rem 0.5rem;
+          font-size: 0.75rem;
+          font-weight: 500;
+          color: #fff;
+          background-color: #6b7280;
+          margin-top: 0.5rem;
+        }
     }
 `;
 

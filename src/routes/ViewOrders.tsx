@@ -19,6 +19,7 @@ export function ViewOrders() {
   const { pathname: location } = useLocation()
   const queryClient = useQueryClient();
   const navigate = useNavigate();
+  const user = Cookies.get('user')
 
   let group: string = searchParams.get('group') ?? '';
 
@@ -55,20 +56,18 @@ export function ViewOrders() {
     navigate('/entrar')
   }
 
-
-  /*  useEffect(() => {
-     const token = Cookies.get('exec.token')
-     if (!token) {
-       navigate('/entrar')
-     }
-   }, []) */
-
   return (
     <Container>
       <Header>
         <img src="../assets/logo_horizontal.svg" alt="Logo São Camilo" />
 
-        <LogOut onClick={logOut} className="icon" size={26} />
+        <div className="hero">
+          <span className="user-name">{user}</span>
+          <span className="logout">
+            <LogOut className="icon" onClick={logOut} size={24} />
+            Sair
+          </span>
+        </div>
       </Header>
       <div className="wrapper">
         <div className="filter">

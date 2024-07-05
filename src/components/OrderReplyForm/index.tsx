@@ -124,7 +124,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
       </div>
 
       <div className="switch-item">
-        <label htmlFor="close">Encerrar Ordem de Serviço</label>
+        <label htmlFor="close">Encerrar Ordem de Serviço?</label>
         <Controller
           control={control}
           name="close"

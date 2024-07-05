@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Check, Clock, MapPin, User, UserCheck, UserPlus, X } from 'lucide-react';
+import { Clock, MapPin, User, UserCheck, UserPlus, X } from 'lucide-react';
 import { useLocation } from 'react-router-dom';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
@@ -21,7 +21,15 @@ export interface OrderProps {
 
 export function Order(props: OrderProps) {
     const { pathname: location } = useLocation()
-    let colorType = location === '/ordens/minhas' ? '#60a5fa' : '#ef4444';
+    let colorType =
+        location === '/ordens/pendentes'
+            ? '#ef4444'
+            : (
+                (location === '/ordens/minhas') && (props.awaiting_validate === "Não")
+                    // tom de laranja e verde
+                    ? '#fbbf24'
+                    : '#3b82f6'
+            ) //#10b981
 
     return (
         <Container>
@@ -83,11 +91,11 @@ export function Order(props: OrderProps) {
                                             <Clock size={16} color='#a1a1aa' />
                                             {convertDate(props.date_order)}
                                         </span>
-                                        <span>
-                                            {
-                                                props.awaiting_validate === "Sim" && <Check size={16} color={'#a1a1aa'} />
-                                            }
-                                        </span>
+                                        {
+                                            props.awaiting_validate === "Sim"
+                                                ? <span className='badge'>Aguardando validação</span>
+                                                : <span className='badge'>Em atendimento</span>
+                                        }
                                     </div>
                                     <OrderReplyForm numberOrder={props.number} />
                                 </>
