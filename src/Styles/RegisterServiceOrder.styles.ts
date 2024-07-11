@@ -38,6 +38,7 @@ export const Solicitante = styled.div`
     }
     input{
         font-family: 'Roboto', sans-serif;
+
         margin-top: 04px;
         background: none;
         width: 90%;
@@ -96,6 +97,9 @@ export const Aviso = styled.div`
 
 export const NmItem = styled.div`
     background: #fff;
+    font-family: 'Inter';
+    color: #27272a;
+    font-weight: 400;
     border-radius: 0.625rem;
     padding: 1rem;
     margin-top: 0.625rem;
@@ -371,7 +375,7 @@ export const Btns = styled.div`
     gap: 2rem;
     margin-bottom: 1rem;
     button{
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Inter','Roboto', sans-serif;
         padding: 20px;
         width: 400px;
         margin-bottom: 8rem;

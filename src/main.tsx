@@ -9,7 +9,7 @@ import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
 import { MyOrders } from './routes/MyOrders';
 import { PendingOrders } from './routes/PendingOrders';
-import { RegisterServiceOrdem } from './routes/RegisterServiceOrder';
+import { RegisterServiceOrder } from './routes/RegisterServiceOrder';
 import { SignIn } from './routes/SignIn';
 import { ViewOrders } from './routes/ViewOrders';
 import { GlobalStyles } from './styles/global';
@@ -23,7 +23,7 @@ const router = createBrowserRouter([
     children: [
       {
         path: '/',
-        element: <RegisterServiceOrdem />,
+        element: <RegisterServiceOrder />,
       },
       {
         path: '/ajuste/success/:nr_seq_os',

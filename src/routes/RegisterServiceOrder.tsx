@@ -9,7 +9,7 @@ import api from "../services/api";
 import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
 
-export function RegisterServiceOrdem() {
+export function RegisterServiceOrder() {
   // Estado para o nome do equipamento
   const [equipamento, setEquipamento] = useState('')
 
@@ -24,7 +24,7 @@ export function RegisterServiceOrdem() {
   const [ajuste, setAjuste] = useState('') //textoFinal
   const [obs, setObs] = useState('')
   const [ramal, setRamal] = useState('')
-  const [parado, setParado] = useState('')
+  const [parado, setParado] = useState('N')
   const [opcoes, setOpcoes] = useState([]);
   const [selectedValue, setSelectedValue] = useState('');
 
@@ -138,7 +138,7 @@ export function RegisterServiceOrdem() {
         })
         const nr_seq_os = response.data
         setIsLoading(false)
-        toast.success('Ordem de serviço feita com sucesso!')
+        toast.success('Ordem de serviço aberta com sucesso!')
         navigate(`/ajuste/success/${nr_seq_os}`)
       }
       catch (status: any) {
@@ -156,18 +156,44 @@ export function RegisterServiceOrdem() {
 
       {isLoading && <Loader />}
       <Header />
-      <Navbar />
+      {/* <Navbar /> */}
       <CardForm>
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>
-            <InputContainer>
-              <Solicitante>
-                <p>Usuário Tasy do solicitante: <b>*</b></p>
-                <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
-              </Solicitante>
-            </InputContainer>
+            {/* TÍTULO */}
             <NmItem>
-              <p>Qual o seu setor? <b>*</b></p>
+              <p>Título da Ordem de Serviço: {/* <b>*</b> */}</p>
+              <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
+            </NmItem>
+
+            {/* DETALHES */}
+            <NmItem>
+              <p>Detalhes do defeito: {/* <b>*</b> */}</p>
+              <textarea
+                name="datalhes_defeito"
+                required
+                placeholder="Adicione uma descrição para sua Ordem de Serviço"
+                value={obs}
+                onChange={e => setObs(e.target.value)}
+              />
+            </NmItem>
+
+            <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center', justifyContent: 'space-between' }}>
+              {/* USUÁRIO */}
+              <NmItem style={{ width: '100%' }}>
+                <p>Usuário Tasy do solicitante: {/* <b>*</b> */}</p>
+                <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário do Tasy" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
+              </NmItem>
+              {/* RAMAL */}
+              <NmItem style={{ width: '100%' }}>
+                <p>N° Ramal:{/* <b>*</b> */}</p>
+                <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
+              </NmItem>
+            </div>
+
+            {/* SETOR */}
+            <NmItem>
+              <p>Qual o seu setor? {/* <b>*</b> */}</p>
               <select value={selectedValue} onChange={handleChange}>
                 {opcoes.map((option: {
                   nr_sequencia: string,
@@ -179,8 +205,10 @@ export function RegisterServiceOrdem() {
                 ))}
               </select>
             </NmItem>
+
+            {/* EQUIPAMENTO */}
             <NmItem>
-              <p>Equipamento: <b>*</b></p>
+              <p>Equipamento: {/* <b>*</b> */}</p>
               <select value={equipamento} onChange={event => setEquipamento(event.target.value)}>
                 <option value="0"></option>
                 <option value="Suporte Tasy">Suporte Tasy</option>
@@ -193,7 +221,9 @@ export function RegisterServiceOrdem() {
                 <p>Neste campo informe qual equipe deverá de atender.</p>
               </Aviso>
             </NmItem>
-            <NmItem >
+
+            {/* INDISPONIBILIDADE */}
+            {/* <NmItem >
               <p>Existe indisponibilidade? <b>*</b></p>
               <div className="div" id="valores">
                 <div className="radio">
@@ -212,25 +242,8 @@ export function RegisterServiceOrdem() {
               <Aviso>
                 <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
               </Aviso>
-            </NmItem>
-            <NmItem>
-              <p>Título da ordem: <b>*</b></p>
-              <input name="titulo_order" required maxLength={80} type="text" placeholder="Nome da solicitação" value={ajuste} onChange={e => setAjuste(e.target.value)} />
-            </NmItem>
-            <NmItem>
-              <p>Detalhes do defeito: <b>*</b></p>
-              <textarea
-                name="datalhes_defeito"
-                required
-                placeholder="Descreva o defeito, ajuste ou problema"
-                value={obs}
-                onChange={e => setObs(e.target.value)}
-              />
-            </NmItem>
-            <NmItem>
-              <p>N° Ramal:<b>*</b></p>
-              <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
-            </NmItem>
+            </NmItem> */}
+
             <Btns>
               <button className="enviar" type="submit">Enviar</button>
             </Btns>

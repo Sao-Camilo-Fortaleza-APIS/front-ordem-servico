@@ -7,7 +7,7 @@ export const NavbarContainer = styled.nav`
     display: flex;
     align-items: center;
     justify-content: space-evenly;
-    gap: 1.5rem;
+    gap: 0.625rem;
     margin: 1rem 0;
 
     @media (max-width: 600px){
