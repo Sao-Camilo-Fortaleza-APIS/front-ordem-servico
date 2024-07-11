@@ -375,7 +375,7 @@ export const Btns = styled.div`
         padding: 20px;
         width: 400px;
         margin-bottom: 8rem;
-        font-size: large;
+        font-size: 18px;
         font-weight: 500;
     }
     button:disabled,
@@ -434,7 +434,7 @@ export const Btns = styled.div`
         button{
             width: 90%;
             height: 60px;
-            font-size: large;
+            font-size: 16px;
         }
     }
 `
