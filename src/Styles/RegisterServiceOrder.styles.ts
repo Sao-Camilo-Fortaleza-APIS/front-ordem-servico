@@ -81,10 +81,10 @@ export const Solicitante = styled.div`
             margin-top: 1rem;
             height: 40px;
             border-radius:10px 10px 0px 0px ;
+            font-size: smaller;
             ::placeholder{
                 font-size: medium;
             }
-            font-size: smaller;
         }
         
     }
@@ -191,18 +191,42 @@ export const NmItem = styled.div`
         }
     }
     
-    #valores{
+    #valores {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 8rem;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            :hover {
+                cursor: pointer;
+            }
+
+            input{
+                font-family: 'Roboto', sans-serif;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    /* #valores{
         margin-top: 1rem;
         display: flex;
         gap: 8rem;
         justify-content: center;
-        div{
+        align-items: center;
+        div {
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
         }
-        p{
+        p {
             margin-top: 6px;
             margin-left: 10px;
         }
@@ -214,8 +238,16 @@ export const NmItem = styled.div`
                 cursor: pointer;
             }
         }
-    }
-    @media (max-width:600px){
+
+        .radio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        gap: 0.5rem;
+        }
+    } */
+    
+        @media (max-width:600px){
         height:auto ;
         input{
             font-family: 'Roboto', sans-serif;
@@ -234,12 +266,10 @@ export const NmItem = styled.div`
             height: 40px;
             font-size: medium;
         }
-        #valores{
-            gap: 3rem;
-            p{
-            margin-top: 1rem;
-            margin-left: 6px;
-         }
+        #valores label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 `

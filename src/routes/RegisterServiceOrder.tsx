@@ -4,9 +4,8 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
-import { Navbar } from "../components/Navbar";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, InputContainer, NmItem, Solicitante } from "../styles/RegisterServiceOrder.styles";
+import { Aviso, Btns, CardForm, NmItem } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
 
 export function RegisterServiceOrder() {
@@ -223,26 +222,29 @@ export function RegisterServiceOrder() {
             </NmItem>
 
             {/* INDISPONIBILIDADE */}
-            {/* <NmItem >
-              <p>Existe indisponibilidade? <b>*</b></p>
+            <NmItem >
+              <p>Prioridade {/* <b>*</b> */}</p>
               <div className="div" id="valores">
-                <div className="radio">
-                  <input type="radio" name="Sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
-                  <p>Sim</p>
-                </div>
-                <div className="radio">
-                  <input type="radio" name="Não" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
-                  <p>Não</p>
-                </div>
-                <div className="radio">
-                  <input type="radio" name="Parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
-                  <p>Parcialmente</p>
-                </div>
+
+                <label htmlFor="nao">
+                  <input type="radio" id="nao" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
+                  Não
+                </label>
+
+                <label htmlFor="sim">
+                  <input type="radio" id="sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
+                  Sim
+                </label>
+
+                <label htmlFor="parcial">
+                  <input type="radio" id="parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
+                  Parcialmente
+                </label>
               </div>
               <Aviso>
                 <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
               </Aviso>
-            </NmItem> */}
+            </NmItem>
 
             <Btns>
               <button className="enviar" type="submit">Enviar</button>
