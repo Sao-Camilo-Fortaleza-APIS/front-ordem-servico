@@ -5,7 +5,7 @@ import { toast } from "react-toastify";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, NmItem } from "../styles/RegisterServiceOrder.styles";
+import { Aviso, Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
 
 export function RegisterServiceOrder() {
@@ -177,7 +177,7 @@ export function RegisterServiceOrder() {
               />
             </NmItem>
 
-            <div style={{ display: 'flex', gap: '0.625rem', alignItems: 'center', justifyContent: 'space-between' }}>
+            <DivItems>
               {/* USUÁRIO */}
               <NmItem style={{ width: '100%' }}>
                 <p>Usuário Tasy do solicitante: {/* <b>*</b> */}</p>
@@ -188,7 +188,7 @@ export function RegisterServiceOrder() {
                 <p>N° Ramal:{/* <b>*</b> */}</p>
                 <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
               </NmItem>
-            </div>
+            </DivItems>
 
             {/* SETOR */}
             <NmItem>

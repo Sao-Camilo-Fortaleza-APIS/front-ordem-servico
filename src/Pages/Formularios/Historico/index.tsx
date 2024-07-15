@@ -18,7 +18,6 @@ import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Mes
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../components/Accordion";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
-import { Navbar } from "../../../components/Navbar";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
@@ -196,7 +195,6 @@ export function Historico() {
     <>
       {isLoading && <Loader />}
       <Header />
-      <Navbar />
       <Container>
         <ContainerHeader>
           <h3>Histórico</h3>

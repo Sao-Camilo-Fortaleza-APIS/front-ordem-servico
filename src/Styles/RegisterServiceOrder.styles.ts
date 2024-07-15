@@ -95,6 +95,13 @@ export const Aviso = styled.div`
     font-size: small;
 `
 
+export const DivItems = styled.div`
+    display: flex; 
+    gap: 0.625rem; 
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const NmItem = styled.div`
     background: #fff;
     font-family: 'Inter';
