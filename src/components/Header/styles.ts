@@ -10,59 +10,25 @@ export const HeaderContainer = styled.header`
     width: 40.625rem;
     margin-top: 1rem;
     padding: 0.25rem 1rem;
-    div{
-        img{
-            border-radius: 10px;
-        }
+    .logo-horizontal {
+        display: block;
     }
-    nav ul{
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        gap: 1.5rem;
-        list-style-type: none;
-        text-decoration: none;
-    }
-
-    nav ul a {
-        text-decoration: none;
-        color: #000;
-    }
-
-    nav ul a li {
-        display: flex;
-        gap: 0.25rem;
-
-        :hover {
-            color:#ce2929
-        }
+    .logo-vertical {
+        display: none;
     }
 
     @media (max-width:600px){
         margin-top: 0;
         border-radius: 0;
         width: 100%;
-        height: 140px;
-    }
-`
+        display: flex;
+        flex-direction: column;
 
-export const Logo = styled.div`
-    height: 100%;
-    width: 100%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    @media (max-width:600px){
-        width: 300px;
-    }
-`
-export const ImageBanner = styled.div`
-    margin: 0;
-    height: 200px;
-    width: 900px;
-    border-radius: 5px;
-    background: url("/assets/hospital_resized.jpg") no-repeat;
-    @media (max-width:600px){
-        display: none;
+        .logo-horizontal {
+            display: none;
+        }
+        .logo-vertical {
+            display: block;
+        }
     }
 `

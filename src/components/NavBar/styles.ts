@@ -2,11 +2,10 @@ import { Link } from "react-router-dom";
 import styled from "styled-components";
 
 export const NavbarContainer = styled.nav`
-    height: 2.5rem;
-    width: 100%;
+    width: auto;
     display: flex;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: end;
     gap: 0.625rem;
     margin: 1rem 0;
 
@@ -22,37 +21,27 @@ export const NavbarContainer = styled.nav`
 `;
 
 export const NavItem = styled(Link) < { active: string } > `
-    width: 100%;
     text-align: center;
     text-decoration: none;
     font-size: 1rem;
-    padding: 0.75rem 1.5rem;
     border-radius: 0.5rem;
     font-weight: 400;
     transition: all 0.25s ease;
-
-    background-color: #ce2929;
-    color: #fff;
+    display: flex;
+    gap: 0.25rem;
 
     /* selected link */
     :active {
         opacity: 0.8;
     }
 
+    :hover {
+        color: #ef4444;
+    }
     ${(props) => props.active === 'true' ? `
-        background-color: #ce2929;
-        color: #fff;
-
-        :hover {
-            background-color: #ef4444;
-        }
+        color: #ef4444;
         ` : `
-        background-color: #fff;
-        color: #ce2929;
-
-        :hover {
-            background-color: #fef2f2;
-        }
+        color: #030712;
     `}
 `;
 /*  display: flex;
