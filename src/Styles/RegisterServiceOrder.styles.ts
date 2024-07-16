@@ -110,7 +110,7 @@ export const NmItem = styled.div`
     border-radius: 0.625rem;
     padding: 1rem;
     margin-top: 0.625rem;
-    box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056;
+   /*  box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056; */
     b{
         color: #FF0000;
     }

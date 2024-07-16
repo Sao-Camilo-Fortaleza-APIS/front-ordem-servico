@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
+import { Tabs } from "../components/Tabs";
 import api from "../services/api";
 import { Aviso, Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
@@ -161,13 +162,13 @@ export function RegisterServiceOrder() {
           <form onSubmit={handleSubmit(registrarEvento)}>
             {/* TÍTULO */}
             <NmItem>
-              <p>Título da Ordem de Serviço: {/* <b>*</b> */}</p>
+              <p>Adicione um título para a sua Ordem de Serviço: {/* <b>*</b> */}</p>
               <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
             </NmItem>
 
             {/* DETALHES */}
             <NmItem>
-              <p>Detalhes do defeito: {/* <b>*</b> */}</p>
+              <p>Descreva melhor solicitação seja ela um pedido, defeito ou dúvida. {/* <b>*</b> */}</p>
               <textarea
                 name="datalhes_defeito"
                 required
@@ -205,6 +206,9 @@ export function RegisterServiceOrder() {
               </select>
             </NmItem>
 
+            {/* TABS */}
+            <Tabs />
+
             {/* EQUIPAMENTO */}
             <NmItem>
               <p>Equipamento: {/* <b>*</b> */}</p>
@@ -223,7 +227,7 @@ export function RegisterServiceOrder() {
 
             {/* INDISPONIBILIDADE */}
             <NmItem >
-              <p>Prioridade {/* <b>*</b> */}</p>
+              <p>Prioridade {/* <b>*</b> */}</p>{/* Você consegue realizar o seu processo de outra forma? */}
               <div className="div" id="valores">
 
                 <label htmlFor="nao">

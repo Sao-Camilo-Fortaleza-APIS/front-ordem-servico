@@ -10,6 +10,7 @@ export const HeaderContainer = styled.header`
     width: 40.625rem;
     margin-top: 1rem;
     padding: 0.25rem 1rem;
+    box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056;
     .logo-horizontal {
         display: block;
     }
@@ -23,6 +24,7 @@ export const HeaderContainer = styled.header`
         width: 100%;
         display: flex;
         flex-direction: column;
+        justify-content: end;
 
         .logo-horizontal {
             display: none;
