@@ -6,16 +6,29 @@ export function Tabs() {
         <NmItem>
             <p>Para qual <strong>área</strong> deseja abrir a sua solicitação? {/* <b>*</b> */}</p>
             <TabsRoot>
-                <TabsList>
-                    <TabsTrigger value='teste1'>Suporte TI</TabsTrigger>
-                    <TabsTrigger value='teste2'>Manutenção Predial</TabsTrigger>
+                <TabsList className='' aria-label='Escolha a área que deve atender sua solicitação'>
+                    <TabsTrigger className='' value='teste1'>Suporte TI</TabsTrigger>
+                    <TabsTrigger className='' value='teste2'>Manutenção Predial</TabsTrigger>
                 </TabsList>
-                <TabsContent value='teste1'>
-                    <div>Conteúdo 1</div>
+                <TabsContent className='' value='teste1'>
+                    <button className='button' type='button'>CFTV</button>
+                    <button className='button' type='button'>Controle de Acesso</button>
+                    <button className='button' type='button'>Criação de Usuários</button>
+                    <button className='button' type='button'>E-mail</button>
+                    <button className='button' type='button'>Fortes</button>
+                    <button className='button' type='button'>Internet</button>
+                    <button className='button' type='button'>Leitor Biométrico</button>
+                    <button className='button' type='button'>Painéis e Gestão à vista</button>
+                    <button className='button' type='button'>Suporte Tasy</button>
+                    <button className='button' type='button'>Suporte TIC</button>
+                    <button className='button' type='button'>Telefonia</button>
+                    <button className='button' type='button'>Totens</button>
                 </TabsContent>
 
-                <TabsContent value='teste2'>
-                    <div>Conteúdo 2</div>
+                <TabsContent className='tabsContent' value='teste2'>
+                    <button className='button' type='button'>Ar-condicionado</button>
+                    <button className='button' type='button'>Obras</button>
+                    <button className='button' type='button'>Elétrica</button>
                 </TabsContent>
             </TabsRoot>
         </NmItem>
