@@ -1,34 +1,67 @@
+import { Check } from 'lucide-react';
+import { useState } from 'react';
 import { NmItem } from '../../styles/RegisterServiceOrder.styles';
-import { TabsContent, TabsList, TabsRoot, TabsTrigger } from './styles';
+import { ContentListItem, TabsContent, TabsList, TabsRoot, TabsTrigger } from './styles';
 
 export function Tabs() {
+    const [selectedOptionTI, setSelectedOptionTI] = useState<number | null>(null);
+    const [selectedOptionMan, setSelectedOptionMan] = useState<number | null>(null);
+    const servicesTI = [
+        'CFTV',
+        'Controle de Acesso',
+        'Criação de Usuários',
+        'E-mail',
+        'Fortes',
+        'Internet',
+        'Leitor Biométrico',
+        'Painéis e Gestão à vista',
+        'Suporte Tasy',
+        'Suporte TIC',
+        'Telefonia',
+        'Totens',
+    ];
+    const servicesMan = [
+        'Ar-condicionado',
+        'Elétrica',
+        'Elevadores',
+        'Hidráulica',
+        'Obras',
+    ];
+
     return (
         <NmItem>
             <p>Para qual <strong>área</strong> deseja abrir a sua solicitação? {/* <b>*</b> */}</p>
             <TabsRoot>
-                <TabsList className='' aria-label='Escolha a área que deve atender sua solicitação'>
-                    <TabsTrigger className='' value='teste1'>Suporte TI</TabsTrigger>
-                    <TabsTrigger className='' value='teste2'>Manutenção Predial</TabsTrigger>
+                <TabsList aria-label='Escolha a área que deve atender sua solicitação'>
+                    <TabsTrigger value='teste1'>Suporte TI</TabsTrigger>
+                    <TabsTrigger value='teste2'>Manutenção Predial</TabsTrigger>
                 </TabsList>
-                <TabsContent className='' value='teste1'>
-                    <button className='button' type='button'>CFTV</button>
-                    <button className='button' type='button'>Controle de Acesso</button>
-                    <button className='button' type='button'>Criação de Usuários</button>
-                    <button className='button' type='button'>E-mail</button>
-                    <button className='button' type='button'>Fortes</button>
-                    <button className='button' type='button'>Internet</button>
-                    <button className='button' type='button'>Leitor Biométrico</button>
-                    <button className='button' type='button'>Painéis e Gestão à vista</button>
-                    <button className='button' type='button'>Suporte Tasy</button>
-                    <button className='button' type='button'>Suporte TIC</button>
-                    <button className='button' type='button'>Telefonia</button>
-                    <button className='button' type='button'>Totens</button>
+                <TabsContent value='teste1'>
+                    {servicesTI.map((service, index) => (
+                        <ContentListItem
+                            key={index}
+                            type='button'
+                            isSelected={selectedOptionTI === index}
+                            onClick={() => setSelectedOptionTI(index)}
+                        >
+                            {service}
+                            {selectedOptionTI === index && <Check />}
+                        </ContentListItem>
+                    ))}
                 </TabsContent>
 
-                <TabsContent className='tabsContent' value='teste2'>
-                    <button className='button' type='button'>Ar-condicionado</button>
-                    <button className='button' type='button'>Obras</button>
-                    <button className='button' type='button'>Elétrica</button>
+                <TabsContent value='teste2'>
+                    {servicesMan.map((service, index) => (
+                        <ContentListItem
+                            key={index}
+                            type='button'
+                            isSelected={selectedOptionMan === index}
+                            onClick={() => setSelectedOptionMan(index)}
+                        >
+                            {service}
+                            {selectedOptionMan === index && <Check />}
+                        </ContentListItem>
+                    ))}
                 </TabsContent>
             </TabsRoot>
         </NmItem>
