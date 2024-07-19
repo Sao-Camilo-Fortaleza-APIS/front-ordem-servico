@@ -4,9 +4,9 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
-import { Tabs } from "../components/Tabs";
+import { Equipamento, Tabs } from "../components/Tabs";
 import api from "../services/api";
-import { Aviso, Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder.styles";
+import { Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder.styles";
 import { configToastError } from "../utils/toast-config";
 
 export function RegisterServiceOrder() {
@@ -26,6 +26,7 @@ export function RegisterServiceOrder() {
   const [ramal, setRamal] = useState('')
   const [parado, setParado] = useState('N')
   const [opcoes, setOpcoes] = useState([]);
+  const [servicos, setServicos] = useState<Equipamento | null>(null);
   const [selectedValue, setSelectedValue] = useState('');
 
 
@@ -41,27 +42,41 @@ export function RegisterServiceOrder() {
   const usuarioTrim = nm_usuario.trim();
   const userMaiusculo = usuarioTrim.toUpperCase();
 
+  async function fetchSetor() {
+    await api.get('/get/setor')
+      .then(response => {
+        const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
+        setOpcoes(optionsWithBlank);
+      })
+      .catch(error => {
+        // console.log(error);
+        toast.error('Não foi possível carregar os setores.', configToastError)
+      });
+  }
+
+  async function fetchEquipamento() {
+    await api.get('/get/equipments')
+      .then(response => {
+        setServicos(response.data);
+      })
+      .catch(error => {
+        // console.log(error);
+        toast.error('Não foi possível carregar os equipamentos.', configToastError)
+      });
+  }
 
   useEffect(() => {
-    async function fetchData() {
-      await api.get('/get/setor')
-        .then(response => {
-          const optionsWithBlank: any = [{ id: "", name: "Selecione uma opção" }, ...response.data];
-          setOpcoes(optionsWithBlank);
-        })
-        .catch(error => {
-          // console.log(error);
-          toast.error('Não foi possível carregar os setores.', configToastError)
-        });
-    }
-    fetchData();
+    fetchSetor();
+    fetchEquipamento();
   }, []);
 
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value);
   };
 
-
+  const handleSelect = (equipamento: Equipamento | null) => {
+    setServicos(equipamento);
+  };
 
   async function registrarEvento(event: any) {
     if (parado === 'N') {
@@ -162,7 +177,7 @@ export function RegisterServiceOrder() {
           <form onSubmit={handleSubmit(registrarEvento)}>
             {/* TÍTULO */}
             <NmItem>
-              <p>Adicione um título para a sua Ordem de Serviço: {/* <b>*</b> */}</p>
+              <p><span>Título</span> para a sua Ordem de Serviço: {/* <b>*</b> */}</p>
               <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
             </NmItem>
 
@@ -207,11 +222,11 @@ export function RegisterServiceOrder() {
             </NmItem>
 
             {/* TABS */}
-            <Tabs />
+            <Tabs equipamentos={servicos} onSelect={handleSelect} />
 
             {/* EQUIPAMENTO */}
-            <NmItem>
-              <p>Equipamento: {/* <b>*</b> */}</p>
+            {/* <NmItem>
+              <p>Equipamento:</p>
               <select value={equipamento} onChange={event => setEquipamento(event.target.value)}>
                 <option value="0"></option>
                 <option value="Suporte Tasy">Suporte Tasy</option>
@@ -223,7 +238,7 @@ export function RegisterServiceOrder() {
               <Aviso>
                 <p>Neste campo informe qual equipe deverá de atender.</p>
               </Aviso>
-            </NmItem>
+            </NmItem> */}
 
             {/* INDISPONIBILIDADE */}
             <NmItem >
@@ -245,9 +260,9 @@ export function RegisterServiceOrder() {
                   Parcialmente
                 </label>
               </div>
-              <Aviso>
+              {/* <Aviso>
                 <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
-              </Aviso>
+              </Aviso> */}
             </NmItem>
 
             <Btns>
