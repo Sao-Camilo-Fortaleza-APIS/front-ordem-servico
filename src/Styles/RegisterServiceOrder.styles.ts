@@ -104,15 +104,20 @@ export const DivItems = styled.div`
 
 export const NmItem = styled.div`
     background: #fff;
-    font-family: 'Inter';
+    font-family: 'Inter', 'Roboto', sans-serif;
     color: #27272a;
     font-weight: 400;
+    font-size: 1.125rem;
     border-radius: 0.625rem;
     padding: 1rem;
     margin-top: 0.625rem;
    /*  box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056; */
     b{
         color: #FF0000;
+    }
+    span {
+        font-family: 'Inter', 'Roboto', sans-serif;
+        font-weight: 500;
     }
     input{
         font-family: 'Roboto', sans-serif;
@@ -123,7 +128,7 @@ export const NmItem = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
@@ -159,7 +164,7 @@ export const NmItem = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
@@ -299,7 +304,7 @@ export const NmItemNumero = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
