@@ -38,6 +38,7 @@ export const Solicitante = styled.div`
     }
     input{
         font-family: 'Roboto', sans-serif;
+
         margin-top: 04px;
         background: none;
         width: 90%;
@@ -80,10 +81,10 @@ export const Solicitante = styled.div`
             margin-top: 1rem;
             height: 40px;
             border-radius:10px 10px 0px 0px ;
+            font-size: smaller;
             ::placeholder{
                 font-size: medium;
             }
-            font-size: smaller;
         }
         
     }
@@ -94,14 +95,29 @@ export const Aviso = styled.div`
     font-size: small;
 `
 
+export const DivItems = styled.div`
+    display: flex; 
+    gap: 0.625rem; 
+    align-items: center;
+    justify-content: space-between;
+`;
+
 export const NmItem = styled.div`
     background: #fff;
+    font-family: 'Roboto', 'Inter', sans-serif;
+    color: #27272a;
+    font-weight: 400;
+    font-size: 1.125rem;
     border-radius: 0.625rem;
     padding: 1rem;
     margin-top: 0.625rem;
-    box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056;
+   /*  box-shadow: 0px 0.625rem 2.5rem -0.75rem #00000056; */
     b{
         color: #FF0000;
+    }
+    span {
+        font-family: 'Inter', 'Roboto', sans-serif;
+        font-weight: 500;
     }
     input{
         font-family: 'Roboto', sans-serif;
@@ -112,7 +128,7 @@ export const NmItem = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
@@ -148,7 +164,7 @@ export const NmItem = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
@@ -187,18 +203,42 @@ export const NmItem = styled.div`
         }
     }
     
-    #valores{
+    #valores {
+        margin-top: 1rem;
+        display: flex;
+        align-items: center;
+        justify-content: start;
+        gap: 8rem;
+
+        label {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            :hover {
+                cursor: pointer;
+            }
+
+            input{
+                font-family: 'Roboto', sans-serif;
+                width: 20px;
+                height: 20px;
+            }
+        }
+    }
+
+    /* #valores{
         margin-top: 1rem;
         display: flex;
         gap: 8rem;
         justify-content: center;
-        div{
+        align-items: center;
+        div {
             display: flex;
             align-items: center;
             justify-content: center;
             text-align: center;
         }
-        p{
+        p {
             margin-top: 6px;
             margin-left: 10px;
         }
@@ -210,8 +250,16 @@ export const NmItem = styled.div`
                 cursor: pointer;
             }
         }
-    }
-    @media (max-width:600px){
+
+        .radio {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        gap: 0.5rem;
+        }
+    } */
+    
+        @media (max-width:600px){
         height:auto ;
         input{
             font-family: 'Roboto', sans-serif;
@@ -230,12 +278,10 @@ export const NmItem = styled.div`
             height: 40px;
             font-size: medium;
         }
-        #valores{
-            gap: 3rem;
-            p{
-            margin-top: 1rem;
-            margin-left: 6px;
-         }
+        #valores label {
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
     }
 `
@@ -258,7 +304,7 @@ export const NmItemNumero = styled.div`
         border: solid;
         border-width: 0;
         border-bottom-width: 1px;
-        border-color: #CE2929;
+        border-color: #d4d4d8;
         transition: all 300ms;
         :hover{
             border-bottom-width: 2px;
@@ -371,7 +417,7 @@ export const Btns = styled.div`
     gap: 2rem;
     margin-bottom: 1rem;
     button{
-        font-family: 'Roboto', sans-serif;
+        font-family: 'Inter','Roboto', sans-serif;
         padding: 20px;
         width: 400px;
         margin-bottom: 8rem;

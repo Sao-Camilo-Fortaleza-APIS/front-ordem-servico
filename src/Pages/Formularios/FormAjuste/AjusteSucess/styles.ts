@@ -6,10 +6,12 @@ export const Ok = styled.div`
     flex-direction: column;
     align-items: center;
     justify-content: flex-start;
-    height: 100%;
+    height: fit-content;
     width: 100%;
     border-radius: 5px;
     padding-top: 2rem;
+    border-radius: 0.625rem;
+    margin-top: 0.625rem;
     div{
         display: flex;
         align-items: center;

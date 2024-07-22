@@ -1,6 +1,5 @@
 import { useNavigate, useParams } from "react-router-dom";
 import { Header } from "../../../../components/Header";
-import { Navbar } from "../../../../components/Navbar";
 import { Btns } from "../../../../styles/RegisterServiceOrder.styles";
 import { ContainerForm } from "../styles";
 import { Ok } from "./styles";
@@ -13,7 +12,6 @@ export function AjusteOk() {
     return (
         <ContainerForm>
             <Header />
-            <Navbar />
             <Ok>
                 <h1>Solicitação feita com sucesso!</h1>
                 <h3>O número da sua Ordem de serviço é: <span>{nr_seq_os}</span></h3>
