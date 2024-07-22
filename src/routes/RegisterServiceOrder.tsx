@@ -175,13 +175,6 @@ export function RegisterServiceOrder() {
             {/* TABS */}
             <Tabs equipamentos={servicos} onSelect={handleSelect} />
 
-
-            {/* TÍTULO */}
-            <NmItem>
-              <p><span>Título</span> para a sua solicitação: </p>
-              <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
-            </NmItem>
-
             {/* INDISPONIBILIDADE */}
             <NmItem>
               <p>O serviço está parado?</p>
@@ -203,6 +196,13 @@ export function RegisterServiceOrder() {
                 </label>
 
               </div>
+            </NmItem>
+
+
+            {/* TÍTULO */}
+            <NmItem>
+              <p><span>Título</span> para a sua solicitação: </p>
+              <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
             </NmItem>
 
             {/* DETALHES */}
