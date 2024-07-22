@@ -104,7 +104,7 @@ export const DivItems = styled.div`
 
 export const NmItem = styled.div`
     background: #fff;
-    font-family: 'Inter', 'Roboto', sans-serif;
+    font-family: 'Roboto', 'Inter', sans-serif;
     color: #27272a;
     font-weight: 400;
     font-size: 1.125rem;

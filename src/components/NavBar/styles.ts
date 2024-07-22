@@ -38,10 +38,11 @@ export const NavItem = styled(Link) < { active: string } > `
     :hover {
         color: #ef4444;
     }
+    // QUANDO TIVER ATIVO COLOCAR UMA BORDA VERMELHA EMBAIXO
     ${(props) => props.active === 'true' ? `
         color: #ef4444;
         ` : `
-        color: #030712;
+        color: #111827;
     `}
 `;
 /*  display: flex;
