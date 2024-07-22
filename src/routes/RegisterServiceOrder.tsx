@@ -10,8 +10,7 @@ import { Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder
 import { configToastError } from "../utils/toast-config";
 
 export function RegisterServiceOrder() {
-  // Estado para o nome do equipamento
-  const [equipamento, setEquipamento] = useState('')
+  const [equipamento, setEquipamento] = useState<Equipamento | null>(null);
 
   // Função para redirecionar a pagina
   const navigate = useNavigate();
@@ -26,7 +25,7 @@ export function RegisterServiceOrder() {
   const [ramal, setRamal] = useState('')
   const [parado, setParado] = useState('N')
   const [opcoes, setOpcoes] = useState([]);
-  const [servicos, setServicos] = useState<Equipamento | null>(null);
+  const [servicos, setServicos] = useState<Equipamento[] | null>(null);
   const [selectedValue, setSelectedValue] = useState('');
 
 
@@ -65,27 +64,15 @@ export function RegisterServiceOrder() {
       });
   }
 
-  useEffect(() => {
-    fetchSetor();
-    fetchEquipamento();
-  }, []);
-
   const handleChange = (event: any) => {
     setSelectedValue(event.target.value);
   };
 
-  const handleSelect = (equipamento: Equipamento | null) => {
-    setServicos(equipamento);
+  const handleSelect = (equip: Equipamento | null) => {
+    setEquipamento(equip || null);
   };
 
   async function registrarEvento(event: any) {
-    if (parado === 'N') {
-      ie_prioridade = 'M'
-    } else if (parado === 'P') {
-      ie_prioridade = 'A'
-    } else if (parado === 'S') {
-      ie_prioridade = 'U'
-    }
     if (parado === 'S') {
       dt_inicio_desejado.setMinutes(dt_inicio_desejado.getMinutes() + 10);
     } else if (parado === 'P') {
@@ -93,28 +80,7 @@ export function RegisterServiceOrder() {
     } else if (parado === 'N') {
       dt_inicio_desejado.setMinutes(dt_inicio_desejado.getMinutes() + 60);
     }
-    if (equipamento === "Suporte Tasy") {
-      seqEquipamento = '202'
-      grupoPlanejamento = '28',
-        grupoTrabalho = '27'
-    } else if (equipamento === "Suporte TIC") {
-      seqEquipamento = '203'
-      grupoPlanejamento = '28',
-        grupoTrabalho = '28'
-    } else if (equipamento === "Manutenção Predial") {
-      seqEquipamento = '204'
-      grupoPlanejamento = '26',
-        grupoTrabalho = '17'
-    } else if (equipamento === "Suporte de Impressoras") {
-      seqEquipamento = '203'
-      grupoPlanejamento = '28',
-        grupoTrabalho = '26'
-    } else if (equipamento === "Central de Cadastro") {
-      seqEquipamento = '206'
-      grupoPlanejamento = '28',
-        grupoTrabalho = '23'
-    }
-    if (parado === '' || selectedValue === '' || equipamento === "") {
+    if (parado === '' || selectedValue === '' || equipamento === null) {
       toast.error("Preencha todos os campos!", {
         position: "top-center",
         autoClose: 7000,
@@ -147,9 +113,9 @@ export function RegisterServiceOrder() {
           ie_parado: `${parado}`,
           dt_inicio_desejado: `${dataOficial}`,
           nr_seq_localizacao: `${selectedValue}`,
-          nr_seq_equipamento: `${seqEquipamento}`,
-          nr_grupo_planej: `${grupoPlanejamento}`,
-          nr_grupo_trabalho: `${grupoTrabalho}`
+          nr_seq_equipamento: `${equipamento?.cd_equip}`,
+          nr_grupo_planej: `${equipamento?.grupo_planej}`,
+          nr_grupo_trabalho: `${equipamento?.cd_group_trab}`
         })
         const nr_seq_os = response.data
         setIsLoading(false)
@@ -160,55 +126,40 @@ export function RegisterServiceOrder() {
         setIsLoading(false);
         const erro = status.request.status
         const request = status.request.response
-        //console.log('ERRO:', erro)
         toast.error(request)
       }
     }
 
   }
+
+  useEffect(() => {
+    fetchSetor();
+    fetchEquipamento();
+  }, []);
+
   return (
     <>
-
       {isLoading && <Loader />}
       <Header />
-      {/* <Navbar /> */}
       <CardForm>
         <div className="meio">
           <form onSubmit={handleSubmit(registrarEvento)}>
-            {/* TÍTULO */}
-            <NmItem>
-              <p><span>Título</span> para a sua Ordem de Serviço: {/* <b>*</b> */}</p>
-              <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
-            </NmItem>
-
-            {/* DETALHES */}
-            <NmItem>
-              <p>Descreva melhor solicitação seja ela um pedido, defeito ou dúvida. {/* <b>*</b> */}</p>
-              <textarea
-                name="datalhes_defeito"
-                required
-                placeholder="Adicione uma descrição para sua Ordem de Serviço"
-                value={obs}
-                onChange={e => setObs(e.target.value)}
-              />
-            </NmItem>
-
             <DivItems>
               {/* USUÁRIO */}
               <NmItem style={{ width: '100%' }}>
-                <p>Usuário Tasy do solicitante: {/* <b>*</b> */}</p>
+                <p>Qual o seu usuário do  <span>Tasy</span> ? </p>
                 <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário do Tasy" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
               </NmItem>
               {/* RAMAL */}
               <NmItem style={{ width: '100%' }}>
-                <p>N° Ramal:{/* <b>*</b> */}</p>
+                <p>Qual seu ramal de contato?</p>
                 <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
               </NmItem>
             </DivItems>
 
             {/* SETOR */}
             <NmItem>
-              <p>Qual o seu setor? {/* <b>*</b> */}</p>
+              <p>Qual o seu <span>setor</span>? </p>
               <select value={selectedValue} onChange={handleChange}>
                 {opcoes.map((option: {
                   nr_sequencia: string,
@@ -224,25 +175,16 @@ export function RegisterServiceOrder() {
             {/* TABS */}
             <Tabs equipamentos={servicos} onSelect={handleSelect} />
 
-            {/* EQUIPAMENTO */}
-            {/* <NmItem>
-              <p>Equipamento:</p>
-              <select value={equipamento} onChange={event => setEquipamento(event.target.value)}>
-                <option value="0"></option>
-                <option value="Suporte Tasy">Suporte Tasy</option>
-                <option value="Suporte TIC">Suporte TIC</option>
-                <option value="Suporte de Impressoras">Suporte de Impressoras</option>
-                <option value="Manutenção Predial">Manutenção Predial</option>
-                <option value="Central de Cadastro">Central de Cadastro</option>
-              </select>
-              <Aviso>
-                <p>Neste campo informe qual equipe deverá de atender.</p>
-              </Aviso>
-            </NmItem> */}
+
+            {/* TÍTULO */}
+            <NmItem>
+              <p><span>Título</span> para a sua solicitação: </p>
+              <input name="titulo_order" required maxLength={80} type="text" placeholder="Digite um título para sua Ordem de Serviço" value={ajuste} onChange={e => setAjuste(e.target.value)} />
+            </NmItem>
 
             {/* INDISPONIBILIDADE */}
-            <NmItem >
-              <p>Prioridade {/* <b>*</b> */}</p>{/* Você consegue realizar o seu processo de outra forma? */}
+            <NmItem>
+              <p>O serviço está parado?</p>
               <div className="div" id="valores">
 
                 <label htmlFor="nao">
@@ -250,19 +192,29 @@ export function RegisterServiceOrder() {
                   Não
                 </label>
 
+                <label htmlFor="parcial">
+                  <input type="radio" id="parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
+                  Parcialmente
+                </label>
+
                 <label htmlFor="sim">
                   <input type="radio" id="sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
                   Sim
                 </label>
 
-                <label htmlFor="parcial">
-                  <input type="radio" id="parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
-                  Parcialmente
-                </label>
               </div>
-              {/* <Aviso>
-                <p>Informe neste campo se o ajuste solicitado impacta no funcionamento do sistema / equipamento</p>
-              </Aviso> */}
+            </NmItem>
+
+            {/* DETALHES */}
+            <NmItem>
+              <p>Descreva melhor a sua solicitação. Como podemos ajudar? </p>
+              <textarea
+                name="datalhes_defeito"
+                required
+                placeholder="Adicione uma descrição para sua Ordem de Serviço"
+                value={obs}
+                onChange={e => setObs(e.target.value)}
+              />
             </NmItem>
 
             <Btns>
