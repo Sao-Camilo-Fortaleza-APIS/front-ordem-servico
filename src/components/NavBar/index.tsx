@@ -1,12 +1,12 @@
 import { Book, Eye } from "lucide-react";
 import { useLocation } from "react-router-dom";
-import { NavItem, NavbarContainer } from "./styles";
+import { NavBarContainer, NavItem } from "./styles";
 
-export function Navbar() {
+export function NavBar() {
     const location = useLocation();
 
     return (
-        <NavbarContainer>
+        <NavBarContainer>
             <NavItem to="/" active={(location.pathname === '/').toString()}>
                 <Book size={20} />
                 Abrir Ordem de Serviço
@@ -15,6 +15,6 @@ export function Navbar() {
                 <Eye size={20} />
                 Visualizar histórico
             </NavItem>
-        </NavbarContainer>
+        </NavBarContainer>
     );
 }

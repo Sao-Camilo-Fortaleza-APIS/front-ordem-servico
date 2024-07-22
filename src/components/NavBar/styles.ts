@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import styled from "styled-components";
 
-export const NavbarContainer = styled.nav`
+export const NavBarContainer = styled.nav`
     width: auto;
     display: flex;
     align-items: center;
@@ -29,42 +29,26 @@ export const NavItem = styled(Link) < { active: string } > `
     transition: all 0.25s ease;
     display: flex;
     gap: 0.25rem;
-
-    /* selected link */
-    :active {
-        opacity: 0.8;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    color: #333;
+    padding-bottom: 0.2rem;
+    ::after {
+        content: '';
+        position: absolute;
+        left: 0;
+        bottom: 0;
+        height: 2px;
+        width: 0;
+        background-color: #ef4444;
+        transition: width 0.5s ease;
     }
-
-    :hover {
-        color: #ef4444;
+    :hover::after {
+        width: 100%;
     }
     // QUANDO TIVER ATIVO COLOCAR UMA BORDA VERMELHA EMBAIXO
     ${(props) => props.active === 'true' ? `
         color: #ef4444;
-        ` : `
-        color: #111827;
-    `}
+        ` : ``}
 `;
-/*  display: flex;
- align-items: center;
- justify-content: space-evenly;
- gap: 4rem;
- list-style: none;
- width: 100%;
- li{
-     transition: all 0.25s ease;
-     font-weight: 500;
-     :hover{
-         text-decoration: underline;
-         text-decoration-color: #fff;
-         cursor: pointer;
-     }
-     a {
-         text-decoration: none;
-         color: #fff;
-     }
-     span {
-         color: #fff;
-         font-weight: 600;
-     }
- } */

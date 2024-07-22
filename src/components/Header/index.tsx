@@ -1,4 +1,4 @@
-import { Navbar } from "../Navbar";
+import { NavBar } from "../NavBar";
 import { HeaderContainer } from "./styles";
 
 export function Header() {
@@ -6,7 +6,7 @@ export function Header() {
     <HeaderContainer>
       <img className="logo-horizontal" src="/Log_Fortaleza_sem_fundo.png" alt="Logo horizontal" width={150} />
       <img className="logo-vertical" src="/logo_horizontal.png" alt="Logo horizontal" width={150} />
-      <Navbar />
+      <NavBar />
     </HeaderContainer>
   )
 }
