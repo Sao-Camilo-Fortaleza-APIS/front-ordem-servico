@@ -24,7 +24,9 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
 
     function updateSelectedOption(cd_equip: number, serviceType: 'ti' | 'man') {
         setSelectedOption(cd_equip);
-        const selectService = serviceType === 'ti' ? (servicesTI && servicesTI[cd_equip]) : (servicesMan && servicesMan[cd_equip]);
+        const selectService = serviceType === 'ti'
+            ? servicesTI?.find(service => service.cd_equip === cd_equip)
+            : servicesMan?.find(service => service.cd_equip === cd_equip);
         if (onSelect) {
             onSelect(selectService || null);
         }
@@ -32,7 +34,7 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
 
     return (
         <NmItem>
-            <p>Para qual <span>área</span> deseja abrir a sua solicitação? {/* <b>*</b> */}</p>
+            <p>Qual área deve atender a sua solicitação? {/* <b>*</b> */}</p>
             <TabsRoot>
                 <TabsList aria-label='Escolha a área que deve atender sua solicitação'>
                     <TabsTrigger value='ti'>Suporte TI</TabsTrigger>
