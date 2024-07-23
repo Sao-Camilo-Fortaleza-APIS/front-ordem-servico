@@ -56,7 +56,7 @@ export function RegisterServiceOrder() {
   async function fetchEquipamento() {
     await api.get('/get/equipments')
       .then(response => {
-        setServicos(response.data);
+        setServicos(response.data.sort((a: any, b: any) => a.ds_equip.localeCompare(b.ds_equip, 'pt-BR', { sensitivity: 'base' })));
       })
       .catch(error => {
         // console.log(error);
