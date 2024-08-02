@@ -2,10 +2,10 @@ import styled from "styled-components";
 
 export const FormStyled = styled.form`
   display: flex;
-  flex-direction: row;
+  flex-direction: column;
   justify-content: space-between;
   align-items: center;
-  gap: 1rem;
+  gap: 2rem;
   margin: 1rem 0;
   width: 100%;
   height: 100%;
@@ -14,7 +14,15 @@ export const FormStyled = styled.form`
 
   button {
     padding: 0.5rem 1rem;
-    width: 100%;
+
     font-size: 1rem;
+  }
+
+  .confirm-transfer {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
   }
 `;

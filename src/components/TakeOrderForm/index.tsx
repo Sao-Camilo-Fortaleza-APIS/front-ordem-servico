@@ -3,12 +3,26 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../services/api";
 import { FormStyled } from "./styles";
+import { useState } from "react";
+import { GroupProps, GroupResponse } from "../../routes/ViewOrders";
 
 
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
   const navigate = useNavigate()
+  const [open, setOpen] = useState(false)
+  const [allWorkgroups, setAllWorkgroups] = useState<GroupResponse>()
+  const [selectedGroup, setSelectedGroup] = useState()
 
   let user = Cookies.get('user') ?? ''
+
+  async function fetchWorkgroups() {
+    await api.get(`/get/workgroup`)
+      .then((response) => {
+        console.log(response.data)
+        setAllWorkgroups(response.data)
+      })
+
+  }
 
   async function handleSendOrderReply(event: any) {
     event.preventDefault()
@@ -35,10 +49,64 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
     }
   }
 
+  async function handleTransferOrder() {
+    await api.post('post/transfer/workgroup', {
+      code_workgroup: selectedGroup,
+      nr_order: numberOrder,
+    }).then(() => {
+      toast.success("Ordem de Serviço transferida!")
+    }).catch((error) => {
+      console.log(error);
+
+      toast.error("Ocorreu um erro")
+    })
+  }
+
+  const handleChange = (event: any) => {
+    setSelectedGroup(event.target.value);
+  };
+
   return (
-    <FormStyled onSubmit={handleSendOrderReply}>
-      <button type="submit">Assumir</button>
-      <button type="submit">Fransferir</button>
+    <FormStyled >
+      <div className="div-1">
+
+        <button type="submit" onClick={handleSendOrderReply}>Assumir</button>
+        <button
+          type="button"
+          onClick={() => {
+            setOpen(true)
+            fetchWorkgroups()
+          }}>
+          Transferir</button>
+      </div>
+
+
+      <div className="confirm-transfer">
+        {open && (
+          <>
+            <label htmlFor="groups">Selecione o grupo para transferir</label>
+            <select
+              className="select-group"
+              name="groups"
+              id="groups"
+              onChange={handleChange}
+              value={selectedGroup}
+            >
+              <option value="">Selecione...</option>
+
+              {allWorkgroups && allWorkgroups.map((group: GroupProps) => {
+                return <option key={group.code} value={group.code}>{group.describe}</option>
+              })}
+
+            </select>
+
+            <div>
+              <button type="button" onClick={() => setOpen(false)}>Fechar</button>
+              <button onClick={handleTransferOrder}>Confirmar</button>
+            </div>
+          </>
+        )}
+      </div>
     </FormStyled>
   )
 }
