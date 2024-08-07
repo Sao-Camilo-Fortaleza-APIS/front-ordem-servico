@@ -68,41 +68,48 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 
   return (
     <FormStyled >
-      <div className="div-1">
 
-        <button type="submit" onClick={handleSendOrderReply}>Assumir</button>
+      <div id="takeon-transfer">
+        <button
+          type="submit"
+          onClick={handleSendOrderReply}>
+          Assumir
+        </button>
         <button
           type="button"
           onClick={() => {
             setOpen(true)
             fetchWorkgroups()
           }}>
-          Transferir</button>
+          Transferir
+        </button>
       </div>
 
 
       <div className="confirm-transfer">
         {open && (
           <>
-            <label htmlFor="groups">Selecione o grupo para transferir</label>
-            <select
-              className="select-group"
-              name="groups"
-              id="groups"
-              onChange={handleChange}
-              value={selectedGroup}
-            >
-              <option value="">Selecione...</option>
+            <div id="select-group">
+              <label htmlFor="groups" style={{ width: '100%' }}>Selecione o grupo para transferir</label>
+              <select
+                className="select-group"
+                name="groups"
+                id="groups"
+                onChange={handleChange}
+                value={selectedGroup}
+              >
+                <option value="">Selecione...</option>
 
-              {allWorkgroups && allWorkgroups.map((group: GroupProps) => {
-                return <option key={group.code} value={group.code}>{group.describe}</option>
-              })}
+                {allWorkgroups && allWorkgroups.map((group: GroupProps) => {
+                  return <option key={group.code} value={group.code}>{group.describe}</option>
+                })}
 
-            </select>
+              </select>
+            </div>
 
-            <div>
-              <button type="button" onClick={() => setOpen(false)}>Fechar</button>
+            <div id="confirm-close">
               <button onClick={handleTransferOrder}>Confirmar</button>
+              <button type="button" onClick={() => setOpen(false)}>Fechar</button>
             </div>
           </>
         )}

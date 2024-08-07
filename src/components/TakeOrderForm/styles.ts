@@ -1,28 +1,44 @@
 import styled from "styled-components";
 
 export const FormStyled = styled.form`
-  display: flex;
-  flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
-  gap: 2rem;
-  margin: 1rem 0;
   width: 100%;
-  height: 100%;
-  border-top: 1px solid #d1d5db;
-  padding-top: 1rem;
+  display: flex; 
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
 
   button {
+      padding: 0.5rem 1rem;
+      width: 100%;
+      color: #71717A;
+      font-weight: 600;
+      background: #d4d4d8;
+      border: 1px solid #d4d4d8;
+      border-radius: 4px;
+    }
+   select {
     padding: 0.5rem 1rem;
+   } 
+   label{
+    color: #71717A;
+    font-weight: 600;
 
-    font-size: 1rem;
+   }
+   
+  #takeon-transfer {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    gap: 0.5rem;
   }
 
-  .confirm-transfer {
+  #select-group {
+    width: 100%;
+  }
+
+  #confirm-close {
+    margin-top: 0.5rem;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    gap: 1rem;
+    gap: 0.5rem;
   }
 `;
