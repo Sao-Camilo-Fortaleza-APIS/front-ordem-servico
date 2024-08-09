@@ -68,61 +68,63 @@ export function Order(props: OrderProps) {
                             </Dialog.Close>
                         </div>
 
-                        <DialogTitle>
-                            {props.damage}
+                        <DialogTitle asChild>
+                            <h4>{props.damage}</h4>
                         </DialogTitle>
 
-                        <DialogDescription>
-                            {location === '/ordens/minhas' && (
-                                <>
-                                    <div>
-                                        <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
-                                            {props.describe}
-                                        </span>
-                                        <span className='infos'>
-                                            <User size={16} color='#a1a1aa' />
-                                            {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
-                                        </span>
-                                        <span className='infos'>
-                                            <MapPin size={16} color='#a1a1aa' />
-                                            {capitalizeFirstLetterOfWords(props.location)}
-                                        </span>
-                                        <span className='infos'>
-                                            <Clock size={16} color='#a1a1aa' />
-                                            {convertDate(props.date_order)}
-                                        </span>
-                                        {
-                                            props.awaiting_validate === "Sim"
-                                                ? <span className='badge'>Aguardando validação</span>
-                                                : <span className='badge'>Em atendimento</span>
-                                        }
-                                    </div>
-                                    <OrderReplyForm numberOrder={props.number} />
-                                </>
-                            )}
+                        <DialogDescription asChild>
+                            <div>
+                                {location === '/ordens/minhas' && (
+                                    <>
+                                        <div>
+                                            <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
+                                                {props.describe}
+                                            </span>
+                                            <span className='infos'>
+                                                <User size={16} color='#a1a1aa' />
+                                                {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
+                                            </span>
+                                            <span className='infos'>
+                                                <MapPin size={16} color='#a1a1aa' />
+                                                {capitalizeFirstLetterOfWords(props.location)}
+                                            </span>
+                                            <span className='infos'>
+                                                <Clock size={16} color='#a1a1aa' />
+                                                {convertDate(props.date_order)}
+                                            </span>
+                                            {
+                                                props.awaiting_validate === "Sim"
+                                                    ? <span className='badge'>Aguardando validação</span>
+                                                    : <span className='badge'>Em atendimento</span>
+                                            }
+                                        </div>
+                                        <OrderReplyForm numberOrder={props.number} />
+                                    </>
+                                )}
 
-                            {location === '/ordens/pendentes' && (
-                                <>
-                                    <div>
-                                        <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
-                                            {props.describe}
-                                        </span>
-                                        <span className='infos'>
-                                            <User size={16} color='#a1a1aa' />
-                                            {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
-                                        </span>
-                                        <span className='infos'>
-                                            <MapPin size={16} color='#a1a1aa' />
-                                            {capitalizeFirstLetterOfWords(props.location)}
-                                        </span>
-                                        <span className='infos'>
-                                            <Clock size={16} color='#a1a1aa' />
-                                            {convertDate(props.date_order)}
-                                        </span>
-                                    </div>
-                                    <TakeOrderForm numberOrder={props.number} />
-                                </>
-                            )}
+                                {location === '/ordens/pendentes' && (
+                                    <>
+                                        <div>
+                                            <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
+                                                {props.describe}
+                                            </span>
+                                            <span className='infos'>
+                                                <User size={16} color='#a1a1aa' />
+                                                {capitalizeFirstLetterOfWords(props.requester)} - {props.contact}
+                                            </span>
+                                            <span className='infos'>
+                                                <MapPin size={16} color='#a1a1aa' />
+                                                {capitalizeFirstLetterOfWords(props.location)}
+                                            </span>
+                                            <span className='infos'>
+                                                <Clock size={16} color='#a1a1aa' />
+                                                {convertDate(props.date_order)}
+                                            </span>
+                                        </div>
+                                        <TakeOrderForm numberOrder={props.number} />
+                                    </>
+                                )}
+                            </div>
                         </DialogDescription>
                     </DialogContent>
                 </Dialog.Portal>

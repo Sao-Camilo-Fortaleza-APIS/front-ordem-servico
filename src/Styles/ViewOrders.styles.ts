@@ -20,7 +20,7 @@ export const Container = styled.div`
 
     .list-orders {
       width: 100%;
-      //margin-top: 0.5rem;
+      margin-bottom: 5rem;
       display: flex;
       flex-direction: column;
       gap: 1rem;
