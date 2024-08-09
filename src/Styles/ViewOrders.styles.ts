@@ -7,6 +7,7 @@ export const Container = styled.div`
   width: 100vw;
   overflow: hidden;
   overflow-Y: scroll;
+  padding: 0 0 5rem 0;
  
 
   .wrapper {
