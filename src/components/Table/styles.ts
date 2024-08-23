@@ -30,17 +30,38 @@ export const Container = styled.div`
 `
 export const Tr = styled.tr`
   border-bottom: 1px solid #e4e4e7;
-
+margin-bottom: 0.5rem;
 `;
+
 export const Th = styled.th`
   border-bottom: 1px solid #e4e4e7;
   font-weight: 500;
-  text-align: left;
+  text-align: center;
 `;
 
 export const Td = styled.td`
   border-bottom: 1px solid #e4e4e7;
-  text-align: left;
-  padding: 0.5rem;
+  text-align: center;
+  padding: 0.5rem 0.75rem;
+
+  .badge {
+    display: inline-block;
+    padding: 0.25rem 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #ffffff;
+    border-radius: 12px;
+    text-transform: uppercase;
+  }
+  
+  .badge-closed {
+    background-color: #fecaca;
+    color: #ef4444;
+  }
+
+  .badge-open {
+      background-color: #a7f3d0;
+      color: #10b981;
+  }
 `;
 

@@ -3,20 +3,22 @@ import { EyeIcon } from 'lucide-react'
 import { toast } from 'react-toastify'
 import { ResultOrderDataProps } from '../../Pages/Formularios/Historico'
 import { useSearch } from '../../contexts/SearchContext'
-import { ApiDataProps } from '../../hooks/useFetch'
+import api from '../../services/api'
+import { convertDate } from '../../utils/convert-date'
 import { configToastError } from '../../utils/toast-config'
 import { Button } from '../Button'
-import { Container, Th } from './styles'
+import { Container, Td, Th, Tr } from './styles'
 
-import api from '../../services/api'
+interface ApiDataProps {
+    number: number
+    title: string
+    closed: string
+    date: string
+}
 
 interface TableProps {
     data: ApiDataProps[]
 }
-
-/**
- * TODO: Verificar como está a estrutura da resposta da API (não está vindo o titulo da ordem)
- */
 
 export default function Table({ data }: TableProps) {
     const {
@@ -56,24 +58,42 @@ export default function Table({ data }: TableProps) {
     return (
         <Container>
             <table style={{ width: '100%' }}>
+                {data.length > 0 && (
+                    <caption style={{ color: '#a1a1aa', textAlign: "right", marginBottom: '1rem' }}>
+                        {data.length} ordens encontradas
+                    </caption>
+                )}
                 <thead>
-                    <tr>
-                        <Th>Número ordem</Th>
-                        <Th>Título da ordem</Th>
+                    <Tr>
+                        <Th>Data</Th>
+                        <Th>Ordem</Th>
+                        <Th style={{ textAlign: "left", paddingLeft: '0.75rem' }}>Título</Th>
+                        <Th>Status</Th>
                         <Th style={{ textAlign: 'center' }}>Ação</Th>
-                    </tr>
+                    </Tr>
                 </thead>
                 <tbody>
                     {data.map((result, index) => (
-                        <tr key={index}>
-                            <td>{result.number}</td>
-                            <td>{result.title}</td>
-                            <td style={{ textAlign: 'center' }}>
+                        <Tr key={index}>
+                            <Td style={{ padding: '0' }}>{convertDate(result.date, 'DD[/]MM[/]YYYY')}</Td>
+                            <Td>{result.number}</Td>
+                            <Td
+                                style={{ textAlign: "left" }}
+                            >
+                                {result.title}
+                            </Td>
+                            <Td>
+                                {result.closed === "S"
+                                    ? (<span className="badge badge-closed">Encerrada</span>)
+                                    : (<span className="badge badge-open">Aberta</span>)
+                                }
+                            </Td>
+                            <Td>
                                 <Button variant='reply' onClick={() => handleSearch(result.number)}>
                                     <EyeIcon size={20} />
                                 </Button>
-                            </td>
-                        </tr>
+                            </Td>
+                        </Tr>
                     )
                     )}
                 </tbody>
