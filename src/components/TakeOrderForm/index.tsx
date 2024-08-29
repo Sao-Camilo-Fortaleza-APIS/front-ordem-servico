@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { useState } from "react";
+import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { GroupProps, GroupResponse } from "../../routes/ViewOrders";
@@ -40,24 +40,26 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 				nr_order: numberOrder,
 				nm_user: user
 			})
-			window.location.reload()
 
 			toast.success('Ordem de Serviço assumida')
+			window.location.reload()
 		} catch (error) {
 			toast.error('Erro ao assumir Ordem de Serviço')
 			console.error(error)
 		}
 	}
 
-	async function handleTransferOrder() {
+	async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
+		event?.preventDefault()
+
 		await api.post('post/transfer/workgroup', {
 			code_workgroup: selectedGroup,
 			nr_order: numberOrder,
 		}).then(() => {
 			toast.success("Ordem de Serviço transferida!")
+			window.location.reload()
 		}).catch((error) => {
 			console.log(error);
-
 			toast.error("Ocorreu um erro")
 		})
 	}
@@ -113,7 +115,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 					</div>
 
 					<div id="confirm-close">
-						<button onClick={handleTransferOrder}>Confirmar</button>
+						<button type="submit" onClick={handleTransferOrder}>Confirmar</button>
 						<button type="button" onClick={() => setOpen(false)}>Fechar</button>
 					</div>
 				</div>
