@@ -54,7 +54,10 @@ export function SignIn() {
             if (error.code === 'ECONNABORTED') {
                 toast.error('O servidor demorou muito para responder, tente novamente mais tarde', configToastError)
                 return
-            } if (error.response?.status === 401) {
+            } else if (error.code === 'ERR_NETWORK') {
+                toast.error('Servidor indisponível, entre em contato com o suporte', configToastError)
+                return
+            } else if (error.response?.status === 401) {
                 toast.error('Usuário ou senha inválidos', configToastError)
                 return
             }
