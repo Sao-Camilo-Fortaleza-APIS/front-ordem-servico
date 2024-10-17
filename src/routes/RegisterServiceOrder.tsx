@@ -28,13 +28,7 @@ export function RegisterServiceOrder() {
   const [servicos, setServicos] = useState<Equipamento[] | null>(null);
   const [selectedValue, setSelectedValue] = useState('');
 
-
-  let ie_prioridade: any
-  var options = { year: 'numeric', month: '2-digit', day: '2-digit', hour: '2-digit', minute: '2-digit', second: '2-digit' };
   let dt_inicio_desejado = new Date()
-  let grupoPlanejamento: any
-  let grupoTrabalho: any
-  let seqEquipamento: string
 
   // Tratando os dados
   // Tirando os espaços vazios e deixando o usuario em maiusculo 

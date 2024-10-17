@@ -21,12 +21,18 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
 
     const servicesTI = equipamentos?.filter(equipamento => equipamento.grupo_planej === 28);
     const servicesMan = equipamentos?.filter(equipamento => equipamento.grupo_planej === 26);
-
-    function updateSelectedOption(cd_equip: number, serviceType: 'ti' | 'man') {
+    const servicesQuali = equipamentos?.filter(equipamento => equipamento.grupo_planej === 32);
+    console.log(servicesQuali)
+    function updateSelectedOption(cd_equip: number, serviceType: 'ti' | 'man' | 'quali') {
         setSelectedOption(cd_equip);
-        const selectService = serviceType === 'ti'
-            ? servicesTI?.find(service => service.cd_equip === cd_equip)
-            : servicesMan?.find(service => service.cd_equip === cd_equip);
+        let selectService = null;
+        if (serviceType === 'ti') {
+            selectService = servicesTI?.find(service => service.cd_equip === cd_equip);
+        } else if (serviceType === 'man') {
+            selectService = servicesMan?.find(service => service.cd_equip === cd_equip);
+        } else if (serviceType === 'quali') {
+            selectService = servicesQuali?.find(service => service.cd_equip === cd_equip); // Adiciona verificação para 'quali'
+        }
         if (onSelect) {
             onSelect(selectService || null);
         }
@@ -39,6 +45,7 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
                 <TabsList aria-label='Escolha a área que deve atender sua solicitação'>
                     <TabsTrigger value='ti'>Suporte TI</TabsTrigger>
                     <TabsTrigger value='man'>Manutenção Predial</TabsTrigger>
+                    <TabsTrigger value='quali'>Qualidade</TabsTrigger>
                 </TabsList>
                 <TabsContent value='ti'>
                     {servicesTI?.map((service) => (
@@ -61,6 +68,20 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
                             type='button'
                             isSelected={selectedOption === service.cd_equip}
                             onClick={() => updateSelectedOption(service.cd_equip, 'man')}
+                        >
+                            {service.ds_equip}
+                            {selectedOption === service.cd_equip && <Check />}
+                        </ContentItem>
+                    ))}
+                </TabsContent>
+
+                <TabsContent value='quali'>
+                    {servicesQuali?.map((service) => (
+                        <ContentItem
+                            key={service.cd_equip}
+                            type='button'
+                            isSelected={selectedOption === service.cd_equip}
+                            onClick={() => updateSelectedOption(service.cd_equip, 'quali')}
                         >
                             {service.ds_equip}
                             {selectedOption === service.cd_equip && <Check />}
