@@ -22,7 +22,7 @@ export function Tabs({ equipamentos = [], onSelect }: TabsProps) {
     const servicesTI = equipamentos?.filter(equipamento => equipamento.grupo_planej === 28);
     const servicesMan = equipamentos?.filter(equipamento => equipamento.grupo_planej === 26);
     const servicesQuali = equipamentos?.filter(equipamento => equipamento.grupo_planej === 32);
-    console.log(servicesQuali)
+
     function updateSelectedOption(cd_equip: number, serviceType: 'ti' | 'man' | 'quali') {
         setSelectedOption(cd_equip);
         let selectService = null;
