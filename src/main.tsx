@@ -10,6 +10,7 @@ import { SearchProvider } from './contexts/SearchContext';
 import { MyOrders } from './routes/MyOrders';
 import { PendingOrders } from './routes/PendingOrders';
 import { RegisterServiceOrder } from './routes/RegisterServiceOrder';
+import { ServiceOrderDetails } from './routes/ServiceOrderDetails';
 import { SignIn } from './routes/SignIn';
 import { ViewOrders } from './routes/ViewOrders';
 import { GlobalStyles } from './styles/global';
@@ -52,6 +53,10 @@ const router = createBrowserRouter([
           }
         ],
       },
+      {
+        path: '/ordem/:orderId',
+        element: <SearchProvider><ServiceOrderDetails /></SearchProvider>,
+      }
     ],
   },
 ])
