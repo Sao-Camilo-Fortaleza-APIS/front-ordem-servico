@@ -91,6 +91,7 @@ export function MyOrders() {
                     {filterOrdersByGroup(group)?.map((order) => {
                         return (
                             <Order
+                                onClick={() => navigate(`/ordens/${order.number}`)}
                                 key={order.number}
                                 number={order.number}
                                 damage={order.number + ' ' + order.damage}

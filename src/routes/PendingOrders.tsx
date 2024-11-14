@@ -70,18 +70,20 @@ export function PendingOrders() {
                 <div>
                     {responsePendingOrders?.map((order) => {
                         return (
-                            <Order
-                                key={order.number}
-                                number={order.number}
-                                damage={order.number + ' ' + order.damage}
-                                date_order={order.date_order}
-                                location={order.location}
-                                requester={order.requester}
-                                contact={order.contact}
-                                group={order.group}
-                                describe={order.describe}
-                                awaiting_validate={order.awaiting_validate}
-                            />
+                            <button onClick={() => navigate(`/ordem/${order.number}`)} key={order.number} style={{ inset: "0", padding: "0", border: "0", margin: "0", width: "100%", backgroundColor: "transparent" }}>
+                                <Order
+                                    key={order.number}
+                                    number={order.number}
+                                    damage={order.number + ' ' + order.damage}
+                                    date_order={order.date_order}
+                                    location={order.location}
+                                    requester={order.requester}
+                                    contact={order.contact}
+                                    group={order.group}
+                                    describe={order.describe}
+                                    awaiting_validate={order.awaiting_validate}
+                                />
+                            </button>
                         )
                     })}
                 </div>

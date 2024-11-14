@@ -1,13 +1,11 @@
-import * as Dialog from '@radix-ui/react-dialog';
-import { Clock, MapPin, User, UserCheck, UserPlus, X } from 'lucide-react';
+import { Clock, MapPin, User, UserCheck, UserPlus } from 'lucide-react';
+import { ComponentProps } from 'react';
 import { useLocation } from 'react-router-dom';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
-import { OrderReplyForm } from '../OrderReplyForm';
-import { TakeOrderForm } from '../TakeOrderForm';
-import { Container, DialogContent, DialogDescription, DialogTitle, OrderDetails } from './styles';
+import { Container, OrderDetails } from './styles';
 
-export interface OrderProps {
+export interface OrderProps extends ComponentProps<'button'> {
     damage: string
     date_order: string
     location: string
@@ -33,31 +31,28 @@ export function Order(props: OrderProps) {
 
     return (
         <Container>
-            <Dialog.Root>
-                <Dialog.Trigger asChild>
-                    <OrderDetails color={colorType}>
-                        <div>
-                            <span className='title'>{props.damage}</span>
-                            <div className='infos'>
-                                <User size={16} color='#a1a1aa' />
-                                <span>{capitalizeFirstLetterOfWords(props.requester)} - {props.contact}</span>
-                            </div>
-                            <div className='infos'>
-                                <MapPin size={16} color='#a1a1aa' />
-                                <span>{capitalizeFirstLetterOfWords(props.location)}</span>
-                            </div>
-                            <div className='infos'>
-                                <Clock size={16} color='#a1a1aa' />
-                                <span>{convertDate(props.date_order)}</span>
-                            </div>
-                        </div>
-                        <div className='icon'>
-                            {location === '/ordens/minhas' ? <UserCheck size={24} color={colorType} /> : <UserPlus size={24} color={colorType} />}
-                        </div>
-                    </OrderDetails>
-                </Dialog.Trigger>
+            <OrderDetails color={colorType}>
+                <div>
+                    <span className='title'>{props.damage}</span>
+                    <div className='infos'>
+                        <User size={16} color='#a1a1aa' />
+                        <span>{capitalizeFirstLetterOfWords(props.requester)} - {props.contact}</span>
+                    </div>
+                    <div className='infos'>
+                        <MapPin size={16} color='#a1a1aa' />
+                        <span>{capitalizeFirstLetterOfWords(props.location)}</span>
+                    </div>
+                    <div className='infos'>
+                        <Clock size={16} color='#a1a1aa' />
+                        <span>{convertDate(props.date_order)}</span>
+                    </div>
+                </div>
+                <div className='icon'>
+                    {location === '/ordens/minhas' ? <UserCheck size={24} color={colorType} /> : <UserPlus size={24} color={colorType} />}
+                </div>
+            </OrderDetails>
 
-                <Dialog.Portal>
+            {/* <Dialog.Portal>
                     <Dialog.Overlay />
                     <DialogContent>
                         <div
@@ -127,8 +122,7 @@ export function Order(props: OrderProps) {
                             </div>
                         </DialogDescription>
                     </DialogContent>
-                </Dialog.Portal>
-            </Dialog.Root>
+                </Dialog.Portal> */}
         </Container >
     )
 }

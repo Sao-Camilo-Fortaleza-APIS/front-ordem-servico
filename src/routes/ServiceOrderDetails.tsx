@@ -1,22 +1,17 @@
 import { AxiosError } from "axios";
-import { Clock, MapPin, User } from "lucide-react";
 import { useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import ChatScreen from "../components/ChatScreen";
 import { Loader } from "../components/Load";
-import { Container } from "../components/Order/styles";
-import { TakeOrderForm } from "../components/TakeOrderForm";
 import { useSearch } from "../contexts/SearchContext";
 import { ResultOrderDataProps } from "../Pages/Formularios/Historico";
-import { ContainerChat, ContainerMessages, Message } from "../Pages/Formularios/Historico/styles";
 import api from "../services/api";
-import { OrderDetails } from "../styles/ServiceOrderDetails.styles";
-import { convertDate } from "../utils/convert-date";
 import { configToastError } from "../utils/toast-config";
-import { capitalizeFirstLetterOfWords } from "../utils/transform-text";
 
 export function ServiceOrderDetails() {
     const { orderId } = useParams()
+    const navigate = useNavigate()
     const {
         resultHistoryData,
         setResultHistoryData,
@@ -50,50 +45,55 @@ export function ServiceOrderDetails() {
         getHistory()
     }, [])
 
-    if (isLoading) {
-        return <Loader />
-    }
+    if (isLoading) { return <Loader /> }
 
     return (
-        <Container>
-            <OrderDetails>
-                <h4>
-                    {resultOrderData.damage}
-                </h4>
-                <div>
-                    <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
-                        {resultOrderData.describe}
-                    </span>
-                    <span className='infos'>
-                        <User size={16} color='#a1a1aa' />
-                        {capitalizeFirstLetterOfWords(resultOrderData.requester)} - {resultOrderData.contact}
-                    </span>
-                    <span className='infos'>
-                        <MapPin size={16} color='#a1a1aa' />
-                        {capitalizeFirstLetterOfWords(resultOrderData.location)}
-                    </span>
-                    <span className='infos'>
-                        <Clock size={16} color='#a1a1aa' />
-                        {convertDate(resultOrderData.date_order)}
-                    </span>
-                </div>
-            </OrderDetails>
-
-            <ContainerChat>
-                <ContainerMessages>
-                    {resultHistoryData.map((history, index) => {
-                        return (
-                            <Message key={index} style={{ width: "50%" }}>
-                                <span>{history.user}</span>
-                                <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                                <span>{convertDate(history.date)}</span>
-                            </Message>
-                        )
-                    })}
-                </ContainerMessages>
-            </ContainerChat>
-
-            <TakeOrderForm numberOrder={resultOrderData.number} />
-        </Container>
+        <ChatScreen
+            orderData={resultOrderData}
+            historyData={resultHistoryData}
+            status="open"
+            onBack={() => navigate(-1)}
+        />
     )
 }
+
+{/* <Container>
+    <OrderDetails>
+        <h4>
+            {resultOrderData.damage}
+        </h4>
+        <div>
+            <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
+                {resultOrderData.describe}
+            </span>
+            <span className='infos'>
+                <User size={16} color='#a1a1aa' />
+                {capitalizeFirstLetterOfWords(resultOrderData.requester)} - {resultOrderData.contact}
+            </span>
+            <span className='infos'>
+                <MapPin size={16} color='#a1a1aa' />
+                {capitalizeFirstLetterOfWords(resultOrderData.location)}
+            </span>
+            <span className='infos'>
+                <Clock size={16} color='#a1a1aa' />
+                {convertDate(resultOrderData.date_order)}
+            </span>
+        </div>
+    </OrderDetails>
+
+    <ContainerChat>
+        <ContainerMessages>
+            {resultHistoryData.map((history, index) => {
+                return (
+                    <Message key={index} style={{ width: "50%" }}>
+                        <span>{history.user}</span>
+                        <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
+                        <span>{convertDate(history.date)}</span>
+                    </Message>
+                )
+            })}
+        </ContainerMessages>
+    </ContainerChat>
+
+    <TakeOrderForm numberOrder={resultOrderData.number} />
+</Container> */}
