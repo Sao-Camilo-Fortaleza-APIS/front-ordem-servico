@@ -134,7 +134,7 @@ export const HeaderOrder = styled.div`
 `;
 
 export const ContainerMessages = styled.div`
-  background-color: #000;
+  background-color: #fff;
   width: 100%;
   height: 55vh;
   overflow-y: scroll;
