@@ -5,9 +5,8 @@ import { convertDate } from '../../utils/convert-date';
 
 const MessagesContainer = styled.div`
   padding: 1rem;
-  overflow-y: scroll;
   background-color: #f4f4f5;
-  height: 100%;
+  min-height: 20rem;
 `;
 
 const Message = styled.div`
@@ -32,6 +31,10 @@ const Message = styled.div`
   }
   .data {
     text-align: right;
+  }
+  .content{
+    word-break: break-word;
+    overflow-wrap: break-word;
   }
 `;
 

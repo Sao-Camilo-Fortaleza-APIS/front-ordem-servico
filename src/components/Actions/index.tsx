@@ -1,6 +1,7 @@
 // src/components/Actions.js
 import { useState } from 'react';
 import styled from 'styled-components';
+import { OrderReplyForm } from '../OrderReplyForm';
 import { TakeOrderForm } from '../TakeOrderForm';
 
 const ActionsContainer = styled.div`
@@ -8,9 +9,6 @@ const ActionsContainer = styled.div`
   padding: 1rem;
   background-color: #f8f9fa;
   border-top: 1px solid #ddd;
- /*  position: fixed;
-  bottom: 0;
-  width: auto; */
 `;
 
 const Button = styled.button`
@@ -38,38 +36,30 @@ const Input = styled.input`
 `;
 
 interface ActionsProps {
-    status: string
-    onSendMessage: (message: string) => void
-    orderId: number
+  hasExecutor: boolean
+  onSendMessage: (message: string) => void
+  orderId: number
 }
 
-const Actions = ({ status, onSendMessage, orderId }: ActionsProps) => {
-    const [message, setMessage] = useState('');
+const Actions = ({ hasExecutor, onSendMessage, orderId }: ActionsProps) => {
+  const [message, setMessage] = useState('');
 
-    const handleSend = () => {
-        if (message.trim()) {
-            onSendMessage(message);
-            setMessage('');
-        }
-    };
+  const handleSend = () => {
+    if (message.trim()) {
+      onSendMessage(message);
+      setMessage('');
+    }
+  }
 
-    return (
-        <ActionsContainer>
-            {status === 'pendente' ? (
-                <TakeOrderForm numberOrder={orderId} />
-            ) : (
-                <>
-                    <Input
-                        type="text"
-                        placeholder="Digite sua mensagem..."
-                        value={message}
-                        onChange={(e) => setMessage(e.target.value)}
-                    />
-                    <Button onClick={handleSend}>Enviar</Button>
-                </>
-            )}
-        </ActionsContainer>
-    );
+  return (
+    <ActionsContainer>
+      {hasExecutor ? (
+        <OrderReplyForm numberOrder={orderId} />
+      ) : (
+        <TakeOrderForm numberOrder={orderId} />
+      )}
+    </ActionsContainer>
+  );
 };
 
 export default Actions;

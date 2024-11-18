@@ -11,15 +11,19 @@ const HeaderContainer = styled.div`
   justify-content: start;
   align-items: start;
   gap: 0.375rem;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   background-color: #f8f8fa;
   color: #71717a;
   border-bottom: 1px solid #ddd;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 
   .header-content{
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
+  }
+  .order-title, .order-description {
+    word-break: break-word;
   }
 
   span {
@@ -29,15 +33,22 @@ const HeaderContainer = styled.div`
   }
 
   .status {
+    text-transform: uppercase;
     background-color: #6b7280;
     color: #fff;
+    
     font-size: 0.75rem;
-    text-transform: uppercase;
     text-align: right;
     align-self: flex-end;
     width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 0.5rem;
+  }
+
+  @media (max-width:360px){
+    .date {
+      font-size: 0.875rem;
+    }
   }
 `;
 
@@ -45,7 +56,7 @@ const BackButton = styled.button`
   background: none;
   border: none;
   color: #9ca39c;
-  font-size: 1rem;
+  font-size: 1.125rem;
   cursor: pointer;
   display: flex;
   align-items: center;
@@ -62,14 +73,16 @@ interface HeaderProps {
 
 const Header = ({ orderData, onBack }: HeaderProps) => (
   <HeaderContainer>
-    <BackButton onClick={onBack}><ArrowLeft size={20} />Voltar</BackButton>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+      <BackButton onClick={onBack}><ArrowLeft size={20} />Voltar</BackButton>
+      <span className='status'>{orderData.stage}</span>
+    </div>
     <div className='header-content'>
-      <h4>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
-      <span>{orderData.describe}</span>
-      <span><User2 size={20} /> {orderData.awaiting_validate}</span>
+      <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
+      <span className='order-description'>{orderData.describe}</span>
+      <span><User2 size={20} /> {capitalizeFirstLetterOfWords(orderData.requester)}</span>
       <span><MapPin size={20} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
-      <span><Clock size={20} /> {convertDate(orderData.date_order)}</span>
-      <div className='status'>{orderData.awaiting_validate === "Sim" ? "Aguardando validação" : "Em atendimento"}</div>
+      <span className='date'><Clock size={20} /> {convertDate(orderData.date_order)}</span>
     </div>
   </HeaderContainer>
 );

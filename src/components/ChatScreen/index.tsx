@@ -11,17 +11,33 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 40.625rem;
-  @media (max-width:600px){
-        width: 95%;
+  width: 48rem;
+  @media (max-width:649px){
+        width: 100%;
         height: 100%;
         h2{
             font-size: medium;
         }
     }
-    @media (max-width: 360px) {
-        padding: 0 1rem;
-    }
+`;
+
+const FixedHeader = styled.div`
+  position: sticky;
+  top: 0;
+  z-index: 10;
+`;
+
+const ScrollableContent = styled.div`
+  flex: 1;
+  overflow-y: auto;
+  background-color: #f4f4f5;
+`;
+
+const FixedFooter = styled.div`
+  position: sticky;
+  bottom: 0;
+  z-index: 10;
+  background-color: #f8f9fa;
 `;
 
 interface ChatScreenProps {
@@ -36,10 +52,13 @@ const ChatScreen = ({ orderData, status, onBack, historyData }: ChatScreenProps)
         { sender: 'Suporte', text: 'Bem-vindo ao atendimento!' },
     ]);
     const [historyDataState, setHistoryData] = useState<ResultHistoryDataProps[]>([]);
+    const hasExecutor = orderData.executor !== null;
 
     const handleSendMessage = (text: string) => {
         setMessages([...messages, { sender: 'Usuário', text }]);
     };
+    console.log("hasExecutor", hasExecutor)
+    console.log("executor", orderData.executor)
 
     useEffect(() => {
         // Simular busca da API usando o orderId
@@ -48,15 +67,24 @@ const ChatScreen = ({ orderData, status, onBack, historyData }: ChatScreenProps)
 
     return (
         <ChatContainer>
-            <Header orderData={orderData} onBack={onBack} />
-            <MessageList messages={historyData} />
-            <Actions
-                orderId={orderData.number}
-                status={orderData.awaiting_validate === 'Sim' ? 'assumida' : 'pendente'}
-                onSendMessage={(message) => {
-                    setHistoryData([...historyDataState, { date: new Date().toISOString(), user: 'Usuário', history: message }]);
-                }}
-            />
+            <FixedHeader>
+                <Header orderData={orderData} onBack={onBack} />
+            </FixedHeader>
+            <ScrollableContent>
+                <MessageList messages={historyData} />
+            </ScrollableContent>
+            <FixedFooter>
+                <Actions
+                    orderId={orderData.number}
+                    hasExecutor={hasExecutor}
+                    onSendMessage={(message) => {
+                        setHistoryData([
+                            ...historyDataState,
+                            { date: new Date().toISOString(), user: 'Usuário', history: message }
+                        ])
+                    }}
+                />
+            </FixedFooter>
         </ChatContainer>
     );
 };

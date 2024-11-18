@@ -1,5 +1,4 @@
 import { zodResolver } from "@hookform/resolvers/zod";
-import * as Dialog from "@radix-ui/react-dialog";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
@@ -141,29 +140,21 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
       </div>
 
       {/* Texto de histórico */}
-      <div>
-        <label htmlFor="reply">Histórico</label>
+      {errors.history?.message && <span style={{ color: '#ef4444' }}>{errors.history.message}</span>}
+      <div style={{ display: "flex", alignItems: "end" }}>
         <textarea
           {...register('history')}
           disabled={isSubmitting}
           required
           id="reply"
           cols={30}
-          rows={10}
-          placeholder="Digite sua resposta"
+          rows={6}
+          placeholder="Digite sua resposta..."
         />
-
-        {errors.history?.message && <span style={{ color: '#ef4444' }}>{errors.history.message}</span>}
-      </div>
-
-      <div className="action-form">
-        <Dialog.Close asChild>
-          <Button disabled={isSubmitting}>Cancelar</Button>
-        </Dialog.Close>
-
         <Button variant="reply" disabled={isSubmitting} type="submit">
           {isSubmitting ? ' Enviando...' : ' Enviar'}
         </Button>
+
       </div>
     </FormStyled>
   )
