@@ -51,49 +51,7 @@ export function ServiceOrderDetails() {
         <ChatScreen
             orderData={resultOrderData}
             historyData={resultHistoryData}
-            status="open"
             onBack={() => navigate(-1)}
         />
     )
 }
-
-{/* <Container>
-    <OrderDetails>
-        <h4>
-            {resultOrderData.damage}
-        </h4>
-        <div>
-            <span style={{ fontWeight: '500', marginBottom: '0.5rem' }}>
-                {resultOrderData.describe}
-            </span>
-            <span className='infos'>
-                <User size={16} color='#a1a1aa' />
-                {capitalizeFirstLetterOfWords(resultOrderData.requester)} - {resultOrderData.contact}
-            </span>
-            <span className='infos'>
-                <MapPin size={16} color='#a1a1aa' />
-                {capitalizeFirstLetterOfWords(resultOrderData.location)}
-            </span>
-            <span className='infos'>
-                <Clock size={16} color='#a1a1aa' />
-                {convertDate(resultOrderData.date_order)}
-            </span>
-        </div>
-    </OrderDetails>
-
-    <ContainerChat>
-        <ContainerMessages>
-            {resultHistoryData.map((history, index) => {
-                return (
-                    <Message key={index} style={{ width: "50%" }}>
-                        <span>{history.user}</span>
-                        <span dangerouslySetInnerHTML={{ __html: history.history }}></span>
-                        <span>{convertDate(history.date)}</span>
-                    </Message>
-                )
-            })}
-        </ContainerMessages>
-    </ContainerChat>
-
-    <TakeOrderForm numberOrder={resultOrderData.number} />
-</Container> */}

@@ -1,5 +1,3 @@
-// src/components/Actions.js
-import { useState } from 'react';
 import styled from 'styled-components';
 import { OrderReplyForm } from '../OrderReplyForm';
 import { TakeOrderForm } from '../TakeOrderForm';
@@ -37,19 +35,10 @@ const Input = styled.input`
 
 interface ActionsProps {
   hasExecutor: boolean
-  onSendMessage: (message: string) => void
   orderId: number
 }
 
-const Actions = ({ hasExecutor, onSendMessage, orderId }: ActionsProps) => {
-  const [message, setMessage] = useState('');
-
-  const handleSend = () => {
-    if (message.trim()) {
-      onSendMessage(message);
-      setMessage('');
-    }
-  }
+const Actions = ({ hasExecutor, orderId }: ActionsProps) => {
 
   return (
     <ActionsContainer>

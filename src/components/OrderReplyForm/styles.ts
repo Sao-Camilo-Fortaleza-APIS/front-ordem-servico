@@ -40,10 +40,7 @@ export const FormStyled = styled.form`
     flex-direction: row;
     gap: 0.5rem;
     align-items: center;
-    border: 1px solid #d1d5db;
     padding: 0.25rem;
-    border-radius: 0.5rem;
-    width: fit-content;
     .radio-item {
       display: flex; 
       flex-direction: row;

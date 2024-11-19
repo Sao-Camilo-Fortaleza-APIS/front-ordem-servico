@@ -32,9 +32,21 @@ const HeaderContainer = styled.div`
     gap: 0.25rem;
   }
 
-  .status {
+  @media (max-width:360px){
+    .date {
+      font-size: 0.875rem;
+    }
+  }
+`;
+
+const Status = styled.span`
     text-transform: uppercase;
-    background-color: #6b7280;
+    background-color: ${({ stage }: { stage: string }) => (
+    stage === 'Aguardando Atendimento' ? '#EF4444' : (
+      stage === 'Em Atendimento' ? '#FBBF24' : (
+        stage === 'Aguardando Validação' ? '#3B82F6' : '#6B7280'
+      ))
+  )};
     color: #fff;
     
     font-size: 0.75rem;
@@ -43,13 +55,6 @@ const HeaderContainer = styled.div`
     width: fit-content;
     padding: 0.25rem 0.5rem;
     border-radius: 0.5rem;
-  }
-
-  @media (max-width:360px){
-    .date {
-      font-size: 0.875rem;
-    }
-  }
 `;
 
 const BackButton = styled.button`
@@ -75,7 +80,7 @@ const Header = ({ orderData, onBack }: HeaderProps) => (
   <HeaderContainer>
     <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
       <BackButton onClick={onBack}><ArrowLeft size={20} />Voltar</BackButton>
-      <span className='status'>{orderData.stage}</span>
+      <Status stage={orderData.stage}>{orderData.stage}</Status>
     </div>
     <div className='header-content'>
       <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
