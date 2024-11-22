@@ -23,7 +23,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
 
-  const { register, handleSubmit, control, resetField, watch, formState: { errors, isSubmitting }, setValue } = useForm<SchemaReplyForm>({
+  const { register, handleSubmit, control, resetField, watch, formState: { errors, isSubmitting } } = useForm<SchemaReplyForm>({
     resolver: zodResolver(schemareplyform),
     defaultValues: {
       typeHistory: 'retorno',
@@ -71,6 +71,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
       resetField('history')
 
       toast.success(`Histórico enviado!`, { position: 'top-center' })
+      return navigate(-1)
     },
     onError: (error) => {
       toast.error(`${error.message}`, { position: 'top-center' })
