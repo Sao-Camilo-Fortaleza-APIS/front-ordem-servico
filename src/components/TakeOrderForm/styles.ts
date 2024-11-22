@@ -37,7 +37,6 @@ export const FormStyled = styled.form`
 		flex-direction: row;
 		width: 100%;
 		gap: 0.5rem;
-		padding: 1rem 2rem;
 	}
 
 	.confirm-transfer {
@@ -45,7 +44,6 @@ export const FormStyled = styled.form`
 		flex-direction: column;
 		width: 100%;
 		gap: 0.5rem;
-		padding: 1rem 2rem;
 	}
 
 	 .select-group {

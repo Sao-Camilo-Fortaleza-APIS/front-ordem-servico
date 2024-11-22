@@ -42,7 +42,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			})
 
 			toast.success('Ordem de Serviço assumida')
-			window.location.reload()
+			navigate(-1)
 		} catch (error) {
 			toast.error('Erro ao assumir Ordem de Serviço')
 			console.error(error)
@@ -57,7 +57,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			nr_order: numberOrder,
 		}).then(() => {
 			toast.success("Ordem de Serviço transferida!")
-			window.location.reload()
+			navigate(-1)
 		}).catch((error) => {
 			console.log(error);
 			toast.error("Ocorreu um erro")

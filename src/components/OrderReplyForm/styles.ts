@@ -4,18 +4,8 @@ import styled from "styled-components";
 export const FormStyled = styled.form`
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  margin: 1rem 0 5rem 0;
   width: 100%;
-  border-top: 1px solid #d1d5db;
-  padding-top: 1rem;
-
-  label{
-    font-family: 'Roboto', sans-serif;
-    font-weight: 500;
-    font-size: 1rem;
-    color: #71717a;
-  }
+  gap: 0.5rem;
 
   textarea {
     resize: none;
@@ -24,8 +14,7 @@ export const FormStyled = styled.form`
     font-size: 1.125rem;
     line-height: 1;
     padding: 0.5rem;
-    margin-bottom: 0.5rem;
-    height: 12rem;
+    height: 4rem;
     border-radius: 0.5rem;
     color: #71717a;
     
@@ -51,7 +40,7 @@ export const FormStyled = styled.form`
     flex-direction: row;
     gap: 0.5rem;
     align-items: center;
-
+    padding: 0.25rem;
     .radio-item {
       display: flex; 
       flex-direction: row;
@@ -72,6 +61,10 @@ export const FormStyled = styled.form`
     gap: 1rem;
     align-items: center;
     justify-content: start;
+    border: 1px solid #d1d5db;
+    border-radius: 0.5rem;
+    padding: 0.25rem;
+    width: fit-content;
   }
 
   .switch-item:has(#close:disabled) {
@@ -89,6 +82,7 @@ export const SwitchThumb = styled(SwitchPrimitive.Thumb)`
     transition: transform 100ms;
     transform: translateX(2px);
     will-change: transform;
+    border: 1px solid #d1d5db;
     
     &[data-state='checked'] {
          transform: translateX(18px);
@@ -97,17 +91,18 @@ export const SwitchThumb = styled(SwitchPrimitive.Thumb)`
 
 export const SwitchRoot = styled(SwitchPrimitive.Root)`
     display: flex;
-    width: 48px;
-    height: 31px;
+    width: 49px;
+    height: 32px;
     align-items: center;
     justify-content: space-between;
     background-color: #f2f2f2;
     border-radius: 9999px;
     transition: background-color 0.3s ease;
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
-    border: 1px solid #d1d5db;
+    border: 1px solid #9ca3af;
 
     &[data-state='checked'] {
         background-color: #10b981;
+        border: 1px solid #d1d5db;
     }
 `
