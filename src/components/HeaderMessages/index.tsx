@@ -85,7 +85,7 @@ const Header = ({ orderData, onBack }: HeaderProps) => (
     <div className='header-content'>
       <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
       <span className='order-description'>{orderData.describe}</span>
-      <span><User2 size={20} /> {capitalizeFirstLetterOfWords(orderData.requester)}</span>
+      <span><User2 size={20} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
       <span><MapPin size={20} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
       <span className='date'><Clock size={20} /> {convertDate(orderData.date_order)}</span>
     </div>
