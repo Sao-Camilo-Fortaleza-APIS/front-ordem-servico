@@ -20,8 +20,9 @@ export function ViewOrders() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const user = Cookies.get('user')
-
+  let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
   let group: string = searchParams.get('group') ?? '';
+  let sector: string = searchParams.get('sector') ?? '';
 
   const { data: groups, isFetching } = useQuery<GroupResponse>({
     queryKey: ['get-groups'],
@@ -40,6 +41,9 @@ export function ViewOrders() {
     //enabled: true, // se false desabilita a nova busca automática
     refetchOnWindowFocus: true,
   })
+
+  const responsePendingOrders = queryClient.getQueryData(['user', filtro, user])
+  console.log(responsePendingOrders)
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
@@ -69,6 +73,7 @@ export function ViewOrders() {
           </span>
         </div>
       </Header>
+
       <div className="wrapper">
         <div className="filter">
           <Filter
@@ -84,27 +89,50 @@ export function ViewOrders() {
           />
         </div>
 
-        <div className="label-groups">
-          <span>Grupo de trabalho</span>
-        </div>
-        <select
-          className="select-group"
-          name="groups"
-          id="groups"
-          onChange={(e) => {
-            setSearchParams(params => {
-              params.set('group', e.target.value)
-              return params
-            })
-          }}
-          value={group ? group : ''}
-        >
-          {location === '/ordens/minhas' && <option value="">Todos os grupos</option>}
-          {location === '/ordens/pendentes' && <option disabled value="">Selecione um grupo</option>}
-          {groups && groups?.map((group: GroupProps) => {
-            return <option key={group.code} value={group.code}>{group.describe}</option>
-          })}
-        </select>
+        <section style={{ width: '100%', gap: '0.25rem', display: 'flex', }}>
+          <div style={{ width: '100%' }}>
+            <span className="label-groups">Grupo de trabalho</span>
+            <select
+              className="select-group"
+              name="groups"
+              id="groups"
+              onChange={(e) => {
+                setSearchParams(params => {
+                  params.set('group', e.target.value)
+                  return params
+                })
+              }}
+              value={group ? group : ''}
+            >
+              {location === '/ordens/minhas' && <option value="">Todos os grupos</option>}
+              {location === '/ordens/pendentes' && <option disabled value="">Selecione um grupo</option>}
+              {groups && groups?.map((group: GroupProps) => {
+                return <option key={group.code} value={group.code}>{group.describe}</option>
+              })}
+            </select>
+          </div>
+
+          <div style={{ width: '100%' }}>
+            <span className="label-groups">Setor</span>
+            <select
+              className="select-group"
+              name="sectors"
+              id="sectors"
+              onChange={(e) => {
+                setSearchParams(params => {
+                  params.set('sector', e.target.value)
+                  return params
+                })
+              }}
+              value={sector ? sector : ''}
+            >
+              {<option disabled value="">Selecione um setor</option>}
+              {groups && groups?.map((group: GroupProps) => {
+                return <option key={group.code} value={group.code}>{group.describe}</option>
+              })}
+            </select>
+          </div>
+        </section>
       </div>
 
       <Outlet />
