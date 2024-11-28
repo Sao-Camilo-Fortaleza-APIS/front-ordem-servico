@@ -139,6 +139,8 @@ export const Header = styled.header`
       font-size: 0.875rem;
       font-weight: 400;
       cursor: pointer;
+      background-color: transparent;
+      border: none;
 
       :hover {
         color: #71717a;

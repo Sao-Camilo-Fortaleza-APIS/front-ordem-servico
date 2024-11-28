@@ -7,6 +7,7 @@ import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
+import { OrderResponse } from "./MyOrders";
 
 export interface GroupProps {
   code: number,
@@ -19,10 +20,12 @@ export function ViewOrders() {
   const { pathname: location } = useLocation()
   const queryClient = useQueryClient();
   const navigate = useNavigate();
-  const user = Cookies.get('user')
+  const user = Cookies.get('user') ?? ''
   let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
   let group: string = searchParams.get('group') ?? '';
   let sector: string = searchParams.get('sector') ?? '';
+
+  const cachedOrders = queryClient.getQueryData(['orders', filtro, user]);
 
   const { data: groups, isFetching } = useQuery<GroupResponse>({
     queryKey: ['get-groups'],
@@ -42,8 +45,45 @@ export function ViewOrders() {
     refetchOnWindowFocus: true,
   })
 
-  const responsePendingOrders = queryClient.getQueryData(['user', filtro, user])
-  console.log(responsePendingOrders)
+  const { data: ordersResponse } = useQuery<OrderResponse>({
+    queryKey: ['user', filtro, user],
+    queryFn: async () => {
+      if (filtro === 'minhas') {
+        const response = await api.get(`/get/orders/executor/${user}`)
+
+        if (response.status === 401) {
+          toast.error('Sessão expirada, faça login novamente')
+          Cookies.remove('exec.token')
+          Cookies.remove('user')
+          navigate('/entrar')
+          return
+        }
+        return response.data
+      }
+      if (group === '') return []
+
+      const response = await api.get(`/get/orders/workgroup/${group}`)
+
+      if (response.status === 401) {
+        toast.error('Sessão expirada, faça login novamente')
+        Cookies.remove('exec.token')
+        Cookies.remove('user')
+        navigate('/entrar')
+      }
+      return response.data
+    },
+    enabled: !cachedOrders,
+    /* initialData: cachedOrders, */
+    placeholderData: keepPreviousData,
+    refetchOnWindowFocus: true,
+  })
+
+  // filtrar os setores baseados nas OSs retornadas por grupo caso o grupo seja selecionado, caso contrário, retorna todos os setores das OSs
+  const filteredSectors = group !== ''
+    ? Array.from(new Set(ordersResponse?.filter(order => order.group === Number(group)).map(order => order.location).sort()))
+    : Array.from(new Set(ordersResponse?.map(order => order.location).sort()))
+
+  const isLoadingOrders = isFetching || !ordersResponse || filteredSectors?.length === 0
 
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
@@ -67,13 +107,12 @@ export function ViewOrders() {
 
         <div className="hero">
           <span className="user-name">{user}</span>
-          <span className="logout">
-            <LogOut className="icon" onClick={logOut} size={24} />
+          <button className="logout" onClick={logOut}>
+            <LogOut className="icon" size={24} />
             Sair
-          </span>
+          </button>
         </div>
       </Header>
-
       <div className="wrapper">
         <div className="filter">
           <Filter
@@ -99,6 +138,7 @@ export function ViewOrders() {
               onChange={(e) => {
                 setSearchParams(params => {
                   params.set('group', e.target.value)
+                  params.set('sector', '')
                   return params
                 })
               }}
@@ -113,11 +153,12 @@ export function ViewOrders() {
           </div>
 
           <div style={{ width: '100%' }}>
-            <span className="label-groups">Setor</span>
+            <span className="label-groups">Setor solicitante</span>
             <select
               className="select-group"
               name="sectors"
               id="sectors"
+              disabled={location === '/ordens/pendentes' && group === ''}
               onChange={(e) => {
                 setSearchParams(params => {
                   params.set('sector', e.target.value)
@@ -126,15 +167,23 @@ export function ViewOrders() {
               }}
               value={sector ? sector : ''}
             >
-              {<option disabled value="">Selecione um setor</option>}
-              {groups && groups?.map((group: GroupProps) => {
-                return <option key={group.code} value={group.code}>{group.describe}</option>
-              })}
+              {isLoadingOrders ? (
+                <>
+                  {location === '/ordens/minhas' && <option value="">Todos os setores</option>}
+                  {location === '/ordens/pendentes' && <option disabled value="">Selecione um grupo primeiro</option>}
+                </>
+              ) : (
+                <>
+                  <option value="">Todos os setores</option>
+                  {filteredSectors?.map((sector, index) => {
+                    return <option key={index} value={sector}>{sector}</option>
+                  })}
+                </>
+              )}
             </select>
           </div>
         </section>
       </div>
-
       <Outlet />
     </Container>
   )
