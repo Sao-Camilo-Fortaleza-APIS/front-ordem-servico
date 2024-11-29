@@ -17,6 +17,7 @@ export function MyOrders() {
     const user = Cookies.get('user') ?? ''
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
     let group: number = Number(searchParams.get('group')) ?? 0
+    let sector: string = searchParams.get('sector') ?? ''
 
     const { data: responseOrders, isLoading, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
@@ -36,12 +37,13 @@ export function MyOrders() {
     })
     //enabled: true, // se false desabilita a pesquisa automática
 
-    function filterOrdersByGroup(group: number) {
+    function filterOrdersByGroup(group: number, sectorSelected: string) {
         if (group === 0) {
-            return responseOrders //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+            return sectorSelected !== '' ? responseOrders?.filter(order => order.location === sectorSelected) : responseOrders //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
         }
         const ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
-        return ordersByGroup //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+        let filteredOrdersBySector = sectorSelected !== '' ? ordersByGroup?.filter(order => order.location === sectorSelected) : ordersByGroup
+        return filteredOrdersBySector //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
     }
 
     let quantidade = group === 0 ? responseOrders?.length : responseOrders?.filter(order => order.group === group).length
@@ -88,7 +90,7 @@ export function MyOrders() {
 
             <div className="list-orders">
                 <div>
-                    {filterOrdersByGroup(group)?.map((order) => {
+                    {filterOrdersByGroup(group, sector)?.map((order) => {
                         return (
                             <button
                                 onClick={() => navigate(`/ordem/${order.number}`)}

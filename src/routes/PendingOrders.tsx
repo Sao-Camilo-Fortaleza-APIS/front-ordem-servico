@@ -15,6 +15,7 @@ export function PendingOrders() {
     const user = Cookies.get('user') ?? ''
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
     let group: string = searchParams.get('group') ?? '';
+    let sector: string = searchParams.get('sector') ?? '';
 
     const { data: responsePendingOrders, isFetching, refetch } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
@@ -34,6 +35,7 @@ export function PendingOrders() {
         placeholderData: keepPreviousData,
     })
     let quantidade = responsePendingOrders?.length
+    let filteredOrdersBySector = sector !== '' ? responsePendingOrders?.filter(order => order.location === sector) : responsePendingOrders
 
     useEffect(() => {
         refetch()
@@ -68,7 +70,7 @@ export function PendingOrders() {
 
             <div className="list-orders">
                 <div>
-                    {responsePendingOrders?.map((order) => {
+                    {filteredOrdersBySector?.map((order) => {
                         return (
                             <button
                                 onClick={() => navigate(`/ordem/${order.number}`)}
