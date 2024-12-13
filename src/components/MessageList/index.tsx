@@ -22,7 +22,7 @@ const Message = styled.div`
   border-radius: 8px;
   gap: 1rem;
   text-align: left;
-  background-color: ${({ user }: { user: string }) => (user === 'executor' ? '#007bff' : '#ddd')};
+  background-color: ${({ user }: { user: string }) => (user === 'executor' ? '#3b82f6' : '#ddd')};
   color: ${({ user }: { user: string }) => (user === 'executor' ? '#fff' : '#333')};
   align-self: ${({ user }: { user: string }) => (user === 'executor' ? 'flex-end' : 'flex-start')};
 
@@ -58,7 +58,7 @@ function MessageList({ messages, userLogged }: MessageListProps) {
         </Message>
       ))}
       {/* caso não tenha mensagem */}
-      {!messages.length && <p>Nenhuma mensagem</p>}
+      {!messages.length && <p style={{ textAlign: 'center', color: '#a1a1aa' }}>Nenhuma mensagem</p>}
     </MessagesContainer>
   )
 }
