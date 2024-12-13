@@ -16,11 +16,7 @@ export const FormStyled = styled.form`
 		border: 1px solid #d4d4d8;
 		border-radius: 4px;
 		transition: 0.3s;
-
-		:hover {
-			background: #71717A;
-			color: #fff;
-		}
+		box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
 	}
 	select {
 		padding: 0.5rem 1rem;
@@ -37,6 +33,44 @@ export const FormStyled = styled.form`
 		flex-direction: row;
 		width: 100%;
 		gap: 0.5rem;
+
+		#takeon-button {
+			background: #10b981; 
+			color: #fff;
+			border: 1px solid #10b981;
+			box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);			
+
+			:hover {
+				background: #059669;
+				border: 1px solid #059669;
+			}
+		}
+
+		#transfer-button {
+			background: #3b82f6;
+			color: #fff;
+			border: 1px solid #3b82f6;
+			box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+			:hover {
+				background: #2563eb;
+				border: 1px solid #2563eb;
+			}
+		}
+
+		@media (max-width: 600px) {
+			flex-direction: column;
+				#takeon-button {
+					width: 100%;
+					font-size: 1rem;
+					padding: 1rem 0;
+				}
+				#transfer-button {
+					font-size: 1rem;
+					padding: 1rem 0;
+					width: 100%;
+				}
+		}
 	}
 
 	.confirm-transfer {
@@ -55,9 +89,46 @@ export const FormStyled = styled.form`
 		border-radius: 4px;
 	}
 
-	#confirm-close {
+	#confirm-or-cancel {
 		margin-top: 0.5rem;
 		display: flex;
 		gap: 0.5rem;
+
+		#confirm-button {
+			background: #3b82f6; 
+			color: #fff;
+			border: 1px solid #3b82f6;
+			box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+			:hover {
+				background: #2563eb;
+				border: 1px solid #2563eb;
+			}
+		}
+
+		#cancel-button{
+			background: transparent;
+			text-decoration: underline;
+			box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+			:hover {
+				background: #d4d4d8;
+				color: #71717A;
+			}
+
+		}
+
+		// colocar media screen para mobile
+		@media (max-width: 600px) {
+			flex-direction: column;
+			#confirm-button {
+				width: 100%;
+				font-size: 1rem;
+			}
+			#cancel-button {
+				font-size: 1rem;
+				width: 100%;
+			}
+		}
 	}
 `;

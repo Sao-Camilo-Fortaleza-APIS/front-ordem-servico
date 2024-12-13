@@ -2,15 +2,20 @@ import Cookies from "js-cookie";
 import { MouseEvent, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import { GroupProps, GroupResponse } from "../../routes/ViewOrders";
 import api from "../../services/api";
 import { Button } from "../Button";
 import { FormStyled } from "./styles";
 
+type GrupoTrabalho = {
+	seq_gp_trab: number;
+	ds_grupo_trabalho: string;
+}
+type DadosAPI = Record<string, GrupoTrabalho[]>
+
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	const navigate = useNavigate()
 	const [open, setOpen] = useState(false)
-	const [allWorkgroups, setAllWorkgroups] = useState<GroupResponse>()
+	const [allWorkgroups, setAllWorkgroups] = useState<DadosAPI | null>(null)
 	const [selectedGroup, setSelectedGroup] = useState()
 
 	let user = Cookies.get('user') ?? ''
@@ -18,10 +23,13 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	async function fetchWorkgroups() {
 		await api.get(`/get/workgroup`)
 			.then((response) => {
-				console.log(response.data)
+				console.log("Grupo Trabalho", response.data)
 				setAllWorkgroups(response.data)
-			})
-
+			}).catch((error) => {
+				console.error(error)
+				toast.error('Erro ao buscar grupos de trabalho')
+			}
+			)
 	}
 
 	async function handleSendOrderReply(event: any) {
@@ -52,6 +60,11 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
 		event?.preventDefault()
 
+		if (!selectedGroup) {
+			toast.error("Selecione um grupo para transferir")
+			return
+		}
+
 		await api.post('post/transfer/workgroup', {
 			code_workgroup: selectedGroup,
 			nr_order: numberOrder,
@@ -75,11 +88,13 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 				<div id="takeon-transfer">
 					<Button
 						type="submit"
+						id="takeon-button"
 						onClick={handleSendOrderReply}>
 						Assumir
 					</Button>
 					<Button
 						type="button"
+						id="transfer-button"
 						onClick={() => {
 							setOpen(true)
 							fetchWorkgroups()
@@ -108,15 +123,22 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 							value={selectedGroup}
 						>
 							<option value="">Selecione...</option>
-							{allWorkgroups && allWorkgroups.map((group: GroupProps) => {
-								return <option key={group.code} value={group.code}>{group.describe}</option>
-							})}
+							{allWorkgroups &&
+								Object.entries(allWorkgroups).map(([gruposPlanejamento, gruposTrabalho]) => (
+									<optgroup key={gruposPlanejamento} label={gruposPlanejamento} style={{ backgroundColor: '#f5f5f5' }}>
+										{gruposTrabalho.map((grupo) => (
+											<option key={grupo.seq_gp_trab} value={grupo.seq_gp_trab} >
+												{grupo.ds_grupo_trabalho}
+											</option>
+										))}
+									</optgroup>
+								))}
 						</select>
 					</div>
 
-					<div id="confirm-close">
-						<button type="submit" onClick={handleTransferOrder}>Confirmar</button>
-						<button type="button" onClick={() => setOpen(false)}>Fechar</button>
+					<div id="confirm-or-cancel">
+						<button type="submit" id="confirm-button" onClick={handleTransferOrder}>Confirmar</button>
+						<button type="button" id="cancel-button" onClick={() => setOpen(false)}>Cancelar transfência</button>
 					</div>
 				</div>
 			)}
