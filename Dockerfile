@@ -1,29 +1,29 @@
-# Description: Dockerfile to build the frontend of the application
+# Apenas o estágio de build é necessário
+FROM node:18-alpine
 
-# Base image
-FROM node:20 as base
-FROM base AS dependencies
-WORKDIR /usr/src/front-ordem-servico
+# Definindo o diretório de trabalho
+WORKDIR /app
+
+# Copiando os arquivos de dependências
 COPY package.json package-lock.json ./
-RUN npm install
 
-# Build image
-FROM base as build
-WORKDIR /usr/src/front-ordem-servico
+# Instalando dependências
+RUN npm ci
+
+# Copiando o resto dos arquivos do projeto
 COPY . .
-COPY --from=dependencies /usr/src/front-ordem-servico/node_modules ./node_modules
+
+# Gerando build de produção
 RUN npm run build
-RUN npm prune --production
 
+# Verificando se a pasta dist foi criada e tem arquivos
+RUN ls -la dist && test -f dist/index.html
 
-# Production image
-FROM node:20-alpine3.19 AS deploy
-WORKDIR /usr/src/front-ordem-servico
+# Instalando serve para disponibilizar os arquivos estáticos
 RUN npm install -g serve
-COPY --from=build /usr/src/front-ordem-servico/dist ./dist
-COPY --from=build /usr/src/front-ordem-servico/node_modules ./node_modules
-COPY --from=build /usr/src/front-ordem-servico/package.json ./package.json
 
+# Expondo a porta (pode ser alterada conforme necessidade)
 EXPOSE 5175
 
-CMD ["npm", "run", "start"]
+# Comando para servir os arquivos estáticos
+CMD ["serve", "-s", "dist", "-l", "5175", "--cors"]
