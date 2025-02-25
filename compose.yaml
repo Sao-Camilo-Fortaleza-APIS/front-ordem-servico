@@ -1,0 +1,25 @@
+networks:
+  apps_net:
+    external: true
+
+services:
+  front_ordem_servico:
+    image: api-chamados:v2
+    container_name: front_ordem_servico
+    build:
+      context: .
+      dockerfile: Dockerfile
+    ports:
+      - 5175:5175
+    env_file:
+      - .env.local
+    restart: always
+    deploy:
+      resources:
+        limits:
+          memory: 1g # Limite máximo de memória
+          cpus: "0.5" # Limite de CPU (metade de um núcleo)
+        reservations:
+          memory: 512M # Reserva mínima de memória
+    networks:
+      - apps_net
