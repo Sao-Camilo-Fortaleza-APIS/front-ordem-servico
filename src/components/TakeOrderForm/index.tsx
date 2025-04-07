@@ -65,7 +65,19 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			return
 		}
 
+		const user_logged = Cookies.get('user') ?? ''
+		console.log("user_logged", user_logged)
+		if (!user_logged || user_logged === '') {
+			//Lançar uma notificação de erro
+			toast.error('Sessão expirada, faça login novamente')
+			Cookies.remove('exec.token')
+			Cookies.remove('user')
+			navigate('/entrar')
+			return
+		}
+
 		await api.post('post/transfer/workgroup', {
+			nm_usuario: user_logged,
 			code_workgroup: selectedGroup,
 			nr_order: numberOrder,
 		}).then(() => {
