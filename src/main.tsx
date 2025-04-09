@@ -9,6 +9,7 @@ import { Historico } from './Pages/Formularios/Historico';
 import { SearchProvider } from './contexts/SearchContext';
 import { MyOrders } from './routes/MyOrders';
 import { PendingOrders } from './routes/PendingOrders';
+import { ProtectedRoute } from './routes/ProtectedRoute';
 import { RegisterServiceOrder } from './routes/RegisterServiceOrder';
 import { ServiceOrderDetails } from './routes/ServiceOrderDetails';
 import { SignIn } from './routes/SignIn';
@@ -32,7 +33,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/historico',
-        element: <SearchProvider><Historico /></SearchProvider>,
+        element:
+          <SearchProvider>
+            <Historico />
+          </SearchProvider>,
       },
       {
         path: '/entrar',
@@ -40,7 +44,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/ordens',
-        element: <ViewOrders />,
+        element:
+          <ProtectedRoute>
+            <ViewOrders />
+          </ProtectedRoute>,
         children: [
           {
             path: '/ordens/minhas',
@@ -55,7 +62,12 @@ const router = createBrowserRouter([
       },
       {
         path: '/ordem/:orderId',
-        element: <SearchProvider><ServiceOrderDetails /></SearchProvider>,
+        element:
+          <SearchProvider>
+            <ProtectedRoute>
+              <ServiceOrderDetails />
+            </ProtectedRoute>,
+          </SearchProvider>,
       }
     ],
   },

@@ -1,7 +1,6 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -18,7 +17,6 @@ const schemareplyform = z.object({
 })
 type SchemaReplyForm = z.infer<typeof schemareplyform>
 
-
 export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
   const queryClient = useQueryClient()
   const navigate = useNavigate()
@@ -31,50 +29,39 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
     }
   })
 
-  let user = Cookies.get('user') ?? ''
-  let isDisabled: boolean = watch('typeHistory') === 'retorno' ? true : false
+  const user = Cookies.get('user') ?? ''
+  const isDisabled = watch('typeHistory') === 'retorno'
 
   const { mutateAsync } = useMutation({
     mutationFn: async ({ history, typeHistory, close }: SchemaReplyForm) => {
-      console.log({ history, typeHistory, close, isDisabled });
-
-      await new Promise(resolve => {
-        setTimeout(resolve, 1000)
-        const verify = verifyToken()
-        if (!verify) {
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-
-          throw new Error("Erro ao enviar histórico", { cause: 'Sessão expirada, faça login novamente' })
-        }
-      })
+      const verify = verifyToken()
+      if (!verify) {
+        throw new Error("Erro", { cause: 'TokenExpired' })
+      }
 
       if (typeHistory === 'retorno') {
-        await api.post('/post/history/return', {
-          nr_order: numberOrder,
-          nm_user: user,
-          history,
-        })
+        await api.post('/post/history/return', { nr_order: numberOrder, nm_user: user, history })
       }
       if (typeHistory === 'solucao') {
-        await api.post(`/post/history/solution?closed=${close}`, {
-          nr_order: numberOrder,
-          nm_user: user,
-          history
-        })
+        await api.post(`/post/history/solution?closed=${close}`, { nr_order: numberOrder, nm_user: user, history })
       }
     },
     onSuccess: () => {
-      queryClient.invalidateQueries({
-        queryKey: ['user', 'minhas', user],
-      })
+      queryClient.invalidateQueries({ queryKey: ['user', 'minhas', user], })
       resetField('history')
 
-      toast.success(`Histórico enviado!`, { position: 'top-center' })
+      toast.success('Histórico enviado!')
       return navigate(-1)
     },
     onError: (error) => {
-      toast.error(`${error.message}`, { position: 'top-center' })
+      if (error instanceof Error && error.cause === 'TokenExpired') {
+        toast.error('Sessão expirada, faça login novamente!')
+        Cookies.remove('exec.token')
+        Cookies.remove('user')
+        queryClient.clear()
+        return navigate('/entrar')
+      }
+      toast.error(error?.message || "Erro ao enviar histórico")
     },
   })
 
@@ -82,14 +69,12 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
     await mutateAsync({ history, typeHistory, close })
   }
 
-  useEffect(() => {
-    if (user === '') {
-      toast.error('Sessão expirada, faça login novamente', { position: 'top-center' })
-      Cookies.remove('exec.token')
-      Cookies.remove('user')
-      return navigate('/entrar')
-    }
-  }, [user])
+  /*   useEffect(() => {
+      if (user === '') {
+        toast.error('Sessão expirada, faça login novamente!')
+        return
+      }
+    }, [user]) */
 
   return (
     <FormStyled onSubmit={handleSubmit(handleSendOrderReply)}>

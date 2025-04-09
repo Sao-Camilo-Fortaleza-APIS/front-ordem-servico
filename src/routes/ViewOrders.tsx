@@ -21,6 +21,7 @@ export function ViewOrders() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const user = Cookies.get('user') ?? ''
+  const token = Cookies.get('exec.token') ?? ''
   let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
   let group: string = searchParams.get('group') ?? '';
   let sector: string = searchParams.get('sector') ?? '';
@@ -34,9 +35,7 @@ export function ViewOrders() {
 
       if (response.status === 401) {
         toast.error('Sessão expirada, faça login novamente')
-        Cookies.remove('exec.token')
-        Cookies.remove('user')
-        navigate('/entrar')
+        logout()
       }
       return response.data
     },
@@ -53,9 +52,7 @@ export function ViewOrders() {
 
         if (response.status === 401) {
           toast.error('Sessão expirada, faça login novamente')
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-          navigate('/entrar')
+          logout()
           return
         }
         return response.data
@@ -66,9 +63,7 @@ export function ViewOrders() {
 
       if (response.status === 401) {
         toast.error('Sessão expirada, faça login novamente')
-        Cookies.remove('exec.token')
-        Cookies.remove('user')
-        navigate('/entrar')
+        logout()
       }
       return response.data
     },
@@ -93,7 +88,7 @@ export function ViewOrders() {
     event.preventDefault()
     navigate('/ordens/pendentes')
   }
-  function logOut() {
+  function logout() {
     Cookies.remove('exec.token')
     Cookies.remove('user')
     queryClient.clear()
@@ -107,7 +102,7 @@ export function ViewOrders() {
 
         <div className="hero">
           <span className="user-name">{user}</span>
-          <button className="logout" onClick={logOut}>
+          <button className="logout" onClick={logout}>
             <LogOut className="icon" size={24} />
             Sair
           </button>

@@ -1,22 +1,34 @@
 import Cookies from "js-cookie"
 import { jwtDecode } from "jwt-decode"
 
+type TokenPayload = {
+    exp: number
+    [key: string]: any // caso tenha mais dados no payload
+}
+
 /**
- * Verify if the token exists in the cookies and if it is valid and not expired
+ * Verifica se o token existe nos cookies e se é válido e não expirado
  * @returns boolean - true if the token is valid, false otherwise
  */
-export function verifyToken() {
+export function verifyToken(): boolean {
     const token = Cookies.get('exec.token')
     if (!token) {
         return false
     }
-    const decoded = jwtDecode(token)
-    if (decoded && decoded.exp) {
-        const now = Date.now().valueOf() / 1000
-        if (decoded.exp < now) {
-            return false
+
+    try {
+        const decoded: TokenPayload = jwtDecode(token)
+
+        // Verifica se o campo 'exp' existe
+        if (!decoded.exp) {
+            return false;
         }
-        return true
+
+        const now = Math.floor(Date.now() / 1000) // tempo atual em segundos
+
+        return decoded.exp > now // verifica se o token não está expirado
+    } catch (error) {
+        console.error("Erro ao decodificar token:", error)
+        return false
     }
-    return false
 }
