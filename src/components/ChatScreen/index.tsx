@@ -67,7 +67,6 @@ const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) => {
 
     useEffect(() => {
         setLastUpdate(new Date())
-        console.log('Atualizado em:', lastUpdate)
     }, [])
 
     return (

@@ -34,9 +34,7 @@ export function ViewOrders() {
 
       if (response.status === 401) {
         toast.error('Sessão expirada, faça login novamente')
-        Cookies.remove('exec.token')
-        Cookies.remove('user')
-        navigate('/entrar')
+        logout()
       }
       return response.data
     },
@@ -50,30 +48,16 @@ export function ViewOrders() {
     queryFn: async () => {
       if (filtro === 'minhas') {
         const response = await api.get(`/get/orders/executor/${user}`)
-
-        if (response.status === 401) {
-          toast.error('Sessão expirada, faça login novamente')
-          Cookies.remove('exec.token')
-          Cookies.remove('user')
-          navigate('/entrar')
-          return
-        }
         return response.data
       }
+
       if (group === '') return []
 
       const response = await api.get(`/get/orders/workgroup/${group}`)
-
-      if (response.status === 401) {
-        toast.error('Sessão expirada, faça login novamente')
-        Cookies.remove('exec.token')
-        Cookies.remove('user')
-        navigate('/entrar')
-      }
       return response.data
     },
-    enabled: !cachedOrders,
-    /* initialData: cachedOrders, */
+    initialData: cachedOrders as OrderResponse | undefined,
+    enabled: true,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: true,
   })
@@ -93,7 +77,8 @@ export function ViewOrders() {
     event.preventDefault()
     navigate('/ordens/pendentes')
   }
-  function logOut() {
+  function logout() {
+    toast.error('Sessão encerrada, faça login novamente')
     Cookies.remove('exec.token')
     Cookies.remove('user')
     queryClient.clear()
@@ -107,7 +92,7 @@ export function ViewOrders() {
 
         <div className="hero">
           <span className="user-name">{user}</span>
-          <button className="logout" onClick={logOut}>
+          <button className="logout" onClick={logout}>
             <LogOut className="icon" size={24} />
             Sair
           </button>
