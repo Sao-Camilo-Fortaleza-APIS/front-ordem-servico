@@ -21,7 +21,6 @@ export function ViewOrders() {
   const queryClient = useQueryClient();
   const navigate = useNavigate();
   const user = Cookies.get('user') ?? ''
-  const token = Cookies.get('exec.token') ?? ''
   let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
   let group: string = searchParams.get('group') ?? '';
   let sector: string = searchParams.get('sector') ?? '';
@@ -49,26 +48,16 @@ export function ViewOrders() {
     queryFn: async () => {
       if (filtro === 'minhas') {
         const response = await api.get(`/get/orders/executor/${user}`)
-
-        if (response.status === 401) {
-          toast.error('Sessão expirada, faça login novamente')
-          logout()
-          return
-        }
         return response.data
       }
+
       if (group === '') return []
 
       const response = await api.get(`/get/orders/workgroup/${group}`)
-
-      if (response.status === 401) {
-        toast.error('Sessão expirada, faça login novamente')
-        logout()
-      }
       return response.data
     },
-    enabled: !cachedOrders,
-    /* initialData: cachedOrders, */
+    initialData: cachedOrders as OrderResponse | undefined,
+    enabled: true,
     placeholderData: keepPreviousData,
     refetchOnWindowFocus: true,
   })
@@ -89,6 +78,7 @@ export function ViewOrders() {
     navigate('/ordens/pendentes')
   }
   function logout() {
+    toast.error('Sessão encerrada, faça login novamente')
     Cookies.remove('exec.token')
     Cookies.remove('user')
     queryClient.clear()
