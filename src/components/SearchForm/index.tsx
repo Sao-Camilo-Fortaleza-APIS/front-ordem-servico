@@ -1,17 +1,22 @@
 import { ChangeEvent, useState } from 'react';
-import { SearchByUser } from '../SearchByUser';
+import { SearchByCPF } from '../SearchByCPF';
 import { SearchByOrderNumber } from '../SearchByOrderNumber';
+import { SearchByUser } from '../SearchByUser';
 import { RadioButton } from './styles';
 
+type SearchType = 'ORDER' | 'USER' | 'CPF'; // Definindo os tipos de pesquisa disponíveis
+
 function SearchForm() {
-  const [searchType, setSearchType] = useState<string>('ORDER'); // Estado para rastrear a seleção de pesquisa
+  const [searchType, setSearchType] = useState<SearchType>('ORDER'); // Estado para rastrear a seleção de pesquisa
 
   const handleSearchTypeChange = (event: ChangeEvent<HTMLInputElement>) => {
-    setSearchType(event.target.value);
+    setSearchType(event.target.value as SearchType); // Atualiza o estado com o tipo de pesquisa selecionado
+
   };
 
   return (
     <div>
+      <span>Prefiro pesquisar por:</span>
       <RadioButton>
         <div>
           <input
@@ -21,7 +26,7 @@ function SearchForm() {
             checked={searchType === 'ORDER'}
             onChange={handleSearchTypeChange}
           />
-          <label htmlFor="order">Pesquisa por Ordem</label>
+          <label htmlFor="order">Ordem</label>
         </div>
         <div>
           <input
@@ -31,7 +36,18 @@ function SearchForm() {
             checked={searchType === 'USER'}
             onChange={handleSearchTypeChange}
           />
-          <label htmlFor="user">Pesquisa por Usuário</label>
+          <label htmlFor="user">Usuário</label>
+        </div>
+
+        <div>
+          <input
+            type="radio"
+            id="cpf"
+            value="CPF"
+            checked={searchType === 'CPF'}
+            onChange={handleSearchTypeChange}
+          />
+          <label htmlFor="cpf">CPF</label>
         </div>
       </RadioButton>
 
@@ -41,6 +57,10 @@ function SearchForm() {
 
       {searchType === 'ORDER' && (
         <SearchByOrderNumber />
+      )}
+
+      {searchType === 'CPF' && (
+        <SearchByCPF />
       )}
     </div>
   );
