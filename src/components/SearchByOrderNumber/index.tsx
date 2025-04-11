@@ -1,14 +1,14 @@
+import { AxiosError } from "axios";
 import { Search } from "lucide-react";
+import { toast } from "react-toastify";
+import { useSearch } from "../../contexts/SearchContext";
+import { ResultOrderDataProps } from "../../Pages/Formularios/Historico";
+import api from "../../services/api";
+import { configToastError } from "../../utils/toast-config";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { Label } from "../Label";
 import { Fieldset } from "../Modal/styles";
-import { useSearch } from "../../contexts/SearchContext";
-import { AxiosError } from "axios";
-import { ResultOrderDataProps } from "../../Pages/Formularios/Historico";
-import { toast } from "react-toastify";
-import { configToastError } from "../../utils/toast-config";
-import api from "../../services/api";
 
 
 export function SearchByOrderNumber() {
@@ -22,7 +22,6 @@ export function SearchByOrderNumber() {
     await api // await é o método que espera a resposta da API
       .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
       .then(response => {
-        console.log(response.data.order)
         setOpen(false)
         setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
         setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData

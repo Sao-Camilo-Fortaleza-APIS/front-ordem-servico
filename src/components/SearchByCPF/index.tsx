@@ -2,6 +2,7 @@ import { Search } from 'lucide-react'
 import { FormEvent, useState } from 'react'
 import { useSearch } from '../../contexts/SearchContext'
 import api from '../../services/api'
+import { formatCPF, sanitizeCPF } from '../../utils/format-cpf'
 import { Button } from '../Button'
 import { Input } from '../Input'
 import { Label } from '../Label'
@@ -22,7 +23,7 @@ export function SearchByCPF() {
         event.preventDefault()
         setApiData([])
         setSearchMade(true)
-        await api.get(`/get/orders/requester/${query}`)
+        await api.get(`/get/orders/cpf/${sanitizeCPF(query)}`)
             .then(response => {
                 setApiData(response.data)
             })
@@ -36,16 +37,17 @@ export function SearchByCPF() {
     return (
         <div>
             <form onSubmit={handleSearch}>
-                <Label htmlFor="user">Usuário do Tasy</Label>
+                <Label htmlFor="cpf">CPF</Label>
                 <Fieldset>
                     <Input
                         required
-                        id="user"
+                        id="cpf"
                         variant="search"
-                        name="user"
+                        name="cpf"
                         type="text"
                         value={query}
-                        onChange={e => setQuery(e.target.value)}
+                        onChange={e => setQuery(formatCPF(e.target.value))}
+                        maxLength={14}
                         placeholder="Ex: 123.456.789-00"
                     />
                     <Button type="submit" variant="search">
