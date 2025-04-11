@@ -1,9 +1,10 @@
 import Cookies from "js-cookie";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import api from "../../services/api";
 import { Button } from "../Button";
+import { TransferOrderModal } from "../TransferOrderModal";
 import { FormStyled } from "./styles";
 
 type GrupoTrabalho = {
@@ -14,13 +15,9 @@ type DadosAPI = Record<string, GrupoTrabalho[]>
 
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	const navigate = useNavigate()
-	const [open, setOpen] = useState(false)
-	const [allWorkgroups, setAllWorkgroups] = useState<DadosAPI | null>(null)
-	const [selectedGroup, setSelectedGroup] = useState()
+	const [openTransferModal, setOpenTransferModal] = useState(false)
 
-	let user = Cookies.get('user') ?? ''
-
-	async function fetchWorkgroups() {
+	/* async function fetchWorkgroups() {
 		await api.get(`/get/workgroup`)
 			.then((response) => {
 				console.log("Grupo Trabalho", response.data)
@@ -30,20 +27,23 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 				toast.error('Erro ao buscar grupos de trabalho')
 			}
 			)
-	}
+	} */
 
 	async function handleSendOrderReply(event: any) {
 		event.preventDefault()
+		const user = Cookies.get('user')
+
+		if (!user) {
+			Cookies.remove('user')
+			Cookies.remove('exec.token')
+			return navigate('/entrar')
+		}
+		if (!numberOrder) {
+			toast.error('Número da Ordem de Serviço não encontrado')
+			return
+		}
 
 		try {
-			if (!user || user === '') {
-				Cookies.remove('user')
-				Cookies.remove('exec.token')
-				navigate('/signin')
-			} else if (!numberOrder) {
-				toast.error('Número da Ordem de Serviço não encontrado')
-				return
-			}
 			await api.post('/post/takeon', {
 				nr_order: numberOrder,
 				nm_user: user
@@ -57,7 +57,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 		}
 	}
 
-	async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
+	/* async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
 		event?.preventDefault()
 
 		if (!selectedGroup) {
@@ -80,6 +80,8 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			nm_usuario: user_logged,
 			code_workgroup: selectedGroup,
 			nr_order: numberOrder,
+			ds_historico: 'Transferido para outro grupo'
+
 		}).then(() => {
 			toast.success("Ordem de Serviço transferida!")
 			navigate(-1)
@@ -87,37 +89,27 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			console.log(error);
 			toast.error("Ocorreu um erro")
 		})
-	}
-
-	const handleChange = (event: any) => {
-		setSelectedGroup(event.target.value);
-	};
+	} */
 
 	return (
 		<FormStyled >
+			<div id="takeon-transfer">
+				<Button onClick={handleSendOrderReply} id="takeon-button" type="submit">
+					Assumir
+				</Button>
+				<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button">
+					Transferir
+				</Button>
+			</div>
 
-			{!open && (
-				<div id="takeon-transfer">
-					<Button
-						type="submit"
-						id="takeon-button"
-						onClick={handleSendOrderReply}>
-						Assumir
-					</Button>
-					<Button
-						type="button"
-						id="transfer-button"
-						onClick={() => {
-							setOpen(true)
-							fetchWorkgroups()
-						}}>
-						Transferir
-					</Button>
-				</div>
-			)}
+			<TransferOrderModal
+				open={openTransferModal}
+				onOpenChange={setOpenTransferModal}
+				numberOrder={numberOrder}
+			/* onSuccess={() => navigate("/ordens/pendentes")} */
+			/>
 
-
-			{open && (
+			{/* {open && (
 				<div className="confirm-transfer">
 					<div>
 						<label
@@ -147,13 +139,26 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 								))}
 						</select>
 					</div>
+					<div>
+						<label htmlFor="users">Deseja atribuir a um usuário? (opcional)</label>
+
+						<select name="users" id="user">
+
+						</select>
+					</div>
+
+					<div>
+						<label htmlFor="comment">Histórico</label>
+
+						<textarea name="comment" id="comment" />
+					</div>
 
 					<div id="confirm-or-cancel">
 						<button type="submit" id="confirm-button" onClick={handleTransferOrder}>Confirmar</button>
 						<button type="button" id="cancel-button" onClick={() => setOpen(false)}>Cancelar transfência</button>
 					</div>
 				</div>
-			)}
+			)} */}
 		</FormStyled>
 	)
 }

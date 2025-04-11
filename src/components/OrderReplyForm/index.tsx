@@ -1,6 +1,7 @@
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
+import { Loader, SendHorizonal } from "lucide-react";
 import { Controller, useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -8,6 +9,7 @@ import { z } from "zod";
 import api from "../../services/api";
 import { verifyToken } from "../../utils/verify-token";
 import { Button } from "../Button";
+import { MoreActionsMenu } from "../MoreActions";
 import { FormStyled, SwitchRoot, SwitchThumb } from "./styles";
 
 const schemareplyform = z.object({
@@ -108,26 +110,30 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
         {errors.typeHistory?.message && <span style={{ color: '#ef4444' }}>{errors.typeHistory.message}</span>}
       </div>
 
-      <div className="switch-item">
-        <label htmlFor="close">Encerrar Ordem de Serviço?</label>
-        <Controller
-          control={control}
-          name="close"
-          render={({ field }) => (
-            <SwitchRoot
-              disabled={isDisabled || isSubmitting}
-              id="close"
-              checked={isDisabled ? false : field.value}
-              onCheckedChange={field.onChange}
-            >
-              <SwitchThumb />
-            </SwitchRoot>
-          )} />
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'space-between' }}>
+        <div className="switch-item">
+          <label htmlFor="close">Encerrar Ordem de Serviço?</label>
+          <Controller
+            control={control}
+            name="close"
+            render={({ field }) => (
+              <SwitchRoot
+                disabled={isDisabled || isSubmitting}
+                id="close"
+                checked={isDisabled ? false : field.value}
+                onCheckedChange={field.onChange}
+              >
+                <SwitchThumb />
+              </SwitchRoot>
+            )} />
+        </div>
+        {/* Adicionar opções */}
+        <MoreActionsMenu />
       </div>
 
       {/* Texto de histórico */}
       {errors.history?.message && <span style={{ color: '#ef4444' }}>{errors.history.message}</span>}
-      <div style={{ display: "flex", alignItems: "end" }}>
+      <div className="comment-container">
         <textarea
           {...register('history')}
           disabled={isSubmitting}
@@ -138,7 +144,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           placeholder="Digite sua resposta..."
         />
         <Button variant="reply" disabled={isSubmitting} type="submit">
-          {isSubmitting ? ' Enviando...' : ' Enviar'}
+          {isSubmitting ? <Loader className="animate-spin" size={20} /> : <SendHorizonal size={20} />}
         </Button>
 
       </div>

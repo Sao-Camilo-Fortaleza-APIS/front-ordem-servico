@@ -7,25 +7,42 @@ export const FormStyled = styled.form`
   width: 100%;
   gap: 0.5rem;
 
-  textarea {
-    resize: none;
-    width: 100%;
-    font-family: 'Roboto', sans-serif;
-    font-size: 1.125rem;
-    line-height: 1;
+  .comment-container {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    background-color: #fff;
     padding: 0.5rem;
-    height: 4rem;
-    border-radius: 0.5rem;
-    color: #71717a;
-    
-    ::placeholder {
-      color: #a1a1aa;
-      font-family: 'Roboto', sans-serif;
-      font-size: 1rem;
-    }
-    :focus{
-      outline: none;
+    border-radius: 0.75rem;
+    border: 1px solid #d4d4d8;
+    max-width: 100%;
+    transition: border 0.2s ease-in-out;
+
+    :focus-within {
       border: 1px solid #60a5fa;
+    }
+
+    textarea {
+      resize: none;
+      width: 100%;
+      font-family: 'Roboto', sans-serif;
+      font-size: 1.125rem;
+      line-height: 1;
+      padding: 0.5rem;
+      height: 4rem;
+      border-radius: 0.5rem;
+      color: #71717a;
+      border: none; //1px solid #d4d4d8;
+      
+      ::placeholder {
+        color: #a1a1aa;
+        font-family: 'Roboto', sans-serif;
+        font-size: 1rem;
+      }
+      :focus{
+        outline: none;
+        border: none;
+      }
     }
   }
 
