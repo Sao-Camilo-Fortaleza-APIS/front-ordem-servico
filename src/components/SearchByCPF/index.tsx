@@ -49,6 +49,7 @@ export function SearchByCPF() {
                         onChange={e => setQuery(formatCPF(e.target.value))}
                         maxLength={14}
                         placeholder="Ex: 123.456.789-00"
+                        autoComplete='off'
                     />
                     <Button type="submit" variant="search">
                         <Search size="20" color="#71717a" />
