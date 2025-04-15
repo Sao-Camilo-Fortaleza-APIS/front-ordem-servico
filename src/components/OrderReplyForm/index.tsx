@@ -53,7 +53,9 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
       resetField('history')
 
       toast.success('Histórico enviado!')
-      return navigate(-1)
+      setTimeout(() => {
+        return navigate(-1)
+      }, 1000)
     },
     onError: (error) => {
       if (error instanceof Error && error.cause === 'TokenExpired') {
@@ -128,7 +130,9 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
             )} />
         </div>
         {/* Adicionar opções */}
-        <MoreActionsMenu />
+        <MoreActionsMenu
+          numberOrder={numberOrder}
+        />
       </div>
 
       {/* Texto de histórico */}

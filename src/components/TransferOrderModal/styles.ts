@@ -5,6 +5,7 @@ export const Overlay = styled(Dialog.Overlay)`
   background-color: rgba(0, 0, 0, 0.4);
   position: fixed;
   inset: 0;
+  z-index: 50;
 `;
 
 export const Content = styled(Dialog.Content)`
@@ -19,13 +20,18 @@ export const Content = styled(Dialog.Content)`
   max-width: 90vw;
   display: flex;
   flex-direction: column;
-  //gap: 1rem;
+  z-index: 50;
 `;
 
 export const Label = styled.label`
   font-weight: bold;
  margin: 1.5rem 0 0.25rem 0;
  font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+ color: #71717A;
+
+ span {
+  font-weight: normal;
+ }
 `;
 
 export const Select = styled.select`
@@ -39,6 +45,11 @@ export const Select = styled.select`
   font-weight: 500;
   font-size: 0.875rem;
   color: #71717A;
+
+  
+  :focus {
+    outline: 2px solid #007bff;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -52,6 +63,14 @@ export const TextArea = styled.textarea`
   font-family: 'Roboto', 'Trebuchet MS', sans-serif;
   font-size: 0.875rem;
   color: #71717A;
+
+  :focus {
+    outline: 2px solid #007bff;
+  }
+
+  ::placeholder {
+    color: #CCC;
+  }
 `;
 
 export const ButtonRow = styled.div`
@@ -68,19 +87,29 @@ export const Button = styled.button`
   background-color: #007bff;
   color: white;
   font-weight: bold;
+  transition: all 0.2s ease-in-out;
 
   &:hover {
 	background-color: #0056b3;
   }
 
+  &:disabled {
+    background-color: #ccc;
+  }
+
+  &:focus {
+    outline: 2px solid #007bff;
+  }
+  
   &.cancel {
 	background-color: #ccc;
 	color: black;
 
-	&:hover {
-	  background-color: #999;
-	}
+    &:hover {
+      background-color: #999;
+    }
   }
+
 `;
 
 export const CloseButton = styled(Dialog.Close)`

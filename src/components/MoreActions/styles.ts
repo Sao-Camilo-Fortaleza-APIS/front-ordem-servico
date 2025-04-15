@@ -25,7 +25,7 @@ export const Content = styled(DropdownMenu.Content)`
   margin: 0.5rem;
   box-shadow: 0 8px 16px rgba(0, 0, 0, 0.08);
   width: 13.75rem;
-  z-index: 999;
+  z-index: 30;
 `;
 
 export const Item = styled(DropdownMenu.Item)`

@@ -1,20 +1,19 @@
+import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSearch } from "../../contexts/SearchContext";
 import api from "../../services/api";
 import { Button } from "../Button";
+import { OrderProps } from "../Order";
 import { TransferOrderModal } from "../TransferOrderModal";
 import { FormStyled } from "./styles";
 
-type GrupoTrabalho = {
-	seq_gp_trab: number;
-	ds_grupo_trabalho: string;
-}
-type DadosAPI = Record<string, GrupoTrabalho[]>
-
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
+	const { setResultOrderData } = useSearch()
 	const navigate = useNavigate()
+	const queryClient = useQueryClient()
 	const [openTransferModal, setOpenTransferModal] = useState(false)
 
 	/* async function fetchWorkgroups() {
@@ -31,9 +30,9 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 
 	async function handleSendOrderReply(event: any) {
 		event.preventDefault()
-		const user = Cookies.get('user')
+		const userLogged = Cookies.get('user')
 
-		if (!user) {
+		if (!userLogged) {
 			Cookies.remove('user')
 			Cookies.remove('exec.token')
 			return navigate('/entrar')
@@ -43,16 +42,43 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			return
 		}
 
+		const loadingToast = toast.loading('Assumindo Ordem de Serviço...')
 		try {
+
 			await api.post('/post/takeon', {
 				nr_order: numberOrder,
-				nm_user: user
+				nm_user: userLogged
 			})
 
-			toast.success('Ordem de Serviço assumida')
-			navigate(-1)
+			// Atualiza o cache localmente
+			const currentOrders = queryClient.getQueryData<OrderProps[]>(['user', 'pendentes', userLogged])
+			if (currentOrders) {
+				const updatedOrders = currentOrders.filter(order => order.number !== numberOrder)
+				queryClient.setQueryData(['user', 'pendentes', userLogged], updatedOrders)
+			}
+
+			queryClient.invalidateQueries({ queryKey: ['user', 'pendentes', userLogged], refetchType: 'all' })
+			queryClient.invalidateQueries({ queryKey: ['user', 'minhas', userLogged], refetchType: 'all' })
+
+			toast.update(loadingToast, {
+				render: 'Ordem de Serviço assumida!',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1000,
+				closeButton: true,
+			})
+
+			setResultOrderData((prev) => ({
+				...prev,
+				executor: userLogged,
+			}))
 		} catch (error) {
-			toast.error('Erro ao assumir Ordem de Serviço')
+			toast.update(loadingToast, {
+				render: 'Erro ao assumir OS.',
+				type: 'error',
+				isLoading: false,
+				autoClose: 2000,
+			})
 			console.error(error)
 		}
 	}
@@ -92,21 +118,22 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	} */
 
 	return (
-		<FormStyled >
-			<div id="takeon-transfer">
-				<Button onClick={handleSendOrderReply} id="takeon-button" type="submit">
-					Assumir
-				</Button>
-				<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button">
-					Transferir
-				</Button>
-			</div>
+		<>
+			<FormStyled onSubmit={handleSendOrderReply}>
+				<div id="takeon-transfer">
+					<Button id="takeon-button" type="submit">
+						Assumir
+					</Button>
+					<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button">
+						Transferir
+					</Button>
+				</div>
+			</FormStyled>
 
 			<TransferOrderModal
 				open={openTransferModal}
 				onOpenChange={setOpenTransferModal}
 				numberOrder={numberOrder}
-			/* onSuccess={() => navigate("/ordens/pendentes")} */
 			/>
 
 			{/* {open && (
@@ -159,6 +186,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 					</div>
 				</div>
 			)} */}
-		</FormStyled>
+
+		</>
 	)
 }

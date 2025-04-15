@@ -1,28 +1,48 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { FileText, Paperclip, UserPen } from 'lucide-react';
+import { Plus, UserPen } from 'lucide-react';
+import { useState } from 'react';
+import { TransferOrderModal } from '../TransferOrderModal';
 import { Content, Item, TriggerButton } from './styles';
 
-export function MoreActionsMenu() {
-  return (
-    <DropdownMenu.Root>
-      <DropdownMenu.Trigger asChild>
-        <TriggerButton aria-label="Abrir menu de ações">
-          <Paperclip size={20} />
-        </TriggerButton>
-      </DropdownMenu.Trigger>
+export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
+  const [openDropdown, setOpenDropdown] = useState(false)
+  const [openTransferModal, setOpenTransferModal] = useState(false)
 
-      <DropdownMenu.Portal>
-        <Content side="top" align="end">
-          <Item>
-            <FileText size={16} />
-            Preencher laudo
-          </Item>
-          <Item>
-            <UserPen size={16} />
-            Transferir Ordem
-          </Item>
-        </Content>
-      </DropdownMenu.Portal>
-    </DropdownMenu.Root>
+  const handleTransferClick = () => {
+    setOpenDropdown(false); // fecha dropdown
+    setTimeout(() => {
+      setOpenTransferModal(true); // abre modal depois do dropdown sair do DOM
+    }, 100); // tempo para Radix animar e desmontar
+  }
+
+  return (
+    <>
+      <DropdownMenu.Root open={openDropdown} onOpenChange={setOpenDropdown}>
+        <DropdownMenu.Trigger asChild>
+          <TriggerButton aria-label="Abrir menu de ações">
+            <Plus size={20} />
+          </TriggerButton>
+        </DropdownMenu.Trigger>
+
+        <DropdownMenu.Portal>
+          <Content side="top" align="end">
+            <Item onSelect={(e) => {
+              e.preventDefault(); // previne fechamento imediato
+              handleTransferClick();
+            }}>
+              <UserPen size={16} />
+              Transferir Ordem
+            </Item>
+
+          </Content>
+        </DropdownMenu.Portal>
+      </DropdownMenu.Root>
+
+      <TransferOrderModal
+        open={openTransferModal}
+        onOpenChange={setOpenTransferModal}
+        numberOrder={numberOrder}
+      />
+    </>
   );
 }
