@@ -8,6 +8,13 @@ export const Overlay = styled(Dialog.Overlay)`
   z-index: 50;
 `;
 
+export const Title = styled(Dialog.Title)`
+  font-size: 1.5rem;
+  font-weight: bold;
+  margin: 1rem 0;
+  font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+`;
+
 export const Content = styled(Dialog.Content)`
   background: white;
   border-radius: 8px;
@@ -18,9 +25,12 @@ export const Content = styled(Dialog.Content)`
   transform: translate(-50%, -50%);
   width: 500px;
   max-width: 90vw;
+  max-height: 80vh;
+  overflow-y: auto;
   display: flex;
   flex-direction: column;
-  z-index: 50;
+  justify-content: start;
+  z-index: 50;  
 `;
 
 export const Label = styled.label`
@@ -34,7 +44,7 @@ export const Label = styled.label`
  }
 `;
 
-export const Select = styled.select`
+export const Input = styled.input`
   padding: 0.5rem;
   border: 1px solid #d4d4d8;
   border-radius: 4px;
@@ -45,8 +55,8 @@ export const Select = styled.select`
   font-weight: 500;
   font-size: 0.875rem;
   color: #71717A;
+  height: 2.5rem;
 
-  
   :focus {
     outline: 2px solid #007bff;
   }
@@ -74,6 +84,20 @@ export const TextArea = styled.textarea`
   }
 `;
 
+export const DivRow = styled.div`
+  display: flex;
+  align-items: end;
+  justify-content: space-between;
+  flex-direction: row;
+`;
+
+export const DivColumn = styled.div`
+  display: flex;
+  align-items: start;
+  justify-content: space-between;
+  flex-direction: column;
+`;
+
 export const ButtonRow = styled.div`
   display: flex;
   justify-content: flex-end;
@@ -85,7 +109,7 @@ export const Button = styled.button`
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #007bff;
+  background-color: #2563eb;
   color: white;
   font-weight: bold;
   transition: all 0.2s ease-in-out;
@@ -122,3 +146,31 @@ export const CloseButton = styled(Dialog.Close)`
   font-size: 1.5rem;
   color: #71717A;
 `;
+
+export const Table = styled.table`
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 1rem;
+  `;
+
+export const TableHeader = styled.thead`
+    background-color: #f3f4f6;
+  `;
+
+export const TableRow = styled.tr`
+    &:nth-child(even) {
+      background-color: #f9fafb;
+    }
+  `;
+
+export const TableHeaderCell = styled.th`
+    padding: 0.5rem;
+    text-align: left;
+    font-weight: bold;
+    font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+  `;
+
+export const TableCell = styled.td`
+    padding: 0.5rem;
+    font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+  `;

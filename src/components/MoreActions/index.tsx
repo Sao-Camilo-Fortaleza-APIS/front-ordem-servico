@@ -1,18 +1,27 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Plus, UserPen } from 'lucide-react';
+import { FileText, Plus, UserPen } from 'lucide-react';
 import { useState } from 'react';
+import { ReportModal } from '../Report';
 import { TransferOrderModal } from '../TransferOrderModal';
 import { Content, Item, TriggerButton } from './styles';
 
 export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [openTransferModal, setOpenTransferModal] = useState(false)
+  const [openReportModal, setOpenReportModal] = useState(false)
 
   const handleTransferClick = () => {
-    setOpenDropdown(false); // fecha dropdown
+    setOpenDropdown(false) // fecha dropdown
     setTimeout(() => {
-      setOpenTransferModal(true); // abre modal depois do dropdown sair do DOM
-    }, 100); // tempo para Radix animar e desmontar
+      setOpenTransferModal(true) // abre modal depois do dropdown sair do DOM
+    }, 100) // tempo para Radix animar e desmontar
+  }
+
+  const handleAddReportClick = () => {
+    setOpenDropdown(false) // fecha dropdown
+    setTimeout(() => {
+      setOpenReportModal(true) // abre modal depois do dropdown sair do DOM
+    }, 100) // tempo para Radix animar e desmontar
   }
 
   return (
@@ -27,8 +36,15 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
         <DropdownMenu.Portal>
           <Content side="top" align="end">
             <Item onSelect={(e) => {
-              e.preventDefault(); // previne fechamento imediato
-              handleTransferClick();
+              e.preventDefault()
+              handleAddReportClick()
+            }}>
+              <FileText size={16} />
+              Laudos
+            </Item>
+            <Item onSelect={(e) => {
+              e.preventDefault()
+              handleTransferClick()
             }}>
               <UserPen size={16} />
               Transferir Ordem
@@ -37,6 +53,12 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
           </Content>
         </DropdownMenu.Portal>
       </DropdownMenu.Root>
+
+      <ReportModal
+        open={openReportModal}
+        onOpenChange={setOpenReportModal}
+        numberOrder={numberOrder}
+      />
 
       <TransferOrderModal
         open={openTransferModal}
