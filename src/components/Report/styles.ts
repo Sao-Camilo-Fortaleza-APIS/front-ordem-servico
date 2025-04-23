@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import styled from "styled-components";
+import styled, { keyframes } from 'styled-components';
 
 export const Overlay = styled(Dialog.Overlay)`
   background-color: rgba(0, 0, 0, 0.4);
@@ -13,6 +13,11 @@ export const Title = styled(Dialog.Title)`
   font-weight: bold;
   margin: 1rem 0;
   font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+
+  @media (max-width: 480px) {
+    font-size: 1.2rem;
+    text-align: center;
+  }
 `;
 
 export const Content = styled(Dialog.Content)`
@@ -23,25 +28,54 @@ export const Content = styled(Dialog.Content)`
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
+  width: 40rem;
   max-width: 90vw;
-  max-height: 80vh;
-  overflow-y: auto;
+  max-height: 90vh;
+  overflow-y: hidden;
   display: flex;
   flex-direction: column;
   justify-content: start;
-  z-index: 50;  
+  z-index: 50;
+
+  &:focus {
+    outline: none;
+  }
+
+  /* Estilo da barra de rolagem */
+  &::-webkit-scrollbar {
+    width: 0.5rem;
+  }
+  /* Estilo do polegar da barra de rolagem */
+  &::-webkit-scrollbar-thumb {
+    background: #71717a; 
+    border-radius: 0.75rem; 
+  }
+  &::-webkit-scrollbar-thumb:hover {
+    background: #52525b;
+  }
+  /* Estilo da faixa de trilha da barra de rolagem */
+  &::-webkit-scrollbar-track {
+    background: #fff;
+    border-radius: 0.75rem;
+  }
+
+  @media (max-width: 480px) {
+    padding: 1rem;
+    max-height: 95vh;
+    max-width: 95vw;
+    border-radius: 12px;
+  }
 `;
 
 export const Label = styled.label`
   font-weight: bold;
- margin: 1.5rem 0 0.25rem 0;
- font-family: 'Roboto', 'Trebuchet MS', sans-serif;
- color: #71717A;
+  margin: 1rem 0 0.25rem 0;
+  font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+  color: #71717A;
 
- span {
-  font-weight: normal;
- }
+  span {
+    font-weight: normal;
+  }
 `;
 
 export const Input = styled.input`
@@ -87,8 +121,10 @@ export const TextArea = styled.textarea`
 export const DivRow = styled.div`
   display: flex;
   align-items: end;
-  justify-content: space-between;
+  justify-content: start;
   flex-direction: row;
+  gap: 1rem;
+  margin: 0 0.25rem;
 `;
 
 export const DivColumn = styled.div`
@@ -96,6 +132,7 @@ export const DivColumn = styled.div`
   align-items: start;
   justify-content: space-between;
   flex-direction: column;
+  width:100%;
 `;
 
 export const ButtonRow = styled.div`
@@ -112,7 +149,23 @@ export const Button = styled.button`
   background-color: #2563eb;
   color: white;
   font-weight: bold;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   transition: all 0.2s ease-in-out;
+  justify-self: flex-end;
+  height: 2.5rem;
+  font-family: 'Roboto', 'Trebuchet MS', sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap:0.5rem;
+  margin-top: 0.5rem;
+  line-height: 1.5rem;
+  
+  @media (max-width: 480px) {
+    padding: 0.4rem 0.75rem;
+    font-size: 1rem;
+  }
 
   &:hover {
 	background-color: #0056b3;
@@ -127,14 +180,56 @@ export const Button = styled.button`
   }
   
   &.cancel {
-	background-color: #ccc;
-	color: black;
+    background-color: #ccc;
+    color: #18181b;
+
+      &:hover {
+        background-color: #999;
+      }
+  }
+
+  &.icon {
+    background-color: transparent;
+    border: none;
+    color: #2563eb;
+    padding: 0.5rem 1rem;
+    font-size: 1.5rem;
+    cursor: pointer;
+    transition: all 0.25s ease;
 
     &:hover {
-      background-color: #999;
+      color: #0056b3;
+      background-color: #f0f0f0;
+    }
+
+  }
+
+  &.ghost {
+    background-color: transparent;
+    color: #18181b;
+
+    padding: 0.5rem;
+
+    &:hover {
+      background-color: #f0f0f0;
+      color: #18181b;
     }
   }
 
+  &.danger {
+    color: #dc2626;
+    transition: all 0.25s ease;
+
+    &:hover {
+      color: #dc2626;
+      background-color: #fef2f2;
+    }
+
+    &:focus {
+      outline: 2px solid #dc2626;
+      background-color: #fef2f2;
+    }
+  }
 `;
 
 export const CloseButton = styled(Dialog.Close)`
@@ -145,32 +240,73 @@ export const CloseButton = styled(Dialog.Close)`
   border: none;
   font-size: 1.5rem;
   color: #71717A;
+
+  @media (max-width: 480px) {
+    font-size: 1.25rem;
+    right: 0.5rem;
+    top: 0.5rem;
+  }
 `;
 
-export const Table = styled.table`
-    width: 100%;
-    border-collapse: collapse;
-    margin-top: 1rem;
-  `;
+export const ConfirmContainer = styled.div`
+  background: #fef2f2;
+  border: 1px solid #fecaca;
+  padding: 0.75rem 1rem;
+  border-radius: 6px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+`
 
-export const TableHeader = styled.thead`
-    background-color: #f3f4f6;
-  `;
+export const CancelBtn = styled.button`
+  background: #f3f4f6;
+  border: none;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  margin-right: 0.5rem;
+  cursor: pointer;
 
-export const TableRow = styled.tr`
-    &:nth-child(even) {
-      background-color: #f9fafb;
-    }
-  `;
+  &:hover {
+    background: #e5e7eb;
+  }
+`
 
-export const TableHeaderCell = styled.th`
-    padding: 0.5rem;
-    text-align: left;
-    font-weight: bold;
-    font-family: 'Roboto', 'Trebuchet MS', sans-serif;
-  `;
+export const ConfirmBtn = styled.button`
+  background: #dc2626;
+  border: none;
+  color: white;
+  padding: 0.4rem 0.75rem;
+  border-radius: 4px;
+  cursor: pointer;
 
-export const TableCell = styled.td`
-    padding: 0.5rem;
-    font-family: 'Roboto', 'Trebuchet MS', sans-serif;
-  `;
+  &:hover {
+    background: #b91c1c;
+  }
+`
+
+// Animação fade + slide
+export const fadeIn = keyframes`
+  from {
+    opacity: 0;
+    transform: translateY(20px);
+  } to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+`
+
+export const fadeOut = keyframes`
+  from {
+    opacity: 1;
+    transform: translateY(0);
+  } to {
+    opacity: 0;
+    transform: translateY(20px);
+  }
+`
+
+export const AnimatedBlock = styled.div<{ visible: boolean }>`
+  animation: ${({ visible }) => (visible ? fadeIn : fadeOut)} 0.3s ease;
+  display: ${({ visible }) => (visible ? 'block' : 'none')};
+  transition: all 0.3s ease;
+`;

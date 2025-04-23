@@ -1,37 +1,32 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { keepPreviousData, useQuery } from '@tanstack/react-query';
 import Cookies from 'js-cookie';
-import { X } from 'lucide-react';
-import { useState } from 'react';
+import { ArrowLeft, Plus, X } from 'lucide-react';
+import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import api from '../../services/api';
-import { Button, ButtonRow, CloseButton, Content, DivColumn, DivRow, Input, Label, Overlay, Table, TableCell, TableHeader, TableHeaderCell, TableRow, TextArea, Title } from './styles';
+import { AnimatedBlock, Button, ButtonRow, CloseButton, Content, DivColumn, DivRow, Input, Label, Overlay, TextArea, Title } from './styles';
 
-interface ReportModalProps {
+export interface ReportModalProps {
   open: boolean;
   onOpenChange: (open: boolean) => void;
   numberOrder: number;
 }
 
-/*
-** Vai pro form **
 
-  request.json.get("nm_user") => userLogged
-  request.json.get("nr_order") => numberOrder
-  request.json.get("cp_patriomonio,")
-  request.json.get("cp_serial,")
-  request.json.get("cp_brand,")
-  request.json.get("cp_modelo,")
-  request.json.get("cp_armazenamento,")
-  request.json.get("cp_acessorio,")
-  request.json.get("cp_observationervacao,")
-  request.json.get("cp_defeito,")
-  request.json.get("cp_laudo,")
-*/
+//
+import { useHistoryData } from '../../hooks/useHistoryData';
+import { TableReport } from '../TableReport';
+import { TableSkeleton } from '../TableSkeleton';
 
 export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProps) {
   const navigate = useNavigate()
+  const { getHistory } = useHistoryData()
+
+  const [responseReport, setResponseReport] = useState<any[]>([]) // estado para armazenar os laudos já existentes
+  const [isLoading, setIsLoading] = useState(true) // estado para controlar o carregamento dos laudos
+
+  const [isAddingReport, setIsAddingReport] = useState(false) // estado para controlar se está adicionando um laudo ou não
 
   const [patrimony, setPatrimony] = useState<number | undefined>()
   const [serial, setSerial] = useState<string>("")
@@ -45,6 +40,10 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
 
   const userLogged = Cookies.get('user')
 
+  /**
+   * Verifica se todos os campos obrigatórios estão preenchidos
+   * @returns boolean
+   */
   const checkAllFieldsFilled = () => {
     const requiredFields: { value: string | number | undefined; type: 'string' | 'number' }[] = [
       { value: patrimony, type: 'number' },
@@ -67,6 +66,10 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
     })
   }
 
+  /**
+   * Função para lidar com o envio do laudo, verificando se o usuário está logado, se existe um número de ordem e se todos os campos obrigatórios estão preenchidos.
+   * @param e - Evento de clique do botão (parâmetro opcional)
+   */
   async function handleReport(e?: React.MouseEvent<HTMLButtonElement>) {
     e?.preventDefault()
 
@@ -110,10 +113,11 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
         closeButton: true,
       })
 
-      setTimeout(() => {
-        onOpenChange(false)
-        resetStates()
-      }, 1000)
+
+      onOpenChange(false)
+      resetStates()
+      setIsAddingReport(false)
+      await getHistory(numberOrder.toString())
     } catch (error) {
       toast.update(loadingToast, {
         render: `${(error as any)?.response?.data?.message || "Erro ao enviar laudo"}`,
@@ -140,142 +144,183 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
   const handleCancel = () => {
     onOpenChange(false)
     resetStates()
+    setIsAddingReport(false)
   }
 
   const isDisabled = !checkAllFieldsFilled()
 
-  // buscar os laudos já  existem para essa ordem de serviço
-  const { data: responseReport } = useQuery({
-    queryKey: ['report', numberOrder],
-    queryFn: async () => {
-      const response = await api.get(`/get/report/${numberOrder}`)
+  useEffect(() => {
+    setIsAddingReport(false) // reseta o estado de adicionar laudo ao abrir o modal
 
-      if (response.status === 401) {
-        toast.error('Sessão expirada, faça login novamente')
-        Cookies.remove('exec.token')
-        Cookies.remove('user')
-        navigate('/entrar')
-      }
-      console.log("response", response.data)
-      return response.data
-    },
-    placeholderData: keepPreviousData,
-  })
+    if (open) {
+      setIsLoading(true)
+      api.get(`/get/report/${numberOrder}`)
+        .then((response) => {
+          setResponseReport(response.data)
+          setIsLoading(false)
+        })
+        .catch((error) => {
+          if (error.response.status === 401) {
+            toast.error('Sessão expirada, faça login novamente')
+            Cookies.remove('exec.token')
+            Cookies.remove('user')
+            navigate('/entrar')
+            return
+          }
+
+          if (error.response.status !== 404) {
+            toast.error('Erro ao buscar laudos')
+            return
+          }
+          setResponseReport([])
+          setIsLoading(false)
+        })
+    }
+  }, [open, numberOrder])
 
   return (
     <Dialog.Root open={open} onOpenChange={onOpenChange}>
       <Overlay />
       <Content>
-
-        <Title>Laudos da Ordem de Serviço</Title>
-
-        <Table>
-          <TableHeader>
-            <TableRow>
-              <TableHeaderCell>Nº Patrimônio</TableHeaderCell>
-              <TableHeaderCell>Serial</TableHeaderCell>
-              <TableHeaderCell>Marca</TableHeaderCell>
-              <TableHeaderCell>Modelo</TableHeaderCell>
-              <TableHeaderCell>Armazenamento</TableHeaderCell>
-            </TableRow>
-          </TableHeader>
-
-          <tbody>
-            {responseReport?.map((report: any) => (
-              <TableRow key={report.id}>
-                <TableCell>{report.patrimony}</TableCell>
-                <TableCell>{report.serial}</TableCell>
-                <TableCell>{report.brand}</TableCell>
-                <TableCell>{report.model}</TableCell>
-                <TableCell>{report.storage}</TableCell>
-              </TableRow>
-            ))}
-            {Array(5).fill(0).map((_, index) => (
-              <TableRow key={index}>
-                <TableCell>dsfsdf</TableCell>
-                <TableCell>sdfsdf</TableCell>
-                <TableCell>sdfsdf</TableCell>
-                <TableCell>sdfsd</TableCell>
-              </TableRow>
-            ))}
-          </tbody>
-        </Table>
         <CloseButton asChild title="Fechar">
           <X size={20} className="close" aria-label="Fechar" onClick={handleCancel} style={{ cursor: "pointer" }} />
         </CloseButton>
 
-        <DivRow>
-          <DivColumn>
-            <Label htmlFor="n-pat">Nº Patrimônio</Label>
-            <Input id="n-pat" value={patrimony}
-              onChange={(e) => {
-                const value = e.target.value;
-                if (/^\d{0,6}$/.test(value)) {
-                  setPatrimony(Number(value));
-                }
-              }}
-              type="number" min={0} required />
-          </DivColumn>
+        <Title>Laudos da Ordem de Serviço</Title>
 
-          <DivColumn>
-            <Label htmlFor="serial-number">Serial</Label>
-            <Input id="serial-number" value={serial} onChange={e => setSerial(e.target.value)} type="text" required maxLength={20} />
-          </DivColumn>
-        </DivRow>
+        <AnimatedBlock visible={!isAddingReport}>
+          {isLoading
+            ? (<TableSkeleton />)
+            : responseReport?.length > 0 ? (
+              <>
+                <TableReport numberOrder={numberOrder} onOpenChange={onOpenChange} open data={responseReport} />
+                {/* Botão de adicionar */}
+                <Button
+                  onClick={() => setIsAddingReport(true)}
+                  type="button"
+                >
+                  <Plus size={20} /> Adicionar laudo
+                </Button>
+              </>
+            ) :
+              (
+                <div style={{ textAlign: 'center' }}>
+                  <p style={{ marginBottom: '0.5rem' }}>Nenhum laudo encontrado para esta Ordem de Serviço.</p>
+                  <Button onClick={() => setIsAddingReport(true)} type="button">Adicionar laudo</Button>
+                </div>
+              )}
+        </AnimatedBlock>
 
-        <Label htmlFor="brand">Marca</Label>
-        <Input id="brand" value={brand} onChange={e => setBrand(e.target.value)} type="text" required maxLength={50} />
+        <AnimatedBlock visible={isAddingReport}>
+          <Button
+            type="button"
+            className="cancel ghost"
+            onClick={() => {
+              resetStates()
+              setIsAddingReport(false)
+            }}
+            style={{ justifySelf: 'flex-start' }}
+          >
+            <ArrowLeft size={20} /> Voltar para lista
+          </Button>
+          {/* adicionar um scroll vertical */}
+          <div style={{ maxHeight: '20rem', overflowY: 'auto' }}>
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="n-pat">Nº Patrimônio</Label>
+                <Input id="n-pat" value={patrimony}
+                  onChange={(e) => {
+                    const value = e.target.value;
+                    if (/^\d{0,6}$/.test(value)) {
+                      setPatrimony(Number(value));
+                    }
+                  }}
+                  autoFocus={true}
+                  type="number" min={0} required />
+              </DivColumn>
 
-        <DivRow>
-          <DivColumn>
-            <Label htmlFor="model">Modelo</Label>
-            <Input id="model" value={model} onChange={e => setModel(e.target.value)} type="text" required maxLength={20} />
-          </DivColumn>
+              <DivColumn>
+                <Label htmlFor="serial-number">Serial</Label>
+                <Input id="serial-number" value={serial} onChange={e => setSerial(e.target.value)} type="text" required />
+              </DivColumn>
+            </DivRow>
 
-          <DivColumn>
-            <Label htmlFor="storage">Armazenamento</Label>
-            <Input id="storage" value={storage} onChange={e => setStorage(e.target.value)} type="text" required maxLength={10} />
-          </DivColumn>
-        </DivRow>
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="brand">Marca</Label>
+                <Input id="brand" value={brand} onChange={e => setBrand(e.target.value)} type="text" required />
+              </DivColumn>
+            </DivRow>
 
-        <Label htmlFor="accessory">Acessórios <span>(opcional)</span></Label>
-        <TextArea
-          id="accessory"
-          value={accessory}
-          onChange={e => setAccessory(e.target.value)}
-          placeholder="Informe os acessórios que estão acompanhando, se necessário..."
-        />
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="model">Modelo</Label>
+                <Input id="model" value={model} onChange={e => setModel(e.target.value)} type="text" required />
+              </DivColumn>
 
-        <Label htmlFor="observation">Observação <span>(opcional)</span></Label>
-        <TextArea
-          id="observation"
-          value={observation}
-          onChange={e => setObservation(e.target.value)}
-          placeholder="Deixei algum comentário se for necessário..."
-        />
+              <DivColumn>
+                <Label htmlFor="storage">Armazenamento</Label>
+                <Input id="storage" value={storage} onChange={e => setStorage(e.target.value)} type="text" required />
+              </DivColumn>
+            </DivRow>
 
-        <Label htmlFor="defect">Defeito/Reclamação</Label>
-        <TextArea
-          id="defect"
-          value={defect}
-          onChange={e => setDefect(e.target.value)}
-          placeholder="Descreva o defeito ou reclamação do cliente..."
-          required
-        />
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="accessory">Acessórios <span>(opcional)</span></Label>
+                <TextArea
+                  id="accessory"
+                  value={accessory}
+                  onChange={e => setAccessory(e.target.value)}
+                  placeholder="Informe os acessórios que estão acompanhando, se necessário..."
+                />
+              </DivColumn>
+            </DivRow>
 
-        <Label htmlFor="report">Laudo Técnico</Label>
-        <TextArea
-          id="report"
-          value={report}
-          onChange={e => setReport(e.target.value)}
-          placeholder="Descreva o laudo do equipamento..."
-          required
-        />
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="observation">Observação <span>(opcional)</span></Label>
+                <TextArea
+                  id="observation"
+                  value={observation}
+                  onChange={e => setObservation(e.target.value)}
+                  placeholder="Deixei algum comentário se for necessário..."
+                />
+              </DivColumn>
+            </DivRow>
 
-        <ButtonRow>
-          <Button className="cancel" onClick={handleCancel}>Cancelar</Button>
-          <Button type="submit" onClick={handleReport} disabled={isDisabled}>Confirmar</Button>
-        </ButtonRow>
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="defect">Defeito/Reclamação</Label>
+                <TextArea
+                  id="defect"
+                  value={defect}
+                  onChange={e => setDefect(e.target.value)}
+                  placeholder="Descreva o defeito ou reclamação do cliente..."
+                  required
+                />
+              </DivColumn>
+            </DivRow>
+
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="report">Laudo Técnico</Label>
+                <TextArea
+                  id="report"
+                  value={report}
+                  onChange={e => setReport(e.target.value)}
+                  placeholder="Descreva o laudo do equipamento..."
+                  required
+                />
+              </DivColumn>
+            </DivRow>
+
+          </div>
+          <ButtonRow>
+            <Button className="cancel" onClick={handleCancel}>Fechar</Button>
+            <Button type="submit" onClick={handleReport} disabled={isDisabled}>Confirmar</Button>
+          </ButtonRow>
+        </AnimatedBlock>
+
       </Content>
     </Dialog.Root >
   );
