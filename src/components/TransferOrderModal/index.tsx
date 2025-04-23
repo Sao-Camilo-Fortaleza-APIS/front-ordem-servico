@@ -6,6 +6,7 @@ import { MouseEvent, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useSearch } from '../../contexts/SearchContext';
+import { useHistoryData } from '../../hooks/useHistoryData';
 import api from '../../services/api';
 import { OrderProps } from '../Order';
 import { Button, ButtonRow, CloseButton, Content, Label, Overlay, Select, TextArea } from './styles';
@@ -28,6 +29,7 @@ interface ExecutorProps {
 
 export function TransferOrderModal({ open, onOpenChange, numberOrder }: TransferOrderModalProps) {
     const { setResultOrderData } = useSearch()
+    const { getHistory } = useHistoryData()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
 
@@ -36,22 +38,6 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
     const [users, setUsers] = useState<ExecutorProps[]>([]);
     const [selectedUser, setSelectedUser] = useState('');
     const [comment, setComment] = useState('');
-
-    useEffect(() => {
-        if (open) {
-            api.get('/get/workgroup')
-                .then(res => setAllWorkgroups(res.data))
-                .catch(() => toast.error('Erro ao buscar grupos'));
-        }
-    }, [open]);
-
-    useEffect(() => {
-        if (selectedGroup) {
-            api.get(`/get/users/workgroup/${selectedGroup}`)
-                .then(res => setUsers(res.data))
-                .catch(() => toast.error('Erro ao buscar usuários do grupo'));
-        }
-    }, [selectedGroup]);
 
     const handleTransfer = async (e?: MouseEvent<HTMLButtonElement>) => {
         e?.preventDefault()
@@ -111,8 +97,12 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
                     ...prev,
                     executor: userLogged,
                 }))
+                await getHistory(numberOrder.toString())
             }
 
+            setSelectedGroup('')
+            setSelectedUser('')
+            setComment('')
             onOpenChange(false);
         } catch (e) {
             console.error(e)
@@ -136,6 +126,22 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
     };
 
     const isDisabled: boolean = selectedGroup === '';
+
+    useEffect(() => {
+        if (open) {
+            api.get('/get/workgroup')
+                .then(res => setAllWorkgroups(res.data))
+                .catch(() => toast.error('Erro ao buscar grupos'));
+        }
+    }, [open]);
+
+    useEffect(() => {
+        if (selectedGroup) {
+            api.get(`/get/users/workgroup/${selectedGroup}`)
+                .then(res => setUsers(res.data))
+                .catch(() => toast.error('Erro ao buscar usuários do grupo'));
+        }
+    }, [selectedGroup]);
 
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
