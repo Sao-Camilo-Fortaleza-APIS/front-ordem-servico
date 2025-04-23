@@ -17,7 +17,7 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
     }, 100) // tempo para Radix animar e desmontar
   }
 
-  const handleAddReportClick = () => {
+  const handleListReportsClick = () => {
     setOpenDropdown(false) // fecha dropdown
     setTimeout(() => {
       setOpenReportModal(true) // abre modal depois do dropdown sair do DOM
@@ -37,7 +37,7 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
           <Content side="top" align="end">
             <Item onSelect={(e) => {
               e.preventDefault()
-              handleAddReportClick()
+              handleListReportsClick()
             }}>
               <FileText size={16} />
               Laudos

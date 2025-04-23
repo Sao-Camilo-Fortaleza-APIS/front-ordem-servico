@@ -16,6 +16,19 @@ export const TriggerButton = styled.button`
     background-color: #e4e4e7;
     cursor: pointer;
   }
+
+  @media (max-width: 480px) {
+    padding: 0.4rem;
+    border-radius: 0.5rem;
+    border: 1px solid #d4d4d8;
+    width: 2.5rem;
+    height: 2.5rem;
+
+    svg {
+      width: 1.5rem;
+      height: 1.5rem;
+    }
+  }
 `;
 
 export const Content = styled(DropdownMenu.Content)`
@@ -46,5 +59,15 @@ export const Item = styled(DropdownMenu.Item)`
   &:focus {
     outline: none;
     background-color: #e4e4e7;
+  }
+
+  @media (max-width: 480px) {
+    font-size: 1rem;
+    padding: 0.4rem 0.5rem;
+
+    svg {
+      width: 1.25rem;
+      height: 1.25rem;
+    }
   }
 `;
