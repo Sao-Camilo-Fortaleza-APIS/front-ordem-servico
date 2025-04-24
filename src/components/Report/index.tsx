@@ -43,7 +43,7 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
 
   const [isAddingReport, setIsAddingReport] = useState(false) // estado para controlar se está adicionando um laudo ou não
 
-  const [patrimony, setPatrimony] = useState<number | undefined>()
+  const [patrimony, setPatrimony] = useState<number | "">("")
   const [serial, setSerial] = useState<string>("")
   const [brand, setBrand] = useState<string>("")
   const [model, setModel] = useState<string>("")
@@ -145,7 +145,7 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
   }
 
   const resetStates = () => {
-    setPatrimony(undefined)
+    setPatrimony("")
     setSerial("")
     setBrand("")
     setModel("")
