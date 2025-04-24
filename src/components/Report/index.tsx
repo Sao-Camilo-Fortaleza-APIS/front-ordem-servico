@@ -13,8 +13,23 @@ export interface ReportModalProps {
   numberOrder: number;
 }
 
+export interface ReportData {
+  details: {
+    ds_acessorios: string
+    ds_armazenamento: string
+    ds_laudo: string
+    ds_marca: string
+    ds_modelo: string
+    ds_problema: string
+    nr_patrimonio: string
+    ds_observacao: string
+    nr_serial: string
+  }
+  dt_liberacao: string
+  nm_tecnico: string
+  nr_laudo: number
+}
 
-//
 import { useHistoryData } from '../../hooks/useHistoryData';
 import { TableReport } from '../TableReport';
 import { TableSkeleton } from '../TableSkeleton';
@@ -23,7 +38,7 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
   const navigate = useNavigate()
   const { getHistory } = useHistoryData()
 
-  const [responseReport, setResponseReport] = useState<any[]>([]) // estado para armazenar os laudos já existentes
+  const [responseReport, setResponseReport] = useState<ReportData[]>([]) // estado para armazenar os laudos já existentes
   const [isLoading, setIsLoading] = useState(true) // estado para controlar o carregamento dos laudos
 
   const [isAddingReport, setIsAddingReport] = useState(false) // estado para controlar se está adicionando um laudo ou não
@@ -206,7 +221,7 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
               (
                 <div style={{ textAlign: 'center' }}>
                   <p style={{ marginBottom: '0.5rem' }}>Nenhum laudo encontrado para esta Ordem de Serviço.</p>
-                  <Button onClick={() => setIsAddingReport(true)} type="button">Adicionar laudo</Button>
+                  <Button onClick={() => setIsAddingReport(true)} style={{ justifySelf: 'center' }} type="button">Adicionar laudo</Button>
                 </div>
               )}
         </AnimatedBlock>
@@ -266,30 +281,6 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
 
             <DivRow>
               <DivColumn>
-                <Label htmlFor="accessory">Acessórios <span>(opcional)</span></Label>
-                <TextArea
-                  id="accessory"
-                  value={accessory}
-                  onChange={e => setAccessory(e.target.value)}
-                  placeholder="Informe os acessórios que estão acompanhando, se necessário..."
-                />
-              </DivColumn>
-            </DivRow>
-
-            <DivRow>
-              <DivColumn>
-                <Label htmlFor="observation">Observação <span>(opcional)</span></Label>
-                <TextArea
-                  id="observation"
-                  value={observation}
-                  onChange={e => setObservation(e.target.value)}
-                  placeholder="Deixei algum comentário se for necessário..."
-                />
-              </DivColumn>
-            </DivRow>
-
-            <DivRow>
-              <DivColumn>
                 <Label htmlFor="defect">Defeito/Reclamação</Label>
                 <TextArea
                   id="defect"
@@ -310,6 +301,30 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
                   onChange={e => setReport(e.target.value)}
                   placeholder="Descreva o laudo do equipamento..."
                   required
+                />
+              </DivColumn>
+            </DivRow>
+
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="accessory">Acessórios <span>(opcional)</span></Label>
+                <TextArea
+                  id="accessory"
+                  value={accessory}
+                  onChange={e => setAccessory(e.target.value)}
+                  placeholder="Informe os acessórios que estão acompanhando, se necessário..."
+                />
+              </DivColumn>
+            </DivRow>
+
+            <DivRow>
+              <DivColumn>
+                <Label htmlFor="observation">Observação <span>(opcional)</span></Label>
+                <TextArea
+                  id="observation"
+                  value={observation}
+                  onChange={e => setObservation(e.target.value)}
+                  placeholder="Deixei algum comentário se for necessário..."
                 />
               </DivColumn>
             </DivRow>

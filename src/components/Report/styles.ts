@@ -94,6 +94,10 @@ export const Input = styled.input`
   :focus {
     outline: 2px solid #007bff;
   }
+
+  :disabled {
+    cursor: not-allowed;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -195,11 +199,12 @@ export const Button = styled.button`
     padding: 0.5rem 1rem;
     font-size: 1.5rem;
     cursor: pointer;
-    transition: all 0.25s ease;
+    transition: all 0.25s ease-in-out;
 
     &:hover {
       color: #0056b3;
-      background-color: #f0f0f0;
+      background-color: #dbeafe;
+      outline: 1px solid #0056b3;
     }
 
   }
@@ -218,11 +223,12 @@ export const Button = styled.button`
 
   &.danger {
     color: #dc2626;
-    transition: all 0.25s ease;
+    transition: all 0.25s ease-in-out;
 
     &:hover {
       color: #dc2626;
       background-color: #fef2f2;
+      outline: 1px solid #dc2626;
     }
 
     &:focus {

@@ -1,17 +1,18 @@
 import Cookies from 'js-cookie';
-import { Trash2 } from 'lucide-react';
+import { Eye, Trash2 } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useHistoryData } from '../../hooks/useHistoryData';
 import api from '../../services/api';
 import { convertDate } from '../../utils/convert-date';
-import { ReportModalProps } from '../Report';
+import { ReportData, ReportModalProps } from '../Report';
 import { Button, CancelBtn, ConfirmBtn, ConfirmContainer } from '../Report/styles';
+import { ReportDetails } from '../ReportDetails';
 import { Table, TableCell, TableContainer, TableHeader, TableHeaderCell, TableRow } from './styles';
 
 interface TableReportProps extends ReportModalProps {
-    data: any[] // Array de laudos
+    data: ReportData[]
 }
 export function TableReport({ open, data, onOpenChange, numberOrder }: TableReportProps) {
     const navigate = useNavigate()
@@ -19,6 +20,7 @@ export function TableReport({ open, data, onOpenChange, numberOrder }: TableRepo
     const userLogged = Cookies.get('user')
 
     const [confirmingNRLaudo, setConfirmingNRLaudo] = useState<number | null>(null) // estado para controlar o id do laudo a ser inativado
+    const [selectedLaudo, setSelectedLaudo] = useState<ReportData | null>(null) // estado para controlar o id do laudo a ser inativado
 
     const handleInativarLaudo = async (id: number) => {
         if (!userLogged) {
@@ -68,69 +70,74 @@ export function TableReport({ open, data, onOpenChange, numberOrder }: TableRepo
 
     return (
         <TableContainer>
-            <Table>
-                {/* colocar uma legenda à esquerda com a quantidade de laudos */}
-                <caption>
-                    {data.length || 0} laudos encontrado(s)
-                </caption>
-                <TableHeader>
-                    <TableRow>
-                        <TableHeaderCell>Laudo</TableHeaderCell>
-                        <TableHeaderCell>Liberação</TableHeaderCell>
-                        <TableHeaderCell>Técnico</TableHeaderCell>
-                        <TableHeaderCell>Inativar</TableHeaderCell>
-                        {/* <TableHeaderCell>Detalhes</TableHeaderCell> */}
-                    </TableRow>
-                </TableHeader>
+            {selectedLaudo ? (
+                <ReportDetails report={selectedLaudo} onClose={() => setSelectedLaudo(null)} />
+            ) : (
+                <Table>
+                    {/* colocar uma legenda à esquerda com a quantidade de laudos */}
+                    <caption>
+                        {data.length || 0} laudos encontrado(s)
+                    </caption>
+                    <TableHeader>
+                        <TableRow>
+                            <TableHeaderCell style={{ whiteSpace: 'nowrap' }}>Laudo</TableHeaderCell>
+                            <TableHeaderCell>Liberação</TableHeaderCell>
+                            <TableHeaderCell>Técnico</TableHeaderCell>
+                            <TableHeaderCell>Inativar</TableHeaderCell>
+                            <TableHeaderCell>Detalhes</TableHeaderCell>
+                        </TableRow>
+                    </TableHeader>
 
-                <tbody>
-                    {data?.map((report: any) => (
-                        <Fragment key={report.nr_laudo}>
-                            <TableRow>
-                                <TableCell style={{ textAlign: 'center' }}>{report.nr_laudo}</TableCell>
-                                <TableCell>{convertDate(report.dt_liberacao)}</TableCell>
-                                <TableCell style={{ whiteSpace: 'normal' }}>{report.nm_tecnico}</TableCell>
-                                <TableCell style={{ textAlign: 'center' }}>
-                                    <Button className="icon danger" onClick={() => setConfirmingNRLaudo(report.nr_laudo)} type="button" autoFocus={false}>
-                                        <Trash2 size={20} />
-                                    </Button>
-                                </TableCell>
-                                {/* <TableCell style={{ textAlign: 'center' }}>
-                                    <Button className='icon' type="button">
-                                        <Eye size={20} />
-                                    </Button>
-                                </TableCell> */}
-                            </TableRow>
-
-                            {confirmingNRLaudo === report.nr_laudo && (
+                    <tbody>
+                        {data?.map((report: ReportData) => (
+                            <Fragment key={report.nr_laudo}>
                                 <TableRow>
-                                    <TableCell colSpan={3}>
-                                        <ConfirmContainer>
-                                            <span>Deseja realmente inativar?</span>
-                                            <div>
-                                                <CancelBtn onClick={() => setConfirmingNRLaudo(null)}
-                                                    type="button"
-                                                >
-                                                    Cancelar
-                                                </CancelBtn>
-                                                <ConfirmBtn
-                                                    onClick={() => {
-                                                        handleInativarLaudo(report.nr_laudo)
-                                                        setConfirmingNRLaudo(null)
-                                                    }}
-                                                    type="button"
-                                                >
-                                                    Confirmar
-                                                </ConfirmBtn>
-                                            </div>
-                                        </ConfirmContainer>
+                                    <TableCell style={{ textAlign: 'center' }}>{report.nr_laudo}</TableCell>
+                                    <TableCell>{convertDate(report.dt_liberacao)}</TableCell>
+                                    <TableCell style={{ whiteSpace: 'normal' }}>{report.nm_tecnico}</TableCell>
+                                    <TableCell style={{ textAlign: 'center' }}>
+                                        <Button className="icon danger" onClick={() => setConfirmingNRLaudo(report.nr_laudo)} type="button" autoFocus={false}>
+                                            <Trash2 size={20} />
+                                        </Button>
+                                    </TableCell>
+                                    <TableCell style={{ textAlign: 'center' }}>
+                                        <Button className='icon' onClick={() => setSelectedLaudo(report)} type="button">
+                                            <Eye size={20} />
+                                        </Button>
                                     </TableCell>
                                 </TableRow>
-                            )}
-                        </Fragment>
-                    ))}
-                </tbody>
-            </Table>
+
+                                {confirmingNRLaudo === report.nr_laudo && (
+                                    <TableRow>
+                                        <TableCell colSpan={5} style={{ overflowWrap: 'break-word' }}>
+                                            <ConfirmContainer>
+                                                <span>Deseja realmente inativar?</span>
+                                                <div>
+                                                    <CancelBtn onClick={() => setConfirmingNRLaudo(null)}
+                                                        type="button"
+                                                    >
+                                                        Cancelar
+                                                    </CancelBtn>
+                                                    <ConfirmBtn
+                                                        onClick={() => {
+                                                            handleInativarLaudo(report.nr_laudo)
+                                                            setConfirmingNRLaudo(null)
+                                                        }}
+                                                        type="button"
+                                                    >
+                                                        Confirmar
+                                                    </ConfirmBtn>
+                                                </div>
+                                            </ConfirmContainer>
+                                        </TableCell>
+                                    </TableRow>
+                                )}
+                            </Fragment>
+                        ))}
+                    </tbody>
+                </Table>
+            )}
+
         </TableContainer>
     )
 }
