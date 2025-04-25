@@ -13,7 +13,6 @@ export interface GroupProps {
   code: number,
   describe: string
 }
-export type GroupResponse = GroupProps[]
 
 export function ViewOrders() {
   const [searchParams, setSearchParams] = useSearchParams()
@@ -27,7 +26,7 @@ export function ViewOrders() {
 
   const cachedOrders = queryClient.getQueryData(['orders', filtro, user]);
 
-  const { data: groups, isFetching } = useQuery<GroupResponse>({
+  const { data: groups, isFetching } = useQuery<GroupProps[]>({
     queryKey: ['get-groups'],
     queryFn: async () => {
       const response = await api.get(`/get/workgroup/user`)

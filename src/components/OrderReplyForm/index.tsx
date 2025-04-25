@@ -7,6 +7,7 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { z } from "zod";
 import api from "../../services/api";
+import { isAllowedToviewItem } from "../../utils/allowed-to-view";
 import { verifyToken } from "../../utils/verify-token";
 import { Button } from "../Button";
 import { MoreActionsMenu } from "../MoreActions";
@@ -112,8 +113,8 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
         {errors.typeHistory?.message && <span style={{ color: '#ef4444' }}>{errors.typeHistory.message}</span>}
       </div>
 
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: 'space-between' }}>
-        <div className="switch-item">
+      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: !isAllowedToviewItem() ? 'space-between' : 'flex-end' }}>
+        {!isAllowedToviewItem() && <div className="switch-item">
           <label htmlFor="close">Encerrar Ordem de Serviço?</label>
           <Controller
             control={control}
@@ -128,7 +129,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
                 <SwitchThumb />
               </SwitchRoot>
             )} />
-        </div>
+        </div>}
         {/* Adicionar opções */}
         <MoreActionsMenu
           numberOrder={numberOrder}

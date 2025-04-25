@@ -65,19 +65,8 @@ export function MyOrders() {
 
     return (
         <div className="wrapper">
-            <div style={{ width: '100%', color: '#A1A1AA', margin: '0.25rem 0 0.5rem 0' }}>
-                <span style={{ color: '#A1A1AA' }}>Legenda:</span>
-
-                <div className="legend">
-                    <div style={{ backgroundColor: '#3b82f6', width: '1rem', height: '1rem', borderRadius: '999px' }}>
-                    </div>
-                    <span>Ordens aguardando validação</span>
-                </div>
-
-                <div className="legend">
-                    <div style={{ backgroundColor: '#fbbf24', width: '1rem', height: '1rem', borderRadius: '999px' }}></div>
-                    <span>Ordens em atendimento</span>
-                </div>
+            <div style={{ width: '100%', margin: '0.25rem 0 0.5rem 0', }}>
+                {quantidade !== 0 && <span style={{ color: '#A1A1AA' }}>Nessa aba estão as OSs que estão atribuídas a você</span>}
             </div>
 
             <div className="quantidade">
@@ -107,6 +96,8 @@ export function MyOrders() {
                                     group={order.group}
                                     describe={order.describe}
                                     awaiting_validate={order.awaiting_validate}
+                                    stage={order.stage}
+                                    group_planej={order.group_planej}
                                 />
                             </button>
                         )

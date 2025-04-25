@@ -1,14 +1,28 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { FileText, Plus, UserPen } from 'lucide-react';
+import { Edit3, FileText, Plus, UserPen } from 'lucide-react';
 import { useState } from 'react';
+import { useSearch } from '../../contexts/SearchContext';
+import { isAllowedToviewItem } from '../../utils/allowed-to-view';
+import { EditStageModal } from '../EditStageModal';
 import { ReportModal } from '../Report';
 import { TransferOrderModal } from '../TransferOrderModal';
 import { Content, Item, TriggerButton } from './styles';
 
 export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
+  const { resultOrderData } = useSearch()
   const [openDropdown, setOpenDropdown] = useState(false)
   const [openTransferModal, setOpenTransferModal] = useState(false)
   const [openReportModal, setOpenReportModal] = useState(false)
+  const [openEditStageModal, setOpenEditStageModal] = useState(false)  /**
+  * Verifica se o usuário tem permissão para visualizar o item "Laudos" no menu de ações se group_planej for igual a 28
+  * @returns boolean
+  */
+  /* const isAllowedToviewItem = () => {
+    if (resultOrderData?.group_planej === 28) {
+      return true
+    }
+    return false
+  } */
 
   const handleTransferClick = () => {
     setOpenDropdown(false) // fecha dropdown
@@ -21,6 +35,13 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
     setOpenDropdown(false) // fecha dropdown
     setTimeout(() => {
       setOpenReportModal(true) // abre modal depois do dropdown sair do DOM
+    }, 100) // tempo para Radix animar e desmontar
+  }
+
+  const handleEditStageClick = () => {
+    setOpenDropdown(false) // fecha dropdown
+    setTimeout(() => {
+      setOpenEditStageModal(true) // abre modal depois do dropdown sair do DOM
     }, 100) // tempo para Radix animar e desmontar
   }
 
@@ -37,11 +58,22 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
           <Content side="top" align="end">
             <Item onSelect={(e) => {
               e.preventDefault()
-              handleListReportsClick()
+              handleEditStageClick()
             }}>
-              <FileText size={16} />
-              Laudos
+              <Edit3 size={16} />
+              Alterar Estágio da Ordem
             </Item>
+
+            {isAllowedToviewItem() && (
+              <Item onSelect={(e) => {
+                e.preventDefault()
+                handleListReportsClick()
+              }}>
+                <FileText size={16} />
+                Laudos
+              </Item>
+            )}
+
             <Item onSelect={(e) => {
               e.preventDefault()
               handleTransferClick()
@@ -63,6 +95,12 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
       <TransferOrderModal
         open={openTransferModal}
         onOpenChange={setOpenTransferModal}
+        numberOrder={numberOrder}
+      />
+
+      <EditStageModal
+        open={openEditStageModal}
+        onOpenChange={setOpenEditStageModal}
         numberOrder={numberOrder}
       />
     </>

@@ -28,7 +28,7 @@ interface ExecutorProps {
 }
 
 export function TransferOrderModal({ open, onOpenChange, numberOrder }: TransferOrderModalProps) {
-    const { setResultOrderData } = useSearch()
+    const { setResultOrderData, resultOrderData } = useSearch()
     const { getHistory } = useHistoryData()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
@@ -65,7 +65,8 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
                 nm_usuario: userLogged,
                 nm_user_destiny: selectedUser,
                 nr_order: numberOrder,
-                ds_history_transf: comment
+                ds_history_transf: comment,
+                nr_internship_old: Number(resultOrderData?.nr_stage),
             })
 
             //Atualzia o cache localmente

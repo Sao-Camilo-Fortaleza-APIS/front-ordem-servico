@@ -16,6 +16,7 @@ import { configToastError, configToastSuccess } from "../../../utils/toast-confi
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Message } from "./styles"; // Importação dos estilos
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../components/Accordion";
+import { badgeStyles, DefaultBadge, StatusBadge } from "../../../components/BadgeStatus";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
@@ -28,11 +29,13 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   requester: string
   title: string
   stage: string;
+  nr_stage: number;
   contact?: string
   damage: string
   date_order: string
   location: string
   group: number
+  group_planej: number
   describe: string
   awaiting_validate: string
   executor: string
@@ -213,9 +216,15 @@ export function Historico() {
                     <div>
                       <span className='title'>{resultOrderData?.damage}</span>
                       <span className='infos'>{resultOrderData?.describe}</span>
-                      <div style={{ width: '100%', textAlign: 'right' }} >
-                        <span style={{ marginRight: '0.25rem' }} className='badge'>{resultOrderData?.stage}</span>
-                        <span className='badge'>{resultOrderData?.executor}</span>
+                      <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
+                        <StatusBadge status={resultOrderData?.stage} />
+                        <DefaultBadge
+                          textColor={badgeStyles[resultOrderData?.stage].color}
+                          bgColor={badgeStyles[resultOrderData?.stage].background}
+                          borderColor={badgeStyles[resultOrderData?.stage].border}
+                        >
+                          {resultOrderData?.executor}
+                        </DefaultBadge>
                       </div>
 
                       <span className='infos'>
