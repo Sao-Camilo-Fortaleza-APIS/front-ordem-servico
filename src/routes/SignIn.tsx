@@ -2,8 +2,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useMutation } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import Cookies from "js-cookie";
-import { Loader } from "lucide-react";
-import { BaseSyntheticEvent, useEffect } from "react";
+import { Eye, EyeOff, Loader } from "lucide-react";
+import { BaseSyntheticEvent, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -29,6 +29,12 @@ export function SignIn() {
     const { register, handleSubmit, formState } = useForm<SignInForm>({
         resolver: zodResolver(signInForm), // Aqui passamos o schema de validação para o useForm
     });
+
+    const [showPassword, setShowPassword] = useState(false);
+
+    const togglePasswordVisibility = () => {
+        setShowPassword((prev) => !prev);
+    };
 
     async function signIn({ user, password }: SignInForm) {
         const response = await api.post('/login', { user, password }, {
@@ -87,7 +93,7 @@ export function SignIn() {
                 <span>Acesse sua conta</span>
 
                 <form onSubmit={handleSubmit(handleSignIn)}>
-                    <div>
+                    <div style={{ width: '100%', }}>
                         {/* <Label htmlFor="user">Usuário do Tasy</Label> */}
                         <input
                             {...register('user')}
@@ -97,16 +103,65 @@ export function SignIn() {
                             required
                             autoComplete="off"
                             autoFocus
+                            style={{ border: '1px solid #ccc', padding: '16px' }}
                         />
                         {formState.errors.user && <span>{formState.errors.user.message}</span>}
 
                         {/* <Label htmlFor="password">Senha</Label> */}
-                        <input
-                            {...register('password')}
-                            id="password"
-                            type="password"
-                            placeholder="Senha do Tasy"
-                        />
+                        <div style={{ display: 'flex', width: '100%', alignItems: 'center', flexDirection: 'column', gap: '16px', position: 'relative' }}>
+                            <input
+                                {...register('password')}
+                                id="password"
+                                type={showPassword ? 'text' : 'password'}
+                                placeholder="Senha do Tasy"
+                                style={{
+                                    padding: '16px',
+                                    borderRadius: '6px',
+                                    border: '1px solid #ccc',
+                                    fontSize: '16px',
+                                    width: '100%',
+                                    paddingRight: '40px', // espaço para o botão
+                                }}
+                            />
+                            <button
+                                type="button"
+                                onClick={togglePasswordVisibility}
+                                style={{
+                                    position: 'absolute',
+                                    top: '0',
+                                    right: '0',
+                                    width: 'min-content',
+                                    background: 'none',
+                                    border: 'none',
+                                    padding: 0,
+                                    margin: 0,
+                                    cursor: 'pointer',
+                                    color: '#777',
+                                    paddingRight: '16px',
+                                    lineHeight: '0',
+                                    display: 'flex',
+                                    alignItems: 'center',
+                                    justifyContent: 'center',
+                                }}
+                                tabIndex={-1}
+                            >
+                                {showPassword ? <EyeOff size={24} /> : <Eye size={24} />}
+
+                                <span style={{
+                                    position: 'absolute',
+                                    width: '1px',
+                                    height: '1px',
+                                    padding: '0',
+                                    margin: '-1px',
+                                    overflow: 'hidden',
+                                    clip: 'rect(0, 0, 0, 0)',
+                                    whiteSpace: 'nowrap',
+                                    borderWidth: '0',
+                                }}>
+                                    {showPassword ? 'Ocultar senha' : 'Mostrar senha'}
+                                </span>
+                            </button>
+                        </div>
                         {formState.errors.password && <span>{formState.errors.password.message}</span>}
                     </div>
 

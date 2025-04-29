@@ -99,7 +99,7 @@ export function EditStageModal({ open, onOpenChange, numberOrder }: EditStageMod
         <Overlay />
         <Content>
           <CloseButton asChild title="Fechar">
-            <X size={20} className="close" aria-label="Fechar" onClick={() => console.log("fechar")} style={{ cursor: "pointer" }} />
+            <X size={20} className="close" aria-label="Fechar" style={{ cursor: "pointer" }} />
           </CloseButton>
           <Title>Alterar Estágio da Ordem de Serviço</Title>
           <DivRow>
