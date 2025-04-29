@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useSearch } from "../../contexts/SearchContext";
+import { useHistoryData } from "../../hooks/useHistoryData";
 import api from "../../services/api";
 import { Button } from "../Button";
 import { OrderProps } from "../Order";
@@ -14,6 +15,7 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 	const { setResultOrderData } = useSearch()
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
+	const { getHistory } = useHistoryData()
 	const [openTransferModal, setOpenTransferModal] = useState(false)
 
 	/* async function fetchWorkgroups() {
@@ -67,6 +69,8 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 				autoClose: 1000,
 				closeButton: true,
 			})
+
+			getHistory(numberOrder.toString())
 
 			setResultOrderData((prev) => ({
 				...prev,
