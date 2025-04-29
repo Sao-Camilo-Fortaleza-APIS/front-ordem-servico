@@ -19,6 +19,7 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { badgeStyles, DefaultBadge, StatusBadge } from "../../../components/BadgeStatus";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
+import { SatisfactionOption, StarRating } from "../../../components/StartRating";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import api from "../../../services/api";
@@ -68,6 +69,8 @@ export function Historico() {
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
   const [userApprobation, setUserApprobation] = useState<string>('')
+  const [satisfactionDegrees, setSatisfactionDegrees] = useState<SatisfactionOption[]>([])
+  const [satisfactionSelected, setSatisfactionSelected] = useState<string>('')
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -152,6 +155,14 @@ export function Historico() {
         toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
       }
     } else if (hasApprove === 'yes') {
+      await api.post('/post/rating', {
+        order: orderNumber,
+        rating: satisfactionSelected
+      }).then(response => console.log(response.data))
+        .catch((error: AxiosError) => {
+          throw new Error((error?.response?.data as { message?: string })?.message || 'Erro ao enviar a avaliação')
+        })
+
       try {
         const response = await api.post('/post/approbation', {
           nr_order: `${orderNumber}`,
@@ -181,6 +192,11 @@ export function Historico() {
     handleApprobation('yes', resultOrderData?.number)
   }
 
+  const fetchSatisfactionDegrees = async () => {
+    const response = await api.get("/get/satisfaction")
+    setSatisfactionDegrees(response.data)
+  }
+
   useEffect(() => {
     if (divRef.current) { // Se o divRef.current existir, ele vai fazer o scroll para o final do elemento
       divRef.current.scrollTop = divRef.current.scrollHeight;
@@ -188,9 +204,12 @@ export function Historico() {
   }, [resultHistoryData])
 
   useEffect(() => {
+    fetchSatisfactionDegrees()
+
     if (openFormReply === false) {
       setReplyHistory('');
       setUserReplyHistory('')
+      return
     }
   }, [openFormReply])
 
@@ -313,7 +332,7 @@ export function Historico() {
               {/* DIALOG APPROVE */}
               <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
                 <Content
-                  size="sm"
+                  size="md"
                   title="Deseja aprovar?"
                 >
                   <Form onSubmit={handleSubmit}>
@@ -326,6 +345,13 @@ export function Historico() {
                       value={userApprobation}
                       onChange={event => setUserApprobation(event.target.value)}
                     />
+
+                    <Label htmlFor="rating">Como foi sua experiência?</Label>
+                    <StarRating
+                      options={satisfactionDegrees}
+                      onRatingChange={(value) => setSatisfactionSelected(value)}
+                    />
+
                     <Fieldset>
                       <Button onClick={() => setOpenPreApprove(false)}>Cancelar</Button>
                       <Button variant="reply" type="submit">Sim</Button>

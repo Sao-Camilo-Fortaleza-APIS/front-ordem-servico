@@ -62,9 +62,12 @@ export const badgeStyles: Record<string, { color: string; background: string; bo
         background: '#e0f2fe',
         border: '#0891b2',
     },
+    'Encerrado': {
+        color: '#374151',
+        background: '#f3f4f6',
+        border: '#d1d5db',
+    },
 }
-
-
 
 export const DefaultBadge = styled.span<{ textColor: string; bgColor: string; borderColor: string }>`
   color: ${({ textColor }) => textColor};
