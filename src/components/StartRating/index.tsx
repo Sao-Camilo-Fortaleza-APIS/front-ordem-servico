@@ -7,14 +7,19 @@ const StarWrapper = styled.div`
   cursor: pointer;
 `;
 
-const Star = styled.span<{ filled: boolean }>`
+const Star = styled.span < { filled: boolean; readOnly?: boolean } > `
   font-size: 2rem;
   color: ${({ filled }) => (filled ? "#FFD700" : "#ccc")};
   transition: color 0.2s;
+  cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
 
-  &:hover {
-    color: #ffc107;
-  }
+  ${({ readOnly }) =>
+        !readOnly &&
+        `
+    &:hover {
+      color: #ffc107;
+    }
+  `}
 `;
 
 export interface SatisfactionOption {
@@ -26,12 +31,12 @@ interface StarRatingProps {
     options: SatisfactionOption[]
     onRatingChange?: (rating: string) => void
     initialValue?: string
+    readOnly?: boolean
 }
 
 export const StarRating: React.FC<StarRatingProps> = ({ options, initialValue, onRatingChange }) => {
     const [selectedValue, setSelectedValue] = useState<string | null>(initialValue || null)
     const [hoverIndex, setHoverIndex] = useState<number | null>(null)
-
 
     const handleClick = (index: number) => {
         const value = options[index].vl_dominio

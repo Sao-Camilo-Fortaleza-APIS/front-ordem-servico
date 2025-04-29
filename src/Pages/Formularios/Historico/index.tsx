@@ -242,7 +242,7 @@ export function Historico() {
                           bgColor={badgeStyles[resultOrderData?.stage].background}
                           borderColor={badgeStyles[resultOrderData?.stage].border}
                         >
-                          {resultOrderData?.executor}
+                          {resultOrderData?.executor ? resultOrderData?.executor : 'Sem executor previsto'}
                         </DefaultBadge>
                       </div>
 
