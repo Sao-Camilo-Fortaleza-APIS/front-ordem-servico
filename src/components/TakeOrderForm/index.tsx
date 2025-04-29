@@ -12,26 +12,15 @@ import { TransferOrderModal } from "../TransferOrderModal";
 import { FormStyled } from "./styles";
 
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
-	const { setResultOrderData } = useSearch()
+	const { setResultOrderData, isLoading, setIsLoading } = useSearch()
 	const navigate = useNavigate()
 	const queryClient = useQueryClient()
 	const { getHistory } = useHistoryData()
 	const [openTransferModal, setOpenTransferModal] = useState(false)
 
-	/* async function fetchWorkgroups() {
-		await api.get(`/get/workgroup`)
-			.then((response) => {
-				console.log("Grupo Trabalho", response.data)
-				setAllWorkgroups(response.data)
-			}).catch((error) => {
-				console.error(error)
-				toast.error('Erro ao buscar grupos de trabalho')
-			}
-			)
-	} */
-
 	async function handleSendOrderReply(event: any) {
 		event.preventDefault()
+		setIsLoading(true)
 		const userLogged = Cookies.get('user')
 
 		if (!userLogged) {
@@ -71,12 +60,13 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 			})
 
 			getHistory(numberOrder.toString())
-
+			setIsLoading(false)
 			setResultOrderData((prev) => ({
 				...prev,
 				executor: userLogged,
 			}))
 		} catch (error) {
+			setIsLoading(false)
 			toast.update(loadingToast, {
 				render: 'Erro ao assumir OS.',
 				type: 'error',
@@ -87,48 +77,14 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 		}
 	}
 
-	/* async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
-		event?.preventDefault()
-
-		if (!selectedGroup) {
-			toast.error("Selecione um grupo para transferir")
-			return
-		}
-
-		const user_logged = Cookies.get('user') ?? ''
-		console.log("user_logged", user_logged)
-		if (!user_logged || user_logged === '') {
-			//Lançar uma notificação de erro
-			toast.error('Sessão expirada, faça login novamente')
-			Cookies.remove('exec.token')
-			Cookies.remove('user')
-			navigate('/entrar')
-			return
-		}
-
-		await api.post('post/transfer/workgroup', {
-			nm_usuario: user_logged,
-			code_workgroup: selectedGroup,
-			nr_order: numberOrder,
-			ds_historico: 'Transferido para outro grupo'
-
-		}).then(() => {
-			toast.success("Ordem de Serviço transferida!")
-			navigate(-1)
-		}).catch((error) => {
-			console.log(error);
-			toast.error("Ocorreu um erro")
-		})
-	} */
-
 	return (
 		<>
 			<FormStyled onSubmit={handleSendOrderReply}>
 				<div id="takeon-transfer">
-					<Button id="takeon-button" type="submit">
+					<Button id="takeon-button" type="submit" disabled={isLoading}>
 						Assumir
 					</Button>
-					<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button">
+					<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button" disabled={isLoading}>
 						Transferir
 					</Button>
 				</div>

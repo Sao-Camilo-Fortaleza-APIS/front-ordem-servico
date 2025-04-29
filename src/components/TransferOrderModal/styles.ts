@@ -96,6 +96,7 @@ export const Button = styled.button`
 
   &:disabled {
     background-color: #ccc;
+    cursor: not-allowed;
   }
 
   &:focus {
@@ -108,6 +109,11 @@ export const Button = styled.button`
 
     &:hover {
       background-color: #999;
+    }
+
+    &:disabled {
+      background-color: #ccc;
+      cursor: not-allowed;
     }
   }
 

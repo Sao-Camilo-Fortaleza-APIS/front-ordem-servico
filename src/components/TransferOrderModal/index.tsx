@@ -28,7 +28,7 @@ interface ExecutorProps {
 }
 
 export function TransferOrderModal({ open, onOpenChange, numberOrder }: TransferOrderModalProps) {
-    const { setResultOrderData, resultOrderData } = useSearch()
+    const { setResultOrderData, resultOrderData, isLoading, setIsLoading } = useSearch()
     const { getHistory } = useHistoryData()
     const navigate = useNavigate()
     const queryClient = useQueryClient()
@@ -41,6 +41,8 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
 
     const handleTransfer = async (e?: MouseEvent<HTMLButtonElement>) => {
         e?.preventDefault()
+
+        setIsLoading(true)
         const userLogged = Cookies.get('user')
 
         if (!userLogged) {
@@ -104,9 +106,11 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
             setSelectedGroup('')
             setSelectedUser('')
             setComment('')
+            setIsLoading(false)
             onOpenChange(false);
         } catch (e) {
             console.error(e)
+            setIsLoading(false)
             if (e instanceof Error) {
                 toast.update(loadingToast, {
                     render: `${e.message}`,
@@ -126,7 +130,7 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
         }
     };
 
-    const isDisabled: boolean = selectedGroup === '';
+    const isDisabled: boolean = !selectedGroup || isLoading;
 
     useEffect(() => {
         if (open) {
@@ -180,7 +184,7 @@ export function TransferOrderModal({ open, onOpenChange, numberOrder }: Transfer
                 />
 
                 <ButtonRow>
-                    <Button className="cancel" onClick={() => onOpenChange(false)}>Cancelar</Button>
+                    <Button disabled={isLoading} type="button" className="cancel" onClick={() => onOpenChange(false)}>Cancelar</Button>
                     <Button type="submit" onClick={handleTransfer} disabled={isDisabled}>Confirmar</Button>
                 </ButtonRow>
             </Content>
