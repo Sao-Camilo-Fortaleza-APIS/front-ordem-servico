@@ -1,9 +1,11 @@
+import { Loader2 } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Header } from "../components/Header";
 import { Loader } from "../components/Load";
+import { OrderPendingData, PendingValidationModal } from "../components/PendingValidationModal";
 import { Equipamento, Tabs } from "../components/Tabs";
 import api from "../services/api";
 import { Btns, CardForm, DivItems, NmItem } from "../styles/RegisterServiceOrder.styles";
@@ -27,7 +29,9 @@ export function RegisterServiceOrder() {
   const [opcoes, setOpcoes] = useState([]);
   const [servicos, setServicos] = useState<Equipamento[] | null>(null);
   const [selectedValue, setSelectedValue] = useState('');
-
+  const [hasPendingOrders, setHasPendingOrders] = useState<boolean>(false)
+  const [pendingOrdersPendingValidation, setPendingOrdersWaitingValidation] = useState<OrderPendingData[]>([])
+  const [isLoadingUser, setIsLoadingUser] = useState(false)
   let dt_inicio_desejado = new Date()
 
   // Tratando os dados
@@ -127,6 +131,27 @@ export function RegisterServiceOrder() {
   }
 
   useEffect(() => {
+    const fetchOrdersPendingValidation = async () => {
+      if (userMaiusculo) {
+        try {
+          setIsLoadingUser(true)
+          const { data } = await api.get(`get/orders/requester/${userMaiusculo}?filter=awaiting`);
+          console.clear()
+          setPendingOrdersWaitingValidation(data)
+          if (data.length > 0) {
+            setHasPendingOrders(true)
+          }
+          setIsLoadingUser(false)
+        } catch (error) {
+          setIsLoadingUser(false)
+        }
+      }
+    }
+
+    fetchOrdersPendingValidation()
+  }, [nm_usuario])
+
+  useEffect(() => {
     fetchSetor();
     fetchEquipamento();
   }, []);
@@ -142,8 +167,20 @@ export function RegisterServiceOrder() {
               {/* USUÁRIO */}
               <NmItem style={{ width: '100%' }}>
                 <p>Qual o seu usuário do  <span>Tasy</span> ? </p>
-                <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário do Tasy" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                  <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário do Tasy" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
+                  {isLoadingUser && <Loader2 className="animate-spin" color="red" />}
+                </div>
               </NmItem>
+
+              {/* MOSTRAR MODAL DE ORDENS PENDENTES DE VALIDAÇÃO */}
+              <PendingValidationModal
+                open={hasPendingOrders}
+                onOpenChange={setHasPendingOrders}
+                data={pendingOrdersPendingValidation}
+                requester={userMaiusculo}
+              />
+
               {/* RAMAL */}
               <NmItem style={{ width: '100%' }}>
                 <p>Qual seu ramal de contato?</p>
@@ -217,7 +254,6 @@ export function RegisterServiceOrder() {
           </form>
         </div>
       </CardForm>
-
     </>
   )
 }

@@ -1,123 +1,102 @@
+import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
-import { MouseEvent, useState } from "react";
+import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import { useSearch } from "../../contexts/SearchContext";
+import { useHistoryData } from "../../hooks/useHistoryData";
 import api from "../../services/api";
 import { Button } from "../Button";
+import { OrderProps } from "../Order";
+import { TransferOrderModal } from "../TransferOrderModal";
 import { FormStyled } from "./styles";
 
-type GrupoTrabalho = {
-	seq_gp_trab: number;
-	ds_grupo_trabalho: string;
-}
-type DadosAPI = Record<string, GrupoTrabalho[]>
-
 export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
+	const { setResultOrderData, isLoading, setIsLoading } = useSearch()
 	const navigate = useNavigate()
-	const [open, setOpen] = useState(false)
-	const [allWorkgroups, setAllWorkgroups] = useState<DadosAPI | null>(null)
-	const [selectedGroup, setSelectedGroup] = useState()
-
-	let user = Cookies.get('user') ?? ''
-
-	async function fetchWorkgroups() {
-		await api.get(`/get/workgroup`)
-			.then((response) => {
-				console.log("Grupo Trabalho", response.data)
-				setAllWorkgroups(response.data)
-			}).catch((error) => {
-				console.error(error)
-				toast.error('Erro ao buscar grupos de trabalho')
-			}
-			)
-	}
+	const queryClient = useQueryClient()
+	const { getHistory } = useHistoryData()
+	const [openTransferModal, setOpenTransferModal] = useState(false)
 
 	async function handleSendOrderReply(event: any) {
 		event.preventDefault()
+		setIsLoading(true)
+		const userLogged = Cookies.get('user')
 
+		if (!userLogged) {
+			Cookies.remove('user')
+			Cookies.remove('exec.token')
+			return navigate('/entrar')
+		}
+		if (!numberOrder) {
+			toast.error('Número da Ordem de Serviço não encontrado')
+			return
+		}
+
+		const loadingToast = toast.loading('Assumindo Ordem de Serviço...')
 		try {
-			if (!user || user === '') {
-				Cookies.remove('user')
-				Cookies.remove('exec.token')
-				navigate('/signin')
-			} else if (!numberOrder) {
-				toast.error('Número da Ordem de Serviço não encontrado')
-				return
-			}
+
 			await api.post('/post/takeon', {
 				nr_order: numberOrder,
-				nm_user: user
+				nm_user: userLogged
 			})
 
-			toast.success('Ordem de Serviço assumida')
-			navigate(-1)
+			// Atualiza o cache localmente
+			const currentOrders = queryClient.getQueryData<OrderProps[]>(['user', 'pendentes', userLogged])
+			if (currentOrders) {
+				const updatedOrders = currentOrders.filter(order => order.number !== numberOrder)
+				queryClient.setQueryData(['user', 'pendentes', userLogged], updatedOrders)
+			}
+
+			queryClient.invalidateQueries({ queryKey: ['user', 'pendentes', userLogged], refetchType: 'all' })
+			queryClient.invalidateQueries({ queryKey: ['user', 'minhas', userLogged], refetchType: 'all' })
+
+			toast.update(loadingToast, {
+				render: 'Ordem de Serviço assumida!',
+				type: 'success',
+				isLoading: false,
+				autoClose: 1000,
+				closeButton: true,
+			})
+
+			getHistory(numberOrder.toString())
+			setIsLoading(false)
+			setResultOrderData((prev) => ({
+				...prev,
+				executor: userLogged,
+			}))
 		} catch (error) {
-			toast.error('Erro ao assumir Ordem de Serviço')
+			setIsLoading(false)
+			toast.update(loadingToast, {
+				render: 'Erro ao assumir OS.',
+				type: 'error',
+				isLoading: false,
+				autoClose: 2000,
+			})
 			console.error(error)
 		}
 	}
 
-	async function handleTransferOrder(event: MouseEvent<HTMLButtonElement>) {
-		event?.preventDefault()
-
-		if (!selectedGroup) {
-			toast.error("Selecione um grupo para transferir")
-			return
-		}
-
-		const user_logged = Cookies.get('user') ?? ''
-		console.log("user_logged", user_logged)
-		if (!user_logged || user_logged === '') {
-			//Lançar uma notificação de erro
-			toast.error('Sessão expirada, faça login novamente')
-			Cookies.remove('exec.token')
-			Cookies.remove('user')
-			navigate('/entrar')
-			return
-		}
-
-		await api.post('post/transfer/workgroup', {
-			nm_usuario: user_logged,
-			code_workgroup: selectedGroup,
-			nr_order: numberOrder,
-		}).then(() => {
-			toast.success("Ordem de Serviço transferida!")
-			navigate(-1)
-		}).catch((error) => {
-			console.log(error);
-			toast.error("Ocorreu um erro")
-		})
-	}
-
-	const handleChange = (event: any) => {
-		setSelectedGroup(event.target.value);
-	};
-
 	return (
-		<FormStyled >
-
-			{!open && (
+		<>
+			<FormStyled onSubmit={handleSendOrderReply}>
 				<div id="takeon-transfer">
-					<Button
-						type="submit"
-						id="takeon-button"
-						onClick={handleSendOrderReply}>
+					<Button id="takeon-button" type="submit" disabled={isLoading}>
 						Assumir
 					</Button>
-					<Button
-						type="button"
-						id="transfer-button"
-						onClick={() => {
-							setOpen(true)
-							fetchWorkgroups()
-						}}>
+					<Button onClick={() => setOpenTransferModal(true)} type="button" id="transfer-button" disabled={isLoading}>
 						Transferir
 					</Button>
 				</div>
-			)}
+			</FormStyled>
 
+			<TransferOrderModal
+				open={openTransferModal}
+				onOpenChange={setOpenTransferModal}
+				numberOrder={numberOrder}
+			/>
 
-			{open && (
+			{/* {open && (
 				<div className="confirm-transfer">
 					<div>
 						<label
@@ -147,13 +126,27 @@ export function TakeOrderForm({ numberOrder }: { numberOrder: number }) {
 								))}
 						</select>
 					</div>
+					<div>
+						<label htmlFor="users">Deseja atribuir a um usuário? (opcional)</label>
+
+						<select name="users" id="user">
+
+						</select>
+					</div>
+
+					<div>
+						<label htmlFor="comment">Histórico</label>
+
+						<textarea name="comment" id="comment" />
+					</div>
 
 					<div id="confirm-or-cancel">
 						<button type="submit" id="confirm-button" onClick={handleTransferOrder}>Confirmar</button>
 						<button type="button" id="cancel-button" onClick={() => setOpen(false)}>Cancelar transfência</button>
 					</div>
 				</div>
-			)}
-		</FormStyled>
+			)} */}
+
+		</>
 	)
 }

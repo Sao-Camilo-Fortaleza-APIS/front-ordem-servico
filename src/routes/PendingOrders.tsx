@@ -51,20 +51,14 @@ export function PendingOrders() {
     }, [user])
     return (
         <div className="wrapper">
-            <div style={{ width: '100%', color: '#A1A1AA', margin: '0.25rem 0 0.5rem 0' }}>
-                <span style={{ color: '#A1A1AA' }}>Legenda:</span>
-
-                <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-                    <div style={{ backgroundColor: '#ef4444', width: '1rem', height: '1rem', borderRadius: '999px' }}>
-                    </div>
-                    <span>Ordens sem executor</span>
-                </div>
+            <div style={{ width: '100%', margin: '0.25rem 0 0.5rem 0', }}>
+                {quantidade !== 0 && <span style={{ color: '#A1A1AA' }}>Nessa aba estão as OSs que não possuem executores atribuídos</span>}
             </div>
 
             <div className="quantidade">
-                {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
-                {quantidade === 1 && <span>1 solicitação encontrada</span>}
-                {quantidade && quantidade > 1 ? <span>{quantidade} solicitações encontradas</span> : ''}
+                {quantidade === 0 && <span>Nenhuma solicitação pendente de atendimento encontrada</span>}
+                {quantidade === 1 && <span>1 solicitação pendente de atendimento encontrada</span>}
+                {quantidade && quantidade > 1 ? <span>{quantidade} solicitações pendentes de atendimento  encontradas</span> : ''}
                 <span>{isFetching && <Loader size={16} className="animate-spin" />}</span>
             </div>
 
@@ -87,6 +81,8 @@ export function PendingOrders() {
                                     group={order.group}
                                     describe={order.describe}
                                     awaiting_validate={order.awaiting_validate}
+                                    stage={order.stage}
+                                    group_planej={order.group_planej}
                                 />
                             </button>
                         )

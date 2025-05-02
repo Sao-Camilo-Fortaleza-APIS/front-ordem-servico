@@ -16,10 +16,14 @@ import { configToastError, configToastSuccess } from "../../../utils/toast-confi
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Message } from "./styles"; // Importação dos estilos
 
 import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../components/Accordion";
+import { badgeStyles, DefaultBadge, StatusBadge } from "../../../components/BadgeStatus";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
+import { SatisfactionOption, StarRating } from "../../../components/StartRating";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
+import { useApprobation } from "../../../hooks/useApprobation";
+import { fetchSatisfactionDegrees } from "../../../hooks/useDegreeSatisfaction";
 import api from "../../../services/api";
 import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
@@ -28,11 +32,13 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   requester: string
   title: string
   stage: string;
+  nr_stage: number;
   contact?: string
   damage: string
   date_order: string
   location: string
   group: number
+  group_planej: number
   describe: string
   awaiting_validate: string
   executor: string
@@ -65,6 +71,8 @@ export function Historico() {
   const [replyHistory, setReplyHistory] = useState<string>('')
   const [userReplyHistory, setUserReplyHistory] = useState<string>('')
   const [userApprobation, setUserApprobation] = useState<string>('')
+  const [satisfactionDegrees, setSatisfactionDegrees] = useState<SatisfactionOption[]>([])
+  const [satisfactionSelected, setSatisfactionSelected] = useState<string>('')
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
@@ -135,43 +143,14 @@ export function Historico() {
     })
   }
 
-  async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
-
-    if (hasApprove === 'not') {
-      try {
-        const response = await api.post('/post/approbation', { nr_order: `${orderNumber}`, has_approve: `${hasApprove}` })
-        if (response?.status === 201) {
-          setOpenFormReply(true)
-          toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
-        }
-        handleSearch(orderNumber)
-      } catch (error) {
-        toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
-      }
-    } else if (hasApprove === 'yes') {
-      try {
-        const response = await api.post('/post/approbation', {
-          nr_order: `${orderNumber}`,
-          has_approve: `${hasApprove}`,
-          nm_usuario: `${userApprobation}`
-        })
-        if (response?.status == 201) {
-          setOpenPreApprove(false)
-          setUserApprobation('')
-          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
-        }
-        handleSearch(orderNumber)
-      } catch (error: AxiosError<Error> | any) {
-        if (error?.response?.status === 400) {
-          toast.error('Informe o Usuário do Tasy. Exemplo: nome.sobrenome', configToastError)
-        } else if (error?.response?.status === 404) {
-          toast.error('Usuário não encontrado. Tente novamente.', configToastError)
-        } else {
-          toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
-        }
-      }
-    }
-  }
+  const { handleApprobation } = useApprobation({
+    userApprobation,
+    satisfactionSelected,
+    setOpenFormReply,
+    setOpenPreApprove,
+    setUserApprobation,
+    handleSearch
+  })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -185,9 +164,12 @@ export function Historico() {
   }, [resultHistoryData])
 
   useEffect(() => {
+    fetchSatisfactionDegrees().then((response) => setSatisfactionDegrees(response)).catch(() => setSatisfactionDegrees([]))
+
     if (openFormReply === false) {
       setReplyHistory('');
       setUserReplyHistory('')
+      return
     }
   }, [openFormReply])
 
@@ -213,9 +195,15 @@ export function Historico() {
                     <div>
                       <span className='title'>{resultOrderData?.damage}</span>
                       <span className='infos'>{resultOrderData?.describe}</span>
-                      <div style={{ width: '100%', textAlign: 'right' }} >
-                        <span style={{ marginRight: '0.25rem' }} className='badge'>{resultOrderData?.stage}</span>
-                        <span className='badge'>{resultOrderData?.executor}</span>
+                      <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
+                        <StatusBadge status={resultOrderData?.stage} />
+                        <DefaultBadge
+                          textColor={badgeStyles[resultOrderData?.stage].color}
+                          bgColor={badgeStyles[resultOrderData?.stage].background}
+                          borderColor={badgeStyles[resultOrderData?.stage].border}
+                        >
+                          {resultOrderData?.executor ? resultOrderData?.executor : 'Sem executor previsto'}
+                        </DefaultBadge>
                       </div>
 
                       <span className='infos'>
@@ -304,7 +292,7 @@ export function Historico() {
               {/* DIALOG APPROVE */}
               <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
                 <Content
-                  size="sm"
+                  size="md"
                   title="Deseja aprovar?"
                 >
                   <Form onSubmit={handleSubmit}>
@@ -317,6 +305,13 @@ export function Historico() {
                       value={userApprobation}
                       onChange={event => setUserApprobation(event.target.value)}
                     />
+
+                    <Label htmlFor="rating">Como foi sua experiência?</Label>
+                    <StarRating
+                      options={satisfactionDegrees}
+                      onRatingChange={(value) => setSatisfactionSelected(value)}
+                    />
+
                     <Fieldset>
                       <Button onClick={() => setOpenPreApprove(false)}>Cancelar</Button>
                       <Button variant="reply" type="submit">Sim</Button>

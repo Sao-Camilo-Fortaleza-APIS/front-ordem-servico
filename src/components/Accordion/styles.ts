@@ -169,7 +169,8 @@ export const StyledContentText = styled.div`
         }
     }
 
-  div:first-child :nth-child(2) {
+  /* div:first-child :nth-child(2) {
     margin-bottom: 0.75rem;
-  }
+    background-color: #f3f4;
+  } */
 `;

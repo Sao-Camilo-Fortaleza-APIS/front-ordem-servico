@@ -136,6 +136,28 @@ export const OrderDetails = styled.div<{ color: string }>`
                 text-overflow: ellipsis;
             }
         }
+
+        .badge-yellow {
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #9a3412 ;
+            background-color: #ffedd5;//#FFF9DB;
+            margin-top: 0.5rem;
+            border: 1px solid #fbbf24;
+        }
+
+        .badge-blue {
+            border-radius: 0.5rem;
+            padding: 0.25rem 0.5rem;
+            font-size: 0.75rem;
+            font-weight: 500;
+            color: #1E40AF ;
+            background-color: #DBEAFE;
+            margin-top: 0.5rem;
+            border: 1px solid #3b82f6;
+        }
     }
     div.icon {
         margin-left: 0.5rem;
