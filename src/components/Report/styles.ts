@@ -246,6 +246,7 @@ export const CloseButton = styled(Dialog.Close)`
   border: none;
   font-size: 1.5rem;
   color: #71717A;
+  cursor: pointer;
 
   @media (max-width: 480px) {
     font-size: 1.25rem;
@@ -254,9 +255,9 @@ export const CloseButton = styled(Dialog.Close)`
   }
 `;
 
-export const ConfirmContainer = styled.div`
-  background: #fef2f2;
-  border: 1px solid #fecaca;
+export const ConfirmContainer = styled.div<{ bgColor?: string, borderColor?: string }>`
+  background: ${({ bgColor }) => bgColor ? bgColor : '#fef2f2'};
+  border: 1px solid ${({ borderColor }) => borderColor ? borderColor : '#fecaca'};
   padding: 0.75rem 1rem;
   border-radius: 6px;
   display: flex;

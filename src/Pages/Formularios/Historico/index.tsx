@@ -22,6 +22,8 @@ import { Header } from "../../../components/Header";
 import { SatisfactionOption, StarRating } from "../../../components/StartRating";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
+import { useApprobation } from "../../../hooks/useApprobation";
+import { fetchSatisfactionDegrees } from "../../../hooks/useDegreeSatisfaction";
 import api from "../../../services/api";
 import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
@@ -141,60 +143,18 @@ export function Historico() {
     })
   }
 
-  async function handleApprobation(hasApprove: 'yes' | 'not', orderNumber: number) {
-
-    if (hasApprove === 'not') {
-      try {
-        const response = await api.post('/post/approbation', { nr_order: `${orderNumber}`, has_approve: `${hasApprove}` })
-        if (response?.status === 201) {
-          setOpenFormReply(true)
-          toast.success('Ordem de Serviço Reprovada!', configToastSuccess)
-        }
-        handleSearch(orderNumber)
-      } catch (error) {
-        toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
-      }
-    } else if (hasApprove === 'yes') {
-      await api.post('/post/rating', {
-        order: orderNumber,
-        rating: satisfactionSelected
-      }).then(response => console.log(response.data))
-        .catch((error: AxiosError) => {
-          throw new Error((error?.response?.data as { message?: string })?.message || 'Erro ao enviar a avaliação')
-        })
-
-      try {
-        const response = await api.post('/post/approbation', {
-          nr_order: `${orderNumber}`,
-          has_approve: `${hasApprove}`,
-          nm_usuario: `${userApprobation}`
-        })
-        if (response?.status == 201) {
-          setOpenPreApprove(false)
-          setUserApprobation('')
-          toast.success('Ordem de Serviço Aprovada!', configToastSuccess)
-        }
-        handleSearch(orderNumber)
-      } catch (error: AxiosError<Error> | any) {
-        if (error?.response?.status === 400) {
-          toast.error('Informe o Usuário do Tasy. Exemplo: nome.sobrenome', configToastError)
-        } else if (error?.response?.status === 404) {
-          toast.error('Usuário não encontrado. Tente novamente.', configToastError)
-        } else {
-          toast.error('Houve um erro inesperado. Tente novamente mais tarde.', configToastError)
-        }
-      }
-    }
-  }
+  const { handleApprobation } = useApprobation({
+    userApprobation,
+    satisfactionSelected,
+    setOpenFormReply,
+    setOpenPreApprove,
+    setUserApprobation,
+    handleSearch
+  })
 
   const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     handleApprobation('yes', resultOrderData?.number)
-  }
-
-  const fetchSatisfactionDegrees = async () => {
-    const response = await api.get("/get/satisfaction")
-    setSatisfactionDegrees(response.data)
   }
 
   useEffect(() => {
@@ -204,7 +164,7 @@ export function Historico() {
   }, [resultHistoryData])
 
   useEffect(() => {
-    fetchSatisfactionDegrees()
+    fetchSatisfactionDegrees().then((response) => setSatisfactionDegrees(response)).catch(() => setSatisfactionDegrees([]))
 
     if (openFormReply === false) {
       setReplyHistory('');

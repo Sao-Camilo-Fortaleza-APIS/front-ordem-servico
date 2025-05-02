@@ -3,12 +3,15 @@ import styled from "styled-components";
 
 const StarWrapper = styled.div`
   display: flex;
+  align-items: center;
+  justify-content: center;
   gap: 8px;
   cursor: pointer;
 `;
 
 const Star = styled.span < { filled: boolean; readOnly?: boolean } > `
   font-size: 2rem;
+  line-height: 1;
   color: ${({ filled }) => (filled ? "#FFD700" : "#ccc")};
   transition: color 0.2s;
   cursor: ${({ readOnly }) => (readOnly ? "not-allowed" : "pointer")};
