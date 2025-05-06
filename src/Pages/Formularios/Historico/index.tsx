@@ -1,7 +1,7 @@
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 
-import { Clock, MapPin, Phone, Search, User } from "lucide-react";
+import { Search } from "lucide-react";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
@@ -9,23 +9,21 @@ import { Label } from "../../../components/Label";
 import { Loader } from "../../../components/Load";
 import { Content, Dialog, Trigger } from "../../../components/Modal";
 import { Fieldset } from "../../../components/Modal/styles";
-import SearchForm from "../../../components/SearchForm";
 import { Btns } from "../../../styles/RegisterServiceOrder.styles";
 import { convertDate } from "../../../utils/convert-date";
 import { configToastError, configToastSuccess } from "../../../utils/toast-config";
 import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Message } from "./styles"; // Importação dos estilos
 
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "../../../components/Accordion";
-import { badgeStyles, DefaultBadge, StatusBadge } from "../../../components/BadgeStatus";
+import { AccordionOrderHeader } from "../../../components/AccordionHeader";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
+import SearchFormDialog from "../../../components/SearchForm";
 import { SatisfactionOption, StarRating } from "../../../components/StartRating";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import { useApprobation } from "../../../hooks/useApprobation";
 import { fetchSatisfactionDegrees } from "../../../hooks/useDegreeSatisfaction";
 import api from "../../../services/api";
-import { capitalizeFirstLetterOfWords } from "../../../utils/transform-text";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
   number: number
@@ -181,71 +179,8 @@ export function Historico() {
         <ContainerHeader>
           <h3>Histórico</h3>
           <div className="content-mobile">
-            {resultOrderData?.number && (
-              <Accordion type="single" collapsible>
-                <AccordionItem value={`${resultOrderData?.number}`}>
-                  <AccordionTrigger>
-                    <div className="number-and-title">
-                      <span>{resultOrderData?.number}</span>
-                      <span>{resultOrderData?.damage}</span>
-                    </div>
-                  </AccordionTrigger>
-
-                  <AccordionContent>
-                    <div>
-                      <span className='title'>{resultOrderData?.damage}</span>
-                      <span className='infos'>{resultOrderData?.describe}</span>
-                      <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
-                        <StatusBadge status={resultOrderData?.stage} />
-                        <DefaultBadge
-                          textColor={badgeStyles[resultOrderData?.stage].color}
-                          bgColor={badgeStyles[resultOrderData?.stage].background}
-                          borderColor={badgeStyles[resultOrderData?.stage].border}
-                        >
-                          {resultOrderData?.executor ? resultOrderData?.executor : 'Sem executor previsto'}
-                        </DefaultBadge>
-                      </div>
-
-                      <span className='infos'>
-                        <User size={18} color='#6b7280' />
-                        {capitalizeFirstLetterOfWords(resultOrderData?.requester)}
-                      </span>
-
-                      <span className='infos'>
-                        <MapPin size={18} color='#6b7280' />
-                        {capitalizeFirstLetterOfWords(resultOrderData?.location)}
-                      </span>
-
-                      <span className='infos'>
-                        <Clock size={18} color='#6b7280' />
-                        {convertDate(resultOrderData?.date_order)}
-                      </span>
-
-                      <span className='infos'>
-                        <Phone size={18} color='#6b7280' />
-                        {resultOrderData?.contact}
-                      </span>
-                    </div>
-                  </AccordionContent>
-                </AccordionItem>
-              </Accordion>
-            )}
-
-            <Dialog open={open} setOpen={setOpen}>
-              <Content
-                size="xl"
-                title="Buscar"
-                description="Pesquise o número da ordem de serviço para visualizar seus históricos."
-              >
-                <SearchForm />
-
-              </Content>
-              <Trigger asChild>
-                <Button variant='search-icon'>
-                  <Search size={24} color='white' />
-                </Button>
-              </Trigger>
-            </Dialog>
+            <AccordionOrderHeader />
+            <SearchFormDialog open={open} setOpen={setOpen} />
           </div>
         </ContainerHeader>
 

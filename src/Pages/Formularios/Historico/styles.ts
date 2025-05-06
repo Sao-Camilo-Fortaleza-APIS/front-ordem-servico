@@ -53,7 +53,7 @@ export const ContainerHeader = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 
   /* para alinhar button com icone de pesquisa */
   position: relative;
