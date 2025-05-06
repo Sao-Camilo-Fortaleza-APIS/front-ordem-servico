@@ -67,6 +67,11 @@ export const badgeStyles: Record<string, { color: string; background: string; bo
         background: '#f3f4f6',
         border: '#d1d5db',
     },
+    'null': { // se for null ou undefined
+        color: '#6b7280',
+        background: '#e5e7eb',
+        border: '#9ca3af',
+    },
 }
 
 export const DefaultBadge = styled.span<{ textColor: string; bgColor: string; borderColor: string }>`
@@ -80,15 +85,13 @@ export const DefaultBadge = styled.span<{ textColor: string; bgColor: string; bo
   display: inline-block;
 `
 
-/* export const allStatuses = Object.keys(statusColorMap) */
+export const StatusBadge = ({ status }: { status: string | null }) => {
+    const displayStatus = typeof status === 'string' ? status : 'Sem Estágio Informado'; // Se status for null ou undefined, exibe 'Sem Estágio Informado'
 
-export const StatusBadge = ({ status }: { status: string }) => {
-    const { color, background, border } = badgeStyles[status] || {
-        color: '#374151',
-        background: '#f3f4f6',
-        border: '#d1d5db',
-    } // fallback cinza
-    return <DefaultBadge textColor={color} bgColor={background} borderColor={border}>{status}</DefaultBadge>
+    const style = badgeStyles[displayStatus] || badgeStyles['null'];
+    return (
+        <DefaultBadge textColor={style.color} bgColor={style.background} borderColor={style.border}>
+            {displayStatus}
+        </DefaultBadge>
+    );
 };
-
-
