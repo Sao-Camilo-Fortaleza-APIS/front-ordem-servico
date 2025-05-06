@@ -18,6 +18,7 @@ export function MyOrders() {
     let filtro = location === '/ordens/minhas' ? 'minhas' : 'pendentes'
     let group: number = Number(searchParams.get('group')) ?? 0
     let sector: string = searchParams.get('sector') ?? ''
+    let status: string = searchParams.get('status') ?? ''
 
     const { data: responseOrders, isLoading, isFetching } = useQuery<OrderResponse>({
         queryKey: ['user', filtro, user],
@@ -37,13 +38,19 @@ export function MyOrders() {
     })
     //enabled: true, // se false desabilita a pesquisa automática
 
-    function filterOrdersByGroup(group: number, sectorSelected: string) {
-        if (group === 0) {
-            return sectorSelected !== '' ? responseOrders?.filter(order => order.location === sectorSelected) : responseOrders //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+    function filterOrdersByGroup(group: number, sectorSelected: string, status: string) {
+        /* if (group === 0) {
+            return sectorSelected !== '' ? responseOrders?.filter(order => order.location === sectorSelected) : responseOrders 
         }
         const ordersByGroup = responseOrders?.filter((order: OrderProps) => order.group === Number(group))
         let filteredOrdersBySector = sectorSelected !== '' ? ordersByGroup?.filter(order => order.location === sectorSelected) : ordersByGroup
-        return filteredOrdersBySector //?.filter((order: OrderProps) => order.awaiting_validate === "Não")
+        return filteredOrdersBySector  */
+        return responseOrders?.filter((order: OrderProps) => {
+            const matchesGroup = group === 0 || order.group === group;
+            const matchesSector = sector === '' || order.location === sector;
+            const matchesStatus = status === '' || order.stage === status;
+            return matchesGroup && matchesSector && matchesStatus;
+        });
     }
 
     let quantidade = group === 0 ? responseOrders?.length : responseOrders?.filter(order => order.group === group).length
@@ -79,7 +86,7 @@ export function MyOrders() {
 
             <div className="list-orders">
                 <div>
-                    {filterOrdersByGroup(group, sector)?.map((order) => {
+                    {filterOrdersByGroup(group, sector, status)?.map((order) => {
                         return (
                             <button
                                 onClick={() => navigate(`/ordem/${order.number}`)}
