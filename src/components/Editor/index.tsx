@@ -48,8 +48,9 @@ export function Editor(props: EditorProps) {
         height: '5rem',
         padding: '0.25rem',
         marginBottom: '0.5rem',
-        border: '1px solid #000',
+        border: '1px solid #71717a',
         borderRadius: '0.5rem',
+        color: '#3f3f46'
       }}
     >
       {editor && (

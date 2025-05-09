@@ -76,7 +76,7 @@ export function TableReport({ open, data, onOpenChange, numberOrder }: TableRepo
                 <Table>
                     {/* colocar uma legenda à esquerda com a quantidade de laudos */}
                     <caption>
-                        {data.length || 0} laudos encontrado(s)
+                        {data.length || 0} laudo(s) encontrado(s)
                     </caption>
                     <TableHeader>
                         <TableRow>
@@ -93,15 +93,15 @@ export function TableReport({ open, data, onOpenChange, numberOrder }: TableRepo
                             <Fragment key={report.nr_laudo}>
                                 <TableRow>
                                     <TableCell style={{ textAlign: 'center' }}>{report.nr_laudo}</TableCell>
-                                    <TableCell>{convertDate(report.dt_liberacao)}</TableCell>
+                                    <TableCell>{convertDate(report.dt_liberacao, "DD/MM/YYYY HH[h]mm")}</TableCell>
                                     <TableCell style={{ whiteSpace: 'normal' }}>{report.nm_tecnico}</TableCell>
                                     <TableCell style={{ textAlign: 'center' }}>
-                                        <Button className="icon danger" onClick={() => setConfirmingNRLaudo(report.nr_laudo)} type="button" autoFocus={false}>
+                                        <Button title='Inativar laudo' className="icon danger" onClick={() => setConfirmingNRLaudo(report.nr_laudo)} type="button" autoFocus={false}>
                                             <Trash2 size={20} />
                                         </Button>
                                     </TableCell>
                                     <TableCell style={{ textAlign: 'center' }}>
-                                        <Button className='icon' onClick={() => setSelectedLaudo(report)} type="button">
+                                        <Button title='Datelhes do laudo' className='icon' onClick={() => setSelectedLaudo(report)} type="button">
                                             <Eye size={20} />
                                         </Button>
                                     </TableCell>

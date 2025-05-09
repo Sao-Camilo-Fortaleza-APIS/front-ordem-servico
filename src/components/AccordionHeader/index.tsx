@@ -20,7 +20,7 @@ export function AccordionOrderHeader() {
 
                 <AccordionContent>
                     <div>
-                        <span className='title'>{resultOrderData?.damage}</span>
+                        <span className='title'>{`${resultOrderData?.number} ${resultOrderData?.damage}`}</span>
                         <span className='infos'>{resultOrderData?.describe}</span>
                         <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
                             <StatusBadge status={resultOrderData?.stage} />

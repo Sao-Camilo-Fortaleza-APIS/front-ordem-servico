@@ -1,7 +1,6 @@
 import { AxiosError } from "axios";
 import { useEffect, useRef, useState } from "react";
 
-import { Search } from "lucide-react";
 import { toast } from "react-toastify";
 import { Button } from "../../../components/Button";
 import { Input } from "../../../components/Input";
@@ -17,6 +16,7 @@ import { Container, ContainerChat, ContainerHeader, ContainerMessages, Form, Mes
 import { AccordionOrderHeader } from "../../../components/AccordionHeader";
 import { Editor } from "../../../components/Editor";
 import { Header } from "../../../components/Header";
+import { MoreActionsMenu } from "../../../components/MoreActions";
 import SearchFormDialog from "../../../components/SearchForm";
 import { SatisfactionOption, StarRating } from "../../../components/StartRating";
 import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
@@ -208,7 +208,12 @@ export function Historico() {
             )}
           </ContainerMessages>
           {resultOrderData?.stage === 'Aguardando Validação' ? (
-            <>
+            <div
+              style={{
+                padding: ' 0.75rem 0.5rem 1rem',
+                backgroundColor: '#ffffff',
+                borderRadius: '0 0 0.75rem 0.75rem',
+              }}>
               <Btns>
                 <button
                   className="check"
@@ -254,13 +259,8 @@ export function Historico() {
                   </Form>
 
                 </Content>
-                <Trigger asChild>
-                  <Button variant='search-icon'>
-                    <Search size={24} color='white' />
-                  </Button>
-                </Trigger>
               </Dialog>
-            </>
+            </div>
           ) : (
             resultOrderData?.stage !== 'Encerrado' && (
               <Dialog open={openFormReply} setOpen={setOpenFormReply}>
@@ -297,14 +297,35 @@ export function Historico() {
                     </div>
                   </Form>
                 </Content>
-                {!resultOrderData?.number !== undefined ? (
+                <div
+                  style={{
+                    display: 'flex',
+                    gap: '0.5rem',
+                    marginBottom: '1rem',
+                    padding: ' 0.75rem 0.5rem 1rem',
+                    backgroundColor: '#ffffff',
+                    borderRadius: '0 0 0.75rem 0.75rem',
+                    alignItems: 'stretch',
+                  }}>
                   <Trigger asChild>
-                    <Btns>
-                      <button disabled={resultOrderData?.number === undefined ? true : false} className="enviar">Responder</button>
+                    <Btns style={{ width: '100%' }}>
+                      <button
+                        disabled={resultOrderData?.number === undefined ? true : false}
+                        title={``}
+                        className="enviar"
+                      >
+                        Responder
+                      </button>
                     </Btns>
                   </Trigger>
-                ) : null}
 
+                  <MoreActionsMenu
+                    numberOrder={resultOrderData?.number}
+                    showUpload={true}
+                    disabled={resultOrderData?.number === undefined ? true : false}
+                    style={{ width: '62px' }}
+                  />
+                </div>
               </Dialog>
             )
           )}

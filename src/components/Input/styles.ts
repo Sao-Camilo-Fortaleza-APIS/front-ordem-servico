@@ -12,10 +12,12 @@ export const InputStyled = styled.input<{ variant: string }>`
   padding: 0 0.5rem;
   font-size: 1rem;
   line-height: 1;
-  color: #000;
+  color: #3f3f46;
   box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
   border: #71717a 1px solid;
   border-right: ${props => props.variant === 'search' && 'none'};
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
   
   ::placeholder {
     color: #a1a1aa;
@@ -23,8 +25,7 @@ export const InputStyled = styled.input<{ variant: string }>`
   }
 
 	:focus {
-  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
-  border-radius: ${props => props.variant === 'search' ? ' 0.5rem 0 0 0.5rem' : '0.5rem'};
-}
-
+    box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+    border-radius: ${props => props.variant === 'search' ? ' 0.5rem 0 0 0.5rem' : '0.5rem'};
+  }
 `;

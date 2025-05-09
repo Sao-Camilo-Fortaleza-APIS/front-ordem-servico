@@ -108,12 +108,7 @@ export const slideUp = keyframes`
 export const StyledContent = styled(AccordionPrimitive.Content)`
   overflow: hidden;
   font-size: 0.875rem;
-  color: #fff;
-  background-color: #f4f4f5;
-
-  &:hover {
-     filter: brightness(1.1);
-  }
+  background-color: #fff;
 
   &[data-state='open'] {
     animation: ${slideDown} 300ms cubic-bezier(0.87, 0, 0.13, 1);

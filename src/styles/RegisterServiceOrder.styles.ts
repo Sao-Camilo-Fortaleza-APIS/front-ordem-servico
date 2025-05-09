@@ -225,40 +225,6 @@ export const NmItem = styled.div`
             }
         }
     }
-
-    /* #valores{
-        margin-top: 1rem;
-        display: flex;
-        gap: 8rem;
-        justify-content: center;
-        align-items: center;
-        div {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-        }
-        p {
-            margin-top: 6px;
-            margin-left: 10px;
-        }
-        input{
-            font-family: 'Roboto', sans-serif;
-            width: 20px;
-            height: 20px;
-            :hover{
-                cursor: pointer;
-            }
-        }
-
-        .radio {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        gap: 0.5rem;
-        }
-    } */
-    
         @media (max-width:600px){
         height:auto ;
         input{
@@ -410,17 +376,14 @@ export const Radios = styled.div`
 `
 
 export const Btns = styled.div`
-    margin-top: 1rem;
     align-items: center;
     justify-content: center;
     display: flex;
     gap: 2rem;
-    margin-bottom: 1rem;
     button{
         font-family: 'Inter','Roboto', sans-serif;
         padding: 20px;
         width: 400px;
-        margin-bottom: 8rem;
         font-size: 18px;
         font-weight: 500;
     }
@@ -432,7 +395,7 @@ export const Btns = styled.div`
 
     .enviar{
             width: 100%;
-            background-color: #2563eb;
+            background-color: #ce2929;
             color: #FFFFFF;
             border-radius: 0.75rem;
             outline: none;
@@ -440,7 +403,7 @@ export const Btns = styled.div`
             transition: all 300ms ease;
             border:none;
             :hover{
-            background-color: #1d4ed8;
+            background-color: #dc2626;
             border-color: none;
             border: none;
             color: #FFFFFF;

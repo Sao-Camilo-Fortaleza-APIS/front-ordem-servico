@@ -130,26 +130,27 @@ export function RegisterServiceOrder() {
 
   }
 
-  useEffect(() => {
-    const fetchOrdersPendingValidation = async () => {
-      if (userMaiusculo) {
-        try {
-          setIsLoadingUser(true)
-          const { data } = await api.get(`get/orders/requester/${userMaiusculo}?filter=awaiting`);
-          console.clear()
-          setPendingOrdersWaitingValidation(data)
-          if (data.length > 0) {
-            setHasPendingOrders(true)
-          }
-          setIsLoadingUser(false)
-        } catch (error) {
-          setIsLoadingUser(false)
-        }
-      }
-    }
+  async function fetchOrdersPendingValidation() {
+    if (!userMaiusculo) return
 
-    fetchOrdersPendingValidation()
-  }, [nm_usuario])
+    setIsLoadingUser(true)
+    await api.get(`get/orders/requester/${userMaiusculo}?filter=awaiting`)
+      .then((response) => {
+        setPendingOrdersWaitingValidation(response.data)
+        if (response.data.length > 0) {
+          setTimeout(() => {
+            setHasPendingOrders(true)
+          }, 500)
+        }
+      })
+      .catch(() => {
+        toast.error('Não foi possível carregar as ordens pendentes de validação.', configToastError)
+      })
+      .finally(() => {
+        setIsLoadingUser(false)
+      })
+
+  }
 
   useEffect(() => {
     fetchSetor();
@@ -168,7 +169,15 @@ export function RegisterServiceOrder() {
               <NmItem style={{ width: '100%' }}>
                 <p>Qual o seu usuário do  <span>Tasy</span> ? </p>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
-                  <input type="text" required {...register("nm_usuario")} placeholder="Seu usuário do Tasy" value={nm_usuario} onChange={e => setNm_usuario(e.target.value)} />
+                  <input
+                    type="text"
+                    required
+                    {...register("nm_usuario")}
+                    placeholder="Seu usuário do Tasy"
+                    value={nm_usuario}
+                    onChange={e => setNm_usuario(e.target.value)}
+                    onBlur={fetchOrdersPendingValidation}
+                  />
                   {isLoadingUser && <Loader2 className="animate-spin" color="red" />}
                 </div>
               </NmItem>
@@ -184,7 +193,14 @@ export function RegisterServiceOrder() {
               {/* RAMAL */}
               <NmItem style={{ width: '100%' }}>
                 <p>Qual seu ramal de contato?</p>
-                <input required type="number" placeholder="Seu Ramal" {...register("ramal")} value={ramal} onChange={e => setRamal(e.target.value)} />
+                <input
+                  required
+                  type="number"
+                  placeholder="Seu Ramal"
+                  {...register("ramal")}
+                  value={ramal}
+                  onChange={e => setRamal(e.target.value)}
+                />
               </NmItem>
             </DivItems>
 
@@ -249,7 +265,7 @@ export function RegisterServiceOrder() {
             </NmItem>
 
             <Btns>
-              <button className="enviar" type="submit">Enviar</button>
+              <button style={{ marginTop: '0.625rem', marginBottom: '2rem' }} className="enviar" type="submit">Enviar</button>
             </Btns>
           </form>
         </div>

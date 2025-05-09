@@ -88,7 +88,7 @@ export const DialogContent = styled(Dialog.Content) <{
         return '100%';
     }
   }};
-  padding: 1.75rem;
+  padding: 1rem 1.25rem;
   animation: ${contentShow} 150ms cubic-bezier(0.16, 1, 0.3, 1);
 
   :focus {

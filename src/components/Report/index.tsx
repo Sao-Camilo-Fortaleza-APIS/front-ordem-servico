@@ -307,24 +307,24 @@ export function ReportModal({ open, onOpenChange, numberOrder }: ReportModalProp
 
             <DivRow>
               <DivColumn>
-                <Label htmlFor="accessory">Acessórios <span>(opcional)</span></Label>
+                <Label htmlFor="accessory">Acessórios</Label>
                 <TextArea
                   id="accessory"
                   value={accessory}
                   onChange={e => setAccessory(e.target.value)}
-                  placeholder="Informe os acessórios que estão acompanhando, se necessário..."
+                  placeholder="Informe os acessórios que estão acompanhando."
                 />
               </DivColumn>
             </DivRow>
 
             <DivRow>
               <DivColumn>
-                <Label htmlFor="observation">Observação <span>(opcional)</span></Label>
+                <Label htmlFor="observation">Observação</Label>
                 <TextArea
                   id="observation"
                   value={observation}
                   onChange={e => setObservation(e.target.value)}
-                  placeholder="Deixei algum comentário se for necessário..."
+                  placeholder="Deixei algum comentário."
                 />
               </DivColumn>
             </DivRow>
