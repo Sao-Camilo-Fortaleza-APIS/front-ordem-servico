@@ -6,11 +6,20 @@ export const TriggerButton = styled.button`
   border-radius: 0.625rem;
   background: transparent;
   transition: background 0.2s;
-  border: 2px solid #d4d4d8;
+  border: 1px solid #d4d4d8;
   color: #a1a1aa;
   display: flex;
   align-items: center;
   justify-content: center;
+  min-height: 2.5rem;
+  min-width: 2.5rem;
+  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+
+  &:disabled {
+    background-color: #e4e4e7;
+    color: #a1a1aa;
+    cursor: not-allowed;
+  }
 
   &:hover {
     background-color: #e4e4e7;
@@ -18,11 +27,8 @@ export const TriggerButton = styled.button`
   }
 
   @media (max-width: 480px) {
-    padding: 0.4rem;
     border-radius: 0.5rem;
     border: 1px solid #d4d4d8;
-    width: 2.5rem;
-    height: 2.5rem;
 
     svg {
       width: 1.5rem;
@@ -64,6 +70,7 @@ export const Item = styled(DropdownMenu.Item)`
   @media (max-width: 480px) {
     font-size: 1rem;
     padding: 0.4rem 0.5rem;
+    height: 100%;
 
     svg {
       width: 1.25rem;

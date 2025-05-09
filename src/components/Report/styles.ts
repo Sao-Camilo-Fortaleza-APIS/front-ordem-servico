@@ -98,6 +98,10 @@ export const Input = styled.input`
   :disabled {
     cursor: not-allowed;
   }
+
+  ::placeholder {
+    color: #CCC;
+  }
 `;
 
 export const TextArea = styled.textarea`
@@ -207,6 +211,21 @@ export const Button = styled.button`
       outline: 1px solid #0056b3;
     }
 
+  }
+
+  &.check {
+    color: #10b981;
+  
+    &:hover {
+      color: #059669;
+      background-color: #d1fae5;
+      outline: 1px solid #059669;
+    }
+
+    &:focus {
+      outline: 2px solid #059669;
+      background-color: #d1fae5;
+    }
   }
 
   &.ghost {

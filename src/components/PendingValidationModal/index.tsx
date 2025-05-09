@@ -129,10 +129,10 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
         if (data.length < 1) {
             onOpenChange(false)
         }
-        if (newData.length < 1) {
+        /* if (newData.length < 1) {
             onOpenChange(false)
-        }
-    }, [data])
+        } */
+    }, [data, onOpenChange])
 
     useEffect(() => {
         setSatisfactionSelected('')
@@ -179,7 +179,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                                                 <TableCell style={{ whiteSpace: 'normal' }}>{title}</TableCell>
                                                 <TableCell>{convertDate(date)}</TableCell>
                                                 <TableCell>
-                                                    <Button onClick={() => handleApproveSelection(number)} className='icon' type="button">
+                                                    <Button onClick={() => handleApproveSelection(number)} className='icon check' type="button">
                                                         <Check size={28} />
                                                     </Button>
                                                 </TableCell>

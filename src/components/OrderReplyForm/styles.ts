@@ -9,7 +9,7 @@ export const FormStyled = styled.form`
 
   .comment-container {
     display: flex;
-    align-items: center;
+    align-items: flex-end;
     gap: 0.5rem;
     background-color: #fff;
     padding: 0.5rem;
@@ -26,10 +26,10 @@ export const FormStyled = styled.form`
       resize: none;
       width: 100%;
       font-family: 'Roboto', sans-serif;
-      font-size: 1.125rem;
+      font-size: 1rem;
       line-height: 1;
-      padding: 0.5rem;
-      height: 4rem;
+      padding: 0.25rem;
+      height: 5rem;
       border-radius: 0.5rem;
       color: #71717a;
       border: none; //1px solid #d4d4d8;

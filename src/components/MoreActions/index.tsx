@@ -1,28 +1,26 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
-import { Edit3, FileText, Plus, UserPen } from 'lucide-react';
+import { Edit3, FileText, Paperclip, Plus, UserPen } from 'lucide-react';
 import { useState } from 'react';
-import { useSearch } from '../../contexts/SearchContext';
-import { isAllowedToviewItem } from '../../utils/allowed-to-view';
 import { EditStageModal } from '../EditStageModal';
 import { ReportModal } from '../Report';
 import { TransferOrderModal } from '../TransferOrderModal';
+import { UploadModal } from '../UploadModal';
 import { Content, Item, TriggerButton } from './styles';
 
-export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
-  const { resultOrderData } = useSearch()
+interface MoreActionsMenuProps extends React.HTMLProps<HTMLDivElement> {
+  numberOrder: number;
+  showUpload?: boolean;
+  showEditStage?: boolean;
+  showTransfer?: boolean;
+  showReports?: boolean;
+}
+
+export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage = false, showTransfer = false, showReports = false, disabled }: MoreActionsMenuProps) {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [openTransferModal, setOpenTransferModal] = useState(false)
   const [openReportModal, setOpenReportModal] = useState(false)
-  const [openEditStageModal, setOpenEditStageModal] = useState(false)  /**
-  * Verifica se o usuário tem permissão para visualizar o item "Laudos" no menu de ações se group_planej for igual a 28
-  * @returns boolean
-  */
-  /* const isAllowedToviewItem = () => {
-    if (resultOrderData?.group_planej === 28) {
-      return true
-    }
-    return false
-  } */
+  const [openEditStageModal, setOpenEditStageModal] = useState(false)
+  const [openUploadModal, setOpenUploadModal] = useState(false)
 
   const handleTransferClick = () => {
     setOpenDropdown(false) // fecha dropdown
@@ -45,26 +43,48 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
     }, 100) // tempo para Radix animar e desmontar
   }
 
+  const handleUploadClick = () => {
+    setOpenDropdown(false) // fecha dropdown
+    setTimeout(() => {
+      setOpenUploadModal(true) // abre modal depois do dropdown sair do DOM
+    }, 100) // tempo para Radix animar e desmontar
+  }
+
   return (
     <>
       <DropdownMenu.Root open={openDropdown} onOpenChange={setOpenDropdown}>
         <DropdownMenu.Trigger asChild>
-          <TriggerButton aria-label="Abrir menu de ações">
-            <Plus size={20} />
+          <TriggerButton aria-label="Abrir menu de ações" title="Abrir menu de opções" disabled={disabled}>
+            <Plus size={24} />
           </TriggerButton>
         </DropdownMenu.Trigger>
 
         <DropdownMenu.Portal>
           <Content side="top" align="end">
-            <Item onSelect={(e) => {
-              e.preventDefault()
-              handleEditStageClick()
-            }}>
-              <Edit3 size={16} />
-              Alterar Estágio da Ordem
-            </Item>
 
-            {isAllowedToviewItem() && (
+            {showEditStage && (
+              <Item onSelect={(e) => {
+                e.preventDefault()
+                handleEditStageClick()
+              }}>
+                <Edit3 size={16} />
+                Alterar Estágio da Ordem
+              </Item>
+            )}
+
+            {showUpload && (
+              <Item
+                onSelect={(e) => {
+                  e.preventDefault()
+                  handleUploadClick()
+                }}
+              >
+                <Paperclip size={16} />
+                Anexos da Ordem
+              </Item>
+            )}
+
+            {showReports && (
               <Item onSelect={(e) => {
                 e.preventDefault()
                 handleListReportsClick()
@@ -74,13 +94,15 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
               </Item>
             )}
 
-            <Item onSelect={(e) => {
-              e.preventDefault()
-              handleTransferClick()
-            }}>
-              <UserPen size={16} />
-              Transferir Ordem
-            </Item>
+            {showTransfer && (
+              <Item onSelect={(e) => {
+                e.preventDefault()
+                handleTransferClick()
+              }}>
+                <UserPen size={16} />
+                Transferir Ordem
+              </Item>
+            )}
 
           </Content>
         </DropdownMenu.Portal>
@@ -101,6 +123,12 @@ export function MoreActionsMenu({ numberOrder }: { numberOrder: number }) {
       <EditStageModal
         open={openEditStageModal}
         onOpenChange={setOpenEditStageModal}
+        numberOrder={numberOrder}
+      />
+
+      <UploadModal
+        open={openUploadModal}
+        onOpenChange={setOpenUploadModal}
         numberOrder={numberOrder}
       />
     </>

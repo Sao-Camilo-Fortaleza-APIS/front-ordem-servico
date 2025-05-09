@@ -53,7 +53,7 @@ export const ContainerHeader = styled.div`
   display: flex;
   flex-direction: column;
   width: 100%;
-  margin-bottom: 0.5rem;
+  margin: 0.5rem 0;
 
   /* para alinhar button com icone de pesquisa */
   position: relative;
@@ -73,7 +73,6 @@ export const ContainerChat = styled.div`
   flex-direction: column;
   width: 100%;
   height: fit-content;
-  gap: 0.5rem;
   margin: 0 0 2rem 0;
 `
 
@@ -138,7 +137,7 @@ export const ContainerMessages = styled.div`
   width: 100%;
   height: 55vh;
   overflow-y: scroll;
-  border-radius: 0.75rem;
+  border-radius: 0.75rem 0.75rem 0 0;
   padding: 1rem;
 
   /* Estilo da barra de rolagem */

@@ -40,9 +40,10 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
     font-weight: 500;
     color: #fff;
     margin-left: 0.5rem;
-    background-color: #2563eb;
+    background-color: #ce2929;
     border-radius: 0.625rem;
-    border: 1px solid #2563eb;
+    border: 1px solid #ce2929;
+    height: 2.5rem;
   `}
 
   /* danger */
@@ -64,7 +65,7 @@ export const ButtonStyled = styled.button<{ variant?: string }>`
       case 'search':
         return '#e4e4e7';
       case 'reply':
-        return '#1d4ed8';
+        return '#dc2626';
       default:
         return '#e4e4e7';
     }

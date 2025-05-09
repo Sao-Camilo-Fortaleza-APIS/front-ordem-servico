@@ -19,7 +19,7 @@ export function AjusteOk() {
                     <img src="https://imagepng.org/wp-content/uploads/2019/12/check-icone-2.png" alt="" height={200} />
                 </div>
                 <Btns>
-                    <button onClick={() => { navigate('/') }} className="enviar">Abrir outra Ordem de Serviço</button>
+                    <button onClick={() => { navigate('/') }} className="enviar" style={{ marginBottom: '0.625rem' }}>Abrir outra Ordem de Serviço</button>
                 </Btns>
             </Ok>
         </ContainerForm>
