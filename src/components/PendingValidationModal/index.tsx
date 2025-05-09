@@ -22,7 +22,7 @@ interface PendingValidationModalProps {
     requester: string
     data: OrderPendingData[]
 }
-//PendingValidationModal.tsx
+
 export function PendingValidationModal({ open, onOpenChange, data, requester }: PendingValidationModalProps) {
     const [confirmApprove, setConfirmApprove] = useState<number | null>(null)
     const [confirmReject, setConfirmReject] = useState<number | null>(null)
