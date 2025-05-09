@@ -74,13 +74,6 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
     await mutateAsync({ history, typeHistory, close })
   }
 
-  /*   useEffect(() => {
-      if (user === '') {
-        toast.error('Sessão expirada, faça login novamente!')
-        return
-      }
-    }, [user]) */
-
   return (
     <FormStyled onSubmit={handleSubmit(handleSendOrderReply)}>
 
@@ -133,6 +126,10 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
         {/* Adicionar opções */}
         <MoreActionsMenu
           numberOrder={numberOrder}
+          showEditStage
+          showTransfer
+          showUpload
+          showReports={isAllowedToviewItem()}
         />
       </div>
 
@@ -148,7 +145,7 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
           rows={6}
           placeholder="Digite sua resposta..."
         />
-        <Button variant="reply" disabled={isSubmitting} type="submit">
+        <Button variant="reply" style={{ backgroundColor: '#2563eb', borderColor: '#2563eb' }} disabled={isSubmitting} type="submit">
           {isSubmitting ? <Loader className="animate-spin" size={20} /> : <SendHorizonal size={20} />}
         </Button>
 
