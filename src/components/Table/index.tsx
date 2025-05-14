@@ -6,13 +6,14 @@ import { useSearch } from '../../contexts/SearchContext'
 import api from '../../services/api'
 import { convertDate } from '../../utils/convert-date'
 import { configToastError } from '../../utils/toast-config'
+import { StatusBadge } from '../BadgeStatus'
 import { Button } from '../Button'
 import { Container, Td, Th, Tr } from './styles'
 
-interface ApiDataProps {
+export interface ApiDataProps {
     number: number
     title: string
-    closed: string
+    stage: string
     date: string
 }
 
@@ -76,17 +77,8 @@ export default function Table({ data }: TableProps) {
                         <Tr key={index}>
                             <Td style={{ padding: '0' }}>{convertDate(result.date, 'DD[/]MM[/]YYYY')}</Td>
                             <Td>{result.number}</Td>
-                            <Td
-                                style={{ textAlign: "left" }}
-                            >
-                                {result.title}
-                            </Td>
-                            <Td>
-                                {result.closed === "S"
-                                    ? (<span className="badge badge-closed">Encerrada</span>)
-                                    : (<span className="badge badge-open">Aberta</span>)
-                                }
-                            </Td>
+                            <Td style={{ textAlign: "left" }} >{result.title}</Td>
+                            <Td><StatusBadge textTransForm='uppercase' status={result.stage} /></Td>
                             <Td>
                                 <Button variant='reply' onClick={() => handleSearch(result.number)}>
                                     <EyeIcon size={20} />
