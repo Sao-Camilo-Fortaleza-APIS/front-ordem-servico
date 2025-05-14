@@ -67,23 +67,6 @@ export function ViewOrders() {
     ? Array.from(new Set(ordersResponse?.filter(order => order.group === Number(group)).map(order => order.location).sort()))
     : Array.from(new Set(ordersResponse?.map(order => order.location).sort()))
 
-
-  const statusOptions = [
-    'Aguardando Atendimento',
-    'Aguardando Compras',
-    'Aguardando Fornecedor',
-    'Aguardando Validação',
-    'Aguardando manutenção predial',
-    'Aguardando retorno Solicitante',
-    'Atendimento Programado',
-    'Em Atendimento',
-    'Enviado para Philips',
-    'Desenvolvimento Philips',
-    'Não Solucionado',
-    'Retorno Philips',
-    'Encerrado'
-  ]
-
   const filteredStatusOptions = status !== ''
     ? Array.from(new Set(ordersResponse?.filter(order => order.stage === status).map(order => order.stage).sort()))
     : Array.from(new Set(ordersResponse?.map(order => order.stage).sort()))
@@ -134,7 +117,7 @@ export function ViewOrders() {
           />
         </div>
 
-        <section style={{ width: '100%', gap: '0.25rem', display: 'flex', }}>
+        <section style={{ width: '100%', gap: '0.5rem', display: 'flex', }}>
           <div style={{ width: '100%' }}>
             <span className="label-groups">Grupo de trabalho</span>
             <select
@@ -159,36 +142,6 @@ export function ViewOrders() {
             </select>
           </div>
 
-          <div style={{ width: '100%' }}>
-            <span className="label-groups">Status</span>
-            <select
-              className="select-group"
-              name="status"
-              id="status"
-              disabled={location === '/ordens/pendentes' && status === ''}
-              onChange={(e) => {
-                setSearchParams(params => {
-                  params.set('status', e.target.value)
-                  return params
-                })
-              }}
-              value={status ? status : ''}
-            >
-              {isLoadingOrders ? (
-                <>
-                  {location === '/ordens/minhas' && <option value="">Todos os status</option>}
-                  {location === '/ordens/pendentes' && <option disabled value="">Selecione um status</option>}
-                </>
-              ) : (
-                <>
-                  <option value="">Todos os setores</option>
-                  {statusOptions && statusOptions?.map(statusOpt => (
-                    <option key={statusOpt} value={statusOpt}>{statusOpt}</option>
-                  ))}
-                </>
-              )}
-            </select>
-          </div>
           <div style={{ width: '100%' }}>
             <span className="label-groups">Setor solicitante</span>
             <select

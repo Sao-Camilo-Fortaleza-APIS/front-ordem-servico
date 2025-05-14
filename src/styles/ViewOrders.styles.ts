@@ -47,7 +47,7 @@ export const Container = styled.div`
     font-weight: 500;
     color: #71717a;
     border: 1px solid #d4d4d8;
-    border-radius: 4px;
+    border-radius: 0.375rem;
     background: #f4f4f5;
   }
 
@@ -74,7 +74,7 @@ export const Container = styled.div`
     display: flex;
     align-items: center; 
     justify-content: space-between;
-    gap: 0.25rem;
+    gap: 0.5rem;
     margin-top: 1rem;
 
     button {
@@ -82,7 +82,7 @@ export const Container = styled.div`
       font-size: 0.75rem;
       font-weight: 400;
       font-family: inherit;
-      border-radius: 4px;
+      border-radius: 0.375rem;
       background: #d4d4d8;
       border: 2px solid #d4d4d8;
     }
