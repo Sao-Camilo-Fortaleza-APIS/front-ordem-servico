@@ -6,6 +6,7 @@ import { useLocation, useNavigate, useSearchParams } from "react-router-dom"
 import { toast } from "react-toastify"
 import { FilterStatus } from "../components/FilterStatus"
 import { Order, OrderProps } from "../components/Order"
+import { SkeletonOrders } from "../components/SkeletonOrders"
 import api from "../services/api"
 
 export type OrderResponse = OrderProps[]
@@ -48,13 +49,10 @@ export function MyOrders() {
         return filteredOrdersBySector
     }
 
-    const handleFilterChange = (filtros: string[]) => {
-        setSelectedFilters(filtros)
-        console.log(filtros)
-    }
+    const handleFilterChange = (filtros: string[]) => { setSelectedFilters(filtros) }
 
     let quantidade = group === 0
-        ? responseOrders?.length
+        ? responseOrders?.filter(order => selectedFilters.length === 0 || selectedFilters.includes(order.stage)).length
         : responseOrders
             ?.filter(order => order.group === group)
             ?.filter(order => selectedFilters.length === 0 || selectedFilters.includes(order.stage)).length
@@ -69,7 +67,7 @@ export function MyOrders() {
     }, [user])
 
     if (isLoading) {
-        return null
+        return <SkeletonOrders />
     }
 
     return (
