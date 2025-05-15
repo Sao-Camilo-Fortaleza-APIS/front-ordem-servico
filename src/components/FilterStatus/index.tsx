@@ -39,9 +39,6 @@ export function FilterStatus({ onFilterChange }: FilterStatusProps) {
     }, [])
 
     useEffect(() => {
-        if (selected.length === 0) {
-            setSelected(statusOptions)
-        }
         localStorage.setItem(LOCAL_STORAGE_KEY, JSON.stringify(selected))
     }, [selected])
 
@@ -63,11 +60,11 @@ export function FilterStatus({ onFilterChange }: FilterStatusProps) {
     return (
         <Popover.Root>
             <TriggerButton title="Filtrar Ordens por Estágio">
-                <Funnel fill="#71717A" /> Filtros
+                <Funnel fill="#71717A" size={20} /> Filtros
             </TriggerButton>
 
             <PopoverContent side="left">
-                <span style={{ color: '#71717a', fontWeight: 500 }}>Filtre as Ordens por estágio</span>
+                <span>Filtre as Ordens por estágio</span>
                 <div>
                     <CheckboxLabel>
                         <CheckboxRoot

@@ -26,6 +26,8 @@ export const PopoverContent = styled(Popover.Content)`
   display:flex;
   flex-direction: column;
   gap:0.5rem;
+  color: #71717a; 
+  font-weight: 500;
 `
 
 export const CheckboxLabel = styled.label`
