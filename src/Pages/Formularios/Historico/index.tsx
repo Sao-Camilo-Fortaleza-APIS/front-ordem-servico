@@ -210,11 +210,15 @@ export function Historico() {
           {resultOrderData?.stage === 'Aguardando Validação' ? (
             <div
               style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: '1rem',
                 padding: ' 0.75rem 0.5rem 1rem',
                 backgroundColor: '#ffffff',
                 borderRadius: '0 0 0.75rem 0.75rem',
+                alignItems: 'stretch',
               }}>
-              <Btns>
+              <Btns style={{ width: '100%' }}>
                 <button
                   className="check"
                   onClick={() => setOpenPreApprove(true)}
@@ -229,6 +233,12 @@ export function Historico() {
                   Reprovar
                 </button>
               </Btns>
+              <MoreActionsMenu
+                numberOrder={resultOrderData?.number}
+                showUpload={true}
+                disabled={resultOrderData?.number === undefined ? true : false}
+                style={{ width: '62px' }}
+              />
               {/* DIALOG APPROVE */}
               <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
                 <Content

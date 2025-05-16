@@ -9,7 +9,7 @@ export const Ok = styled.div`
     height: fit-content;
     width: 100%;
     border-radius: 5px;
-    padding-top: 2rem;
+    padding: 2rem 0;
     border-radius: 0.625rem;
     margin-top: 0.625rem;
     div{

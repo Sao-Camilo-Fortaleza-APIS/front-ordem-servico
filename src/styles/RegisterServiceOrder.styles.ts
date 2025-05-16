@@ -379,7 +379,7 @@ export const Btns = styled.div`
     align-items: center;
     justify-content: center;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     button{
         font-family: 'Inter','Roboto', sans-serif;
         padding: 20px;
