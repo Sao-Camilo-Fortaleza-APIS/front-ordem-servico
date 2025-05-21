@@ -82,7 +82,7 @@ export function ViewOrders() {
     navigate('/ordens/pendentes')
   }
   function logout() {
-    toast.error('Sessão encerrada, faça login novamente')
+    toast.info('Sessão finalizada.')
     Cookies.remove('exec.token')
     Cookies.remove('user')
     queryClient.clear()
