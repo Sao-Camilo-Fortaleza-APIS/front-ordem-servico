@@ -1,34 +1,98 @@
 import * as DropdownMenu from '@radix-ui/react-dropdown-menu';
 import styled from 'styled-components';
 
-export const TriggerButton = styled.button`
+type TriggerButtonProps = {
+  colorScheme?: 'gray' | 'red' | 'blue';
+}
+
+export const TriggerButton = styled.button<TriggerButtonProps>`
   padding: 0.5rem;
   border-radius: 0.625rem;
-  background: transparent;
-  transition: background 0.2s;
-  border: 1px solid #d4d4d8;
-  color: #a1a1aa;
+  transition: all 0.3s;
+  background: transparent;;
+  border: 1px solid 
+    ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#dc2626';
+      case 'blue':
+        return '#2563eb';
+      case 'gray':
+        return '#d4d4d8';
+      default:
+        return '#007bff';
+    }
+  }};
+  color: ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#dc2626';
+      case 'blue':
+        return '#2563eb';
+      case 'gray':
+        return '#a1a1aa';
+      default:
+        return '#007bff';
+    }
+  }};
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 2.5rem;
   min-width: 2.5rem;
-  box-shadow: 0 1px 2px 0 rgb(0 0 0 / 0.05);
-
+  box-shadow: 0 1px 3px 0 rgb(0 0 0 / 0.1), 0 1px 2px -1px rgb(0 0 0 / 0.1);
+  cursor: pointer;
+  
+  &:hover {
+   background-color: ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#fee2e2';
+      case 'blue':
+        return '#eff6ff';
+      case 'gray':
+        return '#f3f4f6';
+      default:
+        return '#f3f4f6';
+    }
+  }};
+    cursor: pointer;
+  }
+  
   &:disabled {
-    background-color: #e4e4e7;
+  border: 1px solid #ccc;
+    background-color: #ccc;
     color: #a1a1aa;
     cursor: not-allowed;
   }
-
-  &:hover {
-    background-color: #e4e4e7;
-    cursor: pointer;
-  }
-
+  
   @media (max-width: 480px) {
     border-radius: 0.5rem;
-    border: 1px solid #d4d4d8;
+    border: 1px solid 
+    ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#dc2626';
+      case 'blue':
+        return '#2563eb';
+      case 'gray':
+        return '#d4d4d8';
+      default:
+        return '#007bff';
+    }
+  }};
+  color: ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#dc2626';
+      case 'blue':
+        return '#2563eb';
+      case 'gray':
+        return '#a1a1aa';
+      default:
+        return '#007bff';
+    }
+  }};
 
     svg {
       width: 1.5rem;
@@ -65,6 +129,12 @@ export const Item = styled(DropdownMenu.Item)`
   &:focus {
     outline: none;
     background-color: #e4e4e7;
+  }
+
+  &:disabled {
+    background-color: #f4f4f5;
+    color: #a1a1aa;
+    cursor: not-allowed;
   }
 
   @media (max-width: 480px) {

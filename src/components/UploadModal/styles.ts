@@ -32,4 +32,7 @@ export const HiddenInput = styled.input`
 export const FilePreview = styled.div`
   margin-top: 10px;
   color: #333;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 `;

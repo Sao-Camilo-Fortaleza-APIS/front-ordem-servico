@@ -9,10 +9,11 @@ export const Ok = styled.div`
     height: fit-content;
     width: 100%;
     border-radius: 5px;
-    padding: 2rem 0;
+    padding: 1rem 0;
     border-radius: 0.625rem;
     margin-top: 0.625rem;
     div{
+        width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -20,13 +21,14 @@ export const Ok = styled.div`
     h3{
         font-weight: 400;
         padding-top: 0.5rem;
+        padding-bottom: 0.5rem;
         
         >span{
             font-weight: 700;
         }
     }
     img{
-        margin: 4rem 0;
+        margin: 1rem 0;
     }
     @media (max-width: 600px) {
        width: 96%;

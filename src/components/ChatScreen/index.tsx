@@ -12,7 +12,7 @@ const ChatContainer = styled.div`
   display: flex;
   flex-direction: column;
   height: 100vh;
-  width: 48rem;
+  max-width: 48rem;
   @media (max-width:649px){
         width: 100%;
         height: 100%;

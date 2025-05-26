@@ -72,11 +72,11 @@ export function MyOrders() {
 
     return (
         <div className="wrapper">
-            <div style={{ width: '100%', margin: '0.25rem 0 0.5rem 0', }}>
+            <div className="legend">
                 {quantidade !== 0 && <span style={{ color: '#A1A1AA' }}>Nessa aba estão as OSs que estão atribuídas a você</span>}
             </div>
 
-            <div style={{ display: 'flex', justifyContent: 'space-between', width: '100%', marginBottom: '0.25rem' }}>
+            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%', marginBottom: '0.25rem' }}>
                 <div className="quantidade">
                     {quantidade === 0 && <span>Nenhuma solicitação encontrada</span>}
                     {quantidade === 1 && <span>1 solicitação encontrada</span>}

@@ -40,6 +40,20 @@ const Message = styled.div`
     overflow-wrap: break-word;
     white-space: pre-wrap;
   }
+
+  @media (max-width: 648px) {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    gap: 0.5rem;
+    .content {
+      font-size: 0.875rem;
+
+      // diminuir o tamanho da fonte de todos os filhos
+      > span, p {
+        font-size: 0.875rem;
+      }
+    }
+  }
 `;
 
 interface MessageListProps {

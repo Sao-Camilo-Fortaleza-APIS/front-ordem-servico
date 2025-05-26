@@ -1,10 +1,6 @@
-import { AxiosError } from "axios";
 import { Search } from "lucide-react";
-import { toast } from "react-toastify";
 import { useSearch } from "../../contexts/SearchContext";
-import { ResultOrderDataProps } from "../../Pages/Formularios/Historico";
-import api from "../../services/api";
-import { configToastError } from "../../utils/toast-config";
+import { useSearchOrder } from "../../hooks/useSearchOrder";
 import { Button } from "../Button";
 import { Input } from "../Input";
 import { Label } from "../Label";
@@ -12,33 +8,17 @@ import { Fieldset } from "../Modal/styles";
 
 
 export function SearchByOrderNumber() {
-  const { setResultHistoryData, setResultOrderData, setOpen, setIsLoading, orderNumber, setOrderNumber } = useSearch()
+  const { setOpen, setIsLoading, orderNumber, setOrderNumber } = useSearch()
+  const { searchOrder } = useSearchOrder()
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    setOrderNumber('')
-    setIsLoading(true);
 
-    await api // await é o método que espera a resposta da API
-      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
-      .then(response => {
-        setOpen(false)
-        setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setIsLoading(false)
-      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
-      .catch((error: AxiosError) => {
-        setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
-        setResultOrderData({} as ResultOrderDataProps) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
-        if (error?.code === 'ERR_NETWORK') {
-          toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
-        } else {
-          toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
-        }
-        console.error(error)
-        setIsLoading(false)
-      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
-
+    await searchOrder(orderNumber, {
+      setIsLoading,
+      resetOrderNumber: () => setOrderNumber(''),
+      closeModal: () => setOpen(false),
+    })
   }
 
   return (

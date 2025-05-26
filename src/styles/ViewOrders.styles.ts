@@ -27,22 +27,11 @@ export const Container = styled.div`
     }
   }
 
-  .legend {
-      display: flex;
-      gap: 0.5rem;
-      align-items: center;
-    }
-
-  @media (max-width: 426px) {
-    .wrapper {
-      padding: 0.5rem 0.75rem;
-    }
-  }
-
   .select-group {
     width: 100%;
     height: 2.5rem;
     padding: 0.5rem;
+    margin-top: 0.25rem;
     font-size: 1rem;
     font-weight: 500;
     color: #71717a;
@@ -51,17 +40,21 @@ export const Container = styled.div`
     background: #f4f4f5;
   }
 
+  .legend {
+    width: 100%;
+    margin-bottom: 1rem;
+  }
+
   .quantidade, .label-groups {
     width: 100%;
     display: flex;
     align-items: center; 
     justify-content: start;
     gap: 0.25rem;
-    margin-top: 1rem;
+    margin-top: 0.5rem;
     font-size: 1.125rem;
     font-weight: 500;
     color: #a1a1aa;
-    // color: #71717a;
 
     span{
       display: flex;
@@ -87,6 +80,27 @@ export const Container = styled.div`
       border: 2px solid #d4d4d8;
     }
   }
+
+  @media (max-width: 426px) {
+    .wrapper {
+      padding: 0.5rem 0.75rem;
+    }
+
+    .quantidade, .label-groups  {
+      font-size: 1rem;
+      margin-top: 1rem;
+    }
+
+    .select-group {
+      font-size: 0.875rem;
+      margin-top: 0.125rem;
+    }
+
+    .legend {
+      width: 100%;
+      font-size: 0.875rem;
+    }
+  }
 `;
 
 export const Header = styled.header`
@@ -94,12 +108,19 @@ export const Header = styled.header`
   width: 100%;
   justify-content: space-between;
   align-items: center;
-  padding-right: 1rem;
+  padding: 0.5rem 1.5rem;
   background-color: #fff;
   border-bottom: 1px solid #f4f4f5;
   img {
-    height: 4rem;
-    width: 6rem;
+    height: 3rem;
+    width: auto;
+  }
+
+  .logo-horizontal {
+    display: flex;
+  }
+  .petala {
+    display: none;
   }
 
   .hero {
@@ -132,6 +153,30 @@ export const Header = styled.header`
       :hover {
         color: #71717a;
       }
+    }
+  }
+
+  @media (max-width:426px){
+    padding: 0.5rem 0.75rem;
+
+    img {
+      height: 2.5rem;
+      width: auto;
+    }
+
+    .hero {
+      gap: 0.5rem;
+      
+      .user-name {
+        padding-right: 0.5rem;
+      }
+    }
+
+    .logo-horizontal {
+        display: none;
+    }
+    .petala {
+        display: flex;
     }
   }
 `;
