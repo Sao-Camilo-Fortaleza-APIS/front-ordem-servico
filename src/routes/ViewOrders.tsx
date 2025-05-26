@@ -91,7 +91,9 @@ export function ViewOrders() {
   return (
     <Container>
       <Header>
-        <img src="../assets/logo_horizontal.svg" alt="Logo São Camilo" />
+        <img className="logo-horizontal" src="../assets/logo_horizontal.png" alt="Logo São Camilo" width={1000} />
+        <img className="petala" src="/assets/petala_cruz.png" alt="Logo horizontal" width={56} />
+
 
         <div className="hero">
           <span className="user-name">{user}</span>
