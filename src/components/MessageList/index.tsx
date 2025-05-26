@@ -38,6 +38,7 @@ const Message = styled.div`
   .content{
     word-break: break-word;
     overflow-wrap: break-word;
+    white-space: pre-wrap;
   }
 `;
 
@@ -47,13 +48,12 @@ interface MessageListProps {
 }
 
 function MessageList({ messages, userLogged }: MessageListProps) {
-  //console.log(userLogged)
   return (
     <MessagesContainer>
       {messages?.map((msg, index) => (
         <Message key={index} user={msg.user === userLogged ? 'executor' : 'solicitante'}>
           <span className='user'>{msg.user}</span>
-          <span className='content' dangerouslySetInnerHTML={{ __html: msg.history }}></span>
+          <span className='content' dangerouslySetInnerHTML={{ __html: msg.history }} />
           <span className='data'>{convertDate(msg.date)}</span>
         </Message>
       ))}
