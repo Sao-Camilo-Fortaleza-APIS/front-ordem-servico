@@ -1,6 +1,6 @@
 import Cookies from "js-cookie";
 import { Loader2, Upload } from "lucide-react";
-import { ChangeEvent, DragEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, ComponentProps, DragEvent, MouseEvent, useState } from "react";
 import { toast } from "react-toastify";
 import { useHistoryData } from "../../hooks/useHistoryData";
 import api from "../../services/api";
@@ -8,7 +8,9 @@ import { Button, DivColumn, DivRow, Input, Label } from "../Report/styles";
 import { UploadModalProps } from "../UploadModal";
 import { DropContainer, FilePreview, HiddenInput } from "../UploadModal/styles";
 
-export function DragDrop({ numberOrder, onOpenChange, open }: UploadModalProps) {
+interface DragDropProps extends UploadModalProps, ComponentProps<'div'> { }
+
+export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragDropProps) {
     const { getHistory } = useHistoryData()
     const userLogged = Cookies.get('user')
     const [userConfirmation, setUserConfirmation] = useState<string | undefined>(userLogged)
@@ -131,10 +133,17 @@ export function DragDrop({ numberOrder, onOpenChange, open }: UploadModalProps) 
                 onDragLeave={handleDragLeave}
                 onClick={handleClick}
             >
-                <Button onClick={handleButtonClick} style={{ marginBottom: '0.5rem' }} type="button"><Upload size={20} /> Anexar arquivo</Button>
+                <Button
+                    onClick={handleButtonClick}
+                    style={{ marginBottom: '0.5rem' }}
+                    type="button"
+                    colorScheme={colorScheme}
+                >
+                    <Upload size={20} /> Anexar arquivo
+                </Button>
 
                 <p>Arraste e solte os arquivos aqui ou clique para selecionar</p>
-            </DropContainer>
+            </DropContainer >
 
             {files && (
                 <FilePreview>
@@ -144,10 +153,10 @@ export function DragDrop({ numberOrder, onOpenChange, open }: UploadModalProps) 
                         ))}
                     </DivRow>
 
-                    <DivRow style={{ alignItems: 'flex-end', justifyContent: 'flex-end', }}>
+                    <DivRow style={{ alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%' }}>
 
                         <DivColumn>
-                            <Label style={{ textAlign: 'start' }} htmlFor="user-confirmation">Usuário do Tasy</Label>
+                            <Label style={{ alignSelf: 'start', textAlign: 'start' }} htmlFor="user-confirmation">Usuário do Tasy</Label>
                             <Input
                                 value={userConfirmation}
                                 onChange={(e) => setUserConfirmation(e.target.value)}
@@ -165,12 +174,14 @@ export function DragDrop({ numberOrder, onOpenChange, open }: UploadModalProps) 
                             onClick={handleUpload}
                             type="button"
                             disabled={isDisabled}
+                            colorScheme={colorScheme}
                         >
                             {isLoading ? <Loader2 className='animate-spin' /> : "Enviar"}
                         </Button>
                     </DivRow>
                 </FilePreview>
-            )}
+            )
+            }
         </>
     )
 }

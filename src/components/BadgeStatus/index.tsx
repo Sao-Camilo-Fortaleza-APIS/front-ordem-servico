@@ -1,3 +1,4 @@
+import { ComponentProps } from 'react';
 import styled from 'styled-components';
 
 export const badgeStyles: Record<string, { color: string; background: string; border: string }
@@ -78,20 +79,25 @@ export const DefaultBadge = styled.span<{ textColor: string; bgColor: string; bo
   color: ${({ textColor }) => textColor};
   background-color: ${({ bgColor }) => bgColor};
   border: 1px solid ${({ borderColor }) => borderColor};
-  border-radius: 0.5rem;
+  border-radius: 999px;
   padding: 0.25rem 0.5rem;
   font-size: 0.75rem;
   font-weight: 500;
   display: inline-block;
 `
 
-export const StatusBadge = ({ status }: { status: string | null }) => {
+interface StatusBadgeProps extends ComponentProps<'span'> {
+    status: string | null
+    textTransForm?: 'uppercase' | 'lowercase'
+}
+
+export const StatusBadge = ({ status, textTransForm = 'lowercase' }: StatusBadgeProps) => {
     const displayStatus = typeof status === 'string' ? status : 'Sem Estágio Informado'; // Se status for null ou undefined, exibe 'Sem Estágio Informado'
 
     const style = badgeStyles[displayStatus] || badgeStyles['null'];
     return (
         <DefaultBadge textColor={style.color} bgColor={style.background} borderColor={style.border}>
-            {displayStatus}
+            {textTransForm === 'uppercase' ? displayStatus.toUpperCase() : displayStatus}
         </DefaultBadge>
     );
 };

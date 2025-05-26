@@ -38,6 +38,21 @@ const Message = styled.div`
   .content{
     word-break: break-word;
     overflow-wrap: break-word;
+    white-space: pre-wrap;
+  }
+
+  @media (max-width: 648px) {
+    padding: 0.5rem;
+    margin: 0.5rem 0;
+    gap: 0.5rem;
+    .content {
+      font-size: 0.875rem;
+
+      // diminuir o tamanho da fonte de todos os filhos
+      > span, p {
+        font-size: 0.875rem;
+      }
+    }
   }
 `;
 
@@ -47,13 +62,12 @@ interface MessageListProps {
 }
 
 function MessageList({ messages, userLogged }: MessageListProps) {
-  //console.log(userLogged)
   return (
     <MessagesContainer>
       {messages?.map((msg, index) => (
         <Message key={index} user={msg.user === userLogged ? 'executor' : 'solicitante'}>
           <span className='user'>{msg.user}</span>
-          <span className='content' dangerouslySetInnerHTML={{ __html: msg.history }}></span>
+          <span className='content' dangerouslySetInnerHTML={{ __html: msg.history }} />
           <span className='data'>{convertDate(msg.date)}</span>
         </Message>
       ))}

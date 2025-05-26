@@ -1,5 +1,5 @@
 import * as Dialog from '@radix-ui/react-dialog';
-import { Check, X } from 'lucide-react';
+import { Check, MessageCircleDashedIcon, X } from 'lucide-react';
 import { Fragment, useEffect, useState } from 'react';
 import { toast } from 'react-toastify';
 import { fetchSatisfactionDegrees } from '../../hooks/useDegreeSatisfaction';
@@ -10,10 +10,11 @@ import { SatisfactionOption, StarRating } from '../StartRating';
 import { Table, TableCell, TableContainer, TableHeader, TableHeaderCell, TableRow } from "../TableReport/styles";
 
 export interface OrderPendingData {
-    closed: string
+    stage: string
     date: string
     number: number
     title: string
+    last_history: string
 }
 
 interface PendingValidationModalProps {
@@ -24,6 +25,7 @@ interface PendingValidationModalProps {
 }
 
 export function PendingValidationModal({ open, onOpenChange, data, requester }: PendingValidationModalProps) {
+    const [showSoluctionHistory, setShowSoluctionHistory] = useState<number | null>(null)
     const [confirmApprove, setConfirmApprove] = useState<number | null>(null)
     const [confirmReject, setConfirmReject] = useState<number | null>(null)
     const [satisfactionDegrees, setSatisfactionDegrees] = useState<SatisfactionOption[]>([])
@@ -37,8 +39,17 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
     // criar um estado para armazenar erros
     const [warningSatisfaction, setWarningSatisfaction] = useState<string | null>(null)
 
+    const handleShowSoluctionHistory = (number: number) => {
+        setShowSoluctionHistory(number)
+        setConfirmReject(null)
+        setConfirmApprove(null)
+        setSatisfactionSelected('')
+        setWarningSatisfaction(null)
+    }
+
     const handleApproveSelection = (number: number) => {
         setConfirmApprove(number)
+        setShowSoluctionHistory(null)
         setConfirmReject(null)
         setSatisfactionSelected('')
         setWarningSatisfaction(null)
@@ -47,6 +58,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
     const handleRejectSelection = (number: number) => {
         setConfirmReject(number)
         setConfirmApprove(null)
+        setShowSoluctionHistory(null)
         setSatisfactionSelected('')
         setWarningSatisfaction(null)
     }
@@ -129,15 +141,13 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
         if (data.length < 1) {
             onOpenChange(false)
         }
-        /* if (newData.length < 1) {
-            onOpenChange(false)
-        } */
     }, [data, onOpenChange])
 
     useEffect(() => {
         setSatisfactionSelected('')
         setWarningSatisfaction(null)
         setConfirmApprove(null)
+        setShowSoluctionHistory(null)
         setConfirmReject(null)
         setCommentForReject('')
         setNewData(data)
@@ -147,6 +157,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
     useEffect(() => {
         fetchSatisfactionDegrees().then((response) => setSatisfactionDegrees(response)).catch(() => setSatisfactionDegrees([]))
     }, [])
+
     return (
         <Dialog.Root open={open} onOpenChange={onOpenChange}>
             <Overlay />
@@ -155,7 +166,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                     <X size={20} className="close" aria-label="Fechar" />
                 </CloseButton>
 
-                <Title>Ordens pendentes de aprovação</Title>
+                <Title>Ordens pendentes de validação</Title>
 
                 <AnimatedBlock visible={true}>
                     {newData.length > 0 && (
@@ -166,34 +177,70 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                                         <TableHeaderCell style={{ textAlign: 'center' }}>Nº</TableHeaderCell>
                                         <TableHeaderCell>Título</TableHeaderCell>
                                         <TableHeaderCell>Data</TableHeaderCell>
+                                        <TableHeaderCell style={{ textAlign: 'center' }}>Solução</TableHeaderCell>
                                         <TableHeaderCell style={{ textAlign: 'center' }}>Aprovar</TableHeaderCell>
                                         <TableHeaderCell style={{ textAlign: 'center' }}>Reprovar</TableHeaderCell>
                                     </TableRow>
                                 </TableHeader>
 
                                 <tbody>
-                                    {newData.map(({ date, number, title }) => (
+                                    {newData.map(({ date, number, title, last_history }) => (
                                         <Fragment key={number}>
                                             <TableRow>
-                                                <TableCell style={{ textAlign: 'center' }}>{number}</TableCell>
-                                                <TableCell style={{ whiteSpace: 'normal' }}>{title}</TableCell>
-                                                <TableCell>{convertDate(date)}</TableCell>
+                                                <TableCell style={{ textAlign: 'center', fontSize: '14px' }}>{number}</TableCell>
+                                                <TableCell style={{ whiteSpace: 'normal', fontSize: '14px' }}>{title}</TableCell>
+                                                <TableCell style={{ fontSize: '14px' }}>{convertDate(date, 'DD/MM/YYYY HH[h]mm')}</TableCell>
                                                 <TableCell>
-                                                    <Button onClick={() => handleApproveSelection(number)} className='icon check' type="button">
-                                                        <Check size={28} />
+                                                    <Button style={{ whiteSpace: 'nowrap', display: 'flex', alignItems: 'center' }} onClick={() => handleShowSoluctionHistory(number)} className='icon' type="button" title='Solução proposta'>
+                                                        <MessageCircleDashedIcon size={24} /> <span style={{ fontSize: '14px', lineHeight: 2 }}>Ver solução</span>
                                                     </Button>
                                                 </TableCell>
                                                 <TableCell>
-                                                    <Button onClick={() => handleRejectSelection(number)} className='icon danger' type="button">
-                                                        <X size={28} />
+                                                    <Button onClick={() => handleApproveSelection(number)} className='icon check' type="button" title='Aprovar Ordem'>
+                                                        <Check size={24} />
+                                                    </Button>
+                                                </TableCell>
+                                                <TableCell>
+                                                    <Button onClick={() => handleRejectSelection(number)} className='icon danger' type="button" title="Reprovar Ordem">
+                                                        <X size={24} />
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
 
+                                            {showSoluctionHistory === number && (
+                                                <TableRow>
+                                                    <TableCell colSpan={6} style={{ overflowWrap: 'break-word' }}>
+                                                        <ConfirmContainer
+                                                            bgColor='#f0f9ff '
+                                                            borderColor="#bae6fd"
+                                                            style={{
+                                                                display: 'flex',
+                                                                flexDirection: 'column',
+                                                                alignItems: 'flex-end',
+                                                                justifyContent: 'start'
+                                                            }}>
+                                                            <span
+                                                                style={{
+                                                                    alignSelf: 'flex-start',
+                                                                    marginBottom: '0.5rem',
+                                                                    fontSize: '14px',
+                                                                }}
+                                                                dangerouslySetInnerHTML={{ __html: last_history }}
+                                                            />
+                                                            <div>
+                                                                <CancelBtn onClick={() => setShowSoluctionHistory(null)} type="button">
+                                                                    Fechar
+                                                                </CancelBtn>
+                                                            </div>
+                                                        </ConfirmContainer>
+                                                    </TableCell>
+                                                </TableRow>
+                                            )}
+
                                             {confirmApprove === number && (
                                                 <TableRow>
-                                                    <TableCell colSpan={5} style={{ overflowWrap: 'break-word' }}>
-                                                        <ConfirmContainer bgColor='#f0f9ff ' borderColor="#bae6fd" >
+                                                    <TableCell colSpan={6} style={{ overflowWrap: 'break-word' }}>
+                                                        <ConfirmContainer bgColor='#f0fdf4' borderColor="#bbf7d0" >
                                                             <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'center', gap: '0.5rem', lineHeight: '1' }}>
                                                                 Avalie sua experiência:
                                                                 <StarRating
@@ -211,7 +258,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                                                                 </CancelBtn>
                                                                 <ConfirmBtn
                                                                     onClick={() => handleApprove('yes', number)}
-                                                                    style={{ backgroundColor: '#2563eb' }}
+                                                                    style={{ backgroundColor: '#10b981' }}
                                                                     type="button"
                                                                     disabled={loading}
                                                                 >
@@ -225,7 +272,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
 
                                             {confirmReject === number && (
                                                 <TableRow>
-                                                    <TableCell colSpan={5} style={{ overflowWrap: 'break-word' }}>
+                                                    <TableCell colSpan={6} style={{ overflowWrap: 'break-word' }}>
                                                         <ConfirmContainer style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', justifyContent: 'start' }}>
 
                                                             <div style={{ width: '100%' }}>
@@ -235,7 +282,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                                                                     onChange={(e) => setCommentForReject(e.target.value)}
                                                                     rows={3}
                                                                     placeholder="Motivo da reprovação"
-                                                                    style={{ width: '100%' }}
+                                                                    style={{ width: '100%', marginBottom: '0.25rem' }}
                                                                 />
                                                             </div>
                                                             <div>
@@ -262,6 +309,6 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
                     )}
                 </AnimatedBlock>
             </Content>
-        </Dialog.Root>
+        </Dialog.Root >
     )
 }

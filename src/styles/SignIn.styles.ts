@@ -16,10 +16,9 @@ export const ContainerImage = styled.div`
     justify-content: center;
     align-items: center;
 
-    img {
-        width: 175px;
-        height: 126px;
-    }
+    /* img {
+        width: 10rem;
+    } */
 `;
 
 export const SignInForm = styled.div`

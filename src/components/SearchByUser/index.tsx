@@ -6,7 +6,7 @@ import { Button } from '../Button'
 import { Input } from '../Input'
 import { Label } from '../Label'
 import { Fieldset } from '../Modal/styles'
-import Table from '../Table'
+import Table, { ApiDataProps } from '../Table'
 
 export function SearchByUser() {
     const { isLoading, setIsLoading } = useSearch()
@@ -14,15 +14,14 @@ export function SearchByUser() {
     const [serverError, setServerError] = useState('')
 
     const [searchMade, setSearchMade] = useState<boolean>(false) // Para mostrar a mensagem de erro caso a busca não retorne nada
-    const [apiData, setApiData] = useState([]) // Para mostrar a mensagem de erro caso a busca não retorne nada
-    //const { apiData, fetchData, setApiData, isLoading, serverError } = useFetch()
+    const [apiData, setApiData] = useState<ApiDataProps[]>([]) // Para mostrar a mensagem de erro caso a busca não retorne nada
 
     async function handleSearch(event: FormEvent<HTMLFormElement>) {
         setIsLoading(true)
         event.preventDefault()
         setApiData([])
         setSearchMade(true)
-        await api.get(`/get/orders/requester/${query}`)
+        await api.get<ApiDataProps[]>(`/get/orders/requester/${query}`)
             .then(response => {
                 setApiData(response.data)
             })
@@ -30,7 +29,6 @@ export function SearchByUser() {
                 setServerError(error.response.data.message)
             })
             .finally(() => setIsLoading(false))
-
     }
 
     return (

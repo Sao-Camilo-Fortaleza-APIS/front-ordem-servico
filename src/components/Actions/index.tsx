@@ -4,7 +4,7 @@ import { TakeOrderForm } from '../TakeOrderForm';
 
 const ActionsContainer = styled.div`
   display: flex;
-  padding: 1rem;
+  padding: 0.5rem 1rem;
   background-color: #f8f9fa;
   border-top: 1px solid #ddd;
 `;

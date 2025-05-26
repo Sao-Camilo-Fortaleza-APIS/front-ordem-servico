@@ -96,10 +96,15 @@ export const Aviso = styled.div`
 `
 
 export const DivItems = styled.div`
-    display: flex; 
-    gap: 0.625rem; 
-    align-items: center;
-    justify-content: space-between;
+    display: flex;
+    gap: 0.625rem;
+    div {
+        width: 100%;
+    }
+
+    @media (max-width:640px) {
+        flex-direction: column;
+    }
 `;
 
 export const NmItem = styled.div`
@@ -379,7 +384,7 @@ export const Btns = styled.div`
     align-items: center;
     justify-content: center;
     display: flex;
-    gap: 2rem;
+    gap: 1rem;
     button{
         font-family: 'Inter','Roboto', sans-serif;
         padding: 20px;

@@ -23,6 +23,7 @@ import { EmptyHistory } from "../../../components/SVGComponents/empty-history";
 import { useSearch } from "../../../contexts/SearchContext";
 import { useApprobation } from "../../../hooks/useApprobation";
 import { fetchSatisfactionDegrees } from "../../../hooks/useDegreeSatisfaction";
+import { useSearchOrder } from "../../../hooks/useSearchOrder";
 import api from "../../../services/api";
 
 export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo dos dados que a API retorna.
@@ -51,9 +52,7 @@ export interface ResultHistoryDataProps { // Históricos: Essa interface é o ti
 export function Historico() {
   const {
     resultOrderData,
-    setResultOrderData,
     resultHistoryData,
-    setResultHistoryData,
     open,
     setOpen,
     isLoading,
@@ -61,6 +60,7 @@ export function Historico() {
     setOrderNumber,
     orderNumber
   } = useSearch()
+  const { searchOrder } = useSearchOrder()
 
   const divRef = useRef<HTMLDivElement>(null);
 
@@ -74,28 +74,12 @@ export function Historico() {
 
   async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
     event?.preventDefault();
-    setOrderNumber('')
-    setOpen(false);
-    setIsLoading(true);
 
-    await api // await é o método que espera a resposta da API
-      .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
-      .then(response => {
-        setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-        setIsLoading(false)
-      }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
-      .catch((error: AxiosError) => {
-        setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
-        setResultOrderData({} as ResultOrderDataProps) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
-        if (error?.code === 'ERR_NETWORK') {
-          toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
-        } else {
-          toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
-        }
-        setIsLoading(false)
-      }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
-
+    await searchOrder(orderNumber, {
+      setIsLoading,
+      resetOrderNumber: () => setOrderNumber(''),
+      closeModal: () => setOpen(false),
+    })
   }
 
   async function handleReplyHistory(event: React.FormEvent<HTMLFormElement>) {
@@ -210,11 +194,15 @@ export function Historico() {
           {resultOrderData?.stage === 'Aguardando Validação' ? (
             <div
               style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: '1rem',
                 padding: ' 0.75rem 0.5rem 1rem',
                 backgroundColor: '#ffffff',
                 borderRadius: '0 0 0.75rem 0.75rem',
+                alignItems: 'stretch',
               }}>
-              <Btns>
+              <Btns style={{ width: '100%' }}>
                 <button
                   className="check"
                   onClick={() => setOpenPreApprove(true)}
@@ -229,6 +217,13 @@ export function Historico() {
                   Reprovar
                 </button>
               </Btns>
+              <MoreActionsMenu
+                numberOrder={resultOrderData?.number}
+                showUpload={true}
+                disabled={resultOrderData?.number === undefined ? true : false}
+                style={{ width: '62px' }}
+                colorScheme="red"
+              />
               {/* DIALOG APPROVE */}
               <Dialog open={openPreApprove} setOpen={setOpenPreApprove}>
                 <Content
@@ -311,7 +306,7 @@ export function Historico() {
                     <Btns style={{ width: '100%' }}>
                       <button
                         disabled={resultOrderData?.number === undefined ? true : false}
-                        title={``}
+                        title="Responder Ordem de Serviço"
                         className="enviar"
                       >
                         Responder
@@ -324,10 +319,42 @@ export function Historico() {
                     showUpload={true}
                     disabled={resultOrderData?.number === undefined ? true : false}
                     style={{ width: '62px' }}
+                    colorScheme="red"
                   />
                 </div>
               </Dialog>
             )
+          )}
+
+          {resultOrderData?.stage === 'Encerrado' && (
+            <div
+              style={{
+                display: 'flex',
+                gap: '0.5rem',
+                marginBottom: '1rem',
+                padding: ' 0.75rem 0.5rem 1rem',
+                backgroundColor: '#ffffff',
+                borderRadius: '0 0 0.75rem 0.75rem',
+                alignItems: 'stretch',
+              }}>
+              <Btns style={{ width: '100%' }}>
+                <button
+                  disabled={resultOrderData?.stage === 'Encerrado' ? true : false}
+                  title="Essa Ordem já está encerrada"
+                  className="enviar"
+                >
+                  Essa Ordem já está encerrada
+                </button>
+              </Btns>
+
+              <MoreActionsMenu
+                numberOrder={resultOrderData?.number}
+                showUpload={true}
+                disabled={resultOrderData?.number === undefined ? true : false}
+                style={{ width: '62px' }}
+                colorScheme="red"
+              />
+            </div>
           )}
 
         </ContainerChat>

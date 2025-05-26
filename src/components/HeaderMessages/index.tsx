@@ -5,6 +5,7 @@ import { ResultOrderDataProps } from '../../Pages/Formularios/Historico';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
 import { StatusBadge } from '../BadgeStatus';
+import { ReadMoreText } from '../ReadMoreText';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -67,10 +68,10 @@ const Header = ({ orderData, onBack }: HeaderProps) => (
     </div>
     <div className='header-content'>
       <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
-      <span className='order-description'>{orderData.describe}</span>
-      <span><User2 size={20} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
-      <span><MapPin size={20} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
-      <span className='date'><Clock size={20} /> {convertDate(orderData.date_order)}</span>
+      <ReadMoreText text={orderData.describe} />
+      <span><User2 size={18} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
+      <span><MapPin size={18} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
+      <span className='date'><Clock size={18} /> {convertDate(orderData.date_order)}</span>
     </div>
   </HeaderContainer>
 );

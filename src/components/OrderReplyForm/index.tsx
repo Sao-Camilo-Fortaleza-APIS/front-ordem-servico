@@ -76,61 +76,71 @@ export function OrderReplyForm({ numberOrder }: { numberOrder: number }) {
 
   return (
     <FormStyled onSubmit={handleSubmit(handleSendOrderReply)}>
-
-      {/* Tipos de histórico */}
-      <div className="radio-group">
-        <label htmlFor="type">Tipo de histórico</label>
-
-        <div className="radio-item">
-          <input
-            {...register('typeHistory')}
-            value='retorno'
-            id="retorno"
-            type="radio"
-            disabled={isSubmitting}
-          />
-          <label htmlFor="retorno">Retorno</label>
+      <div className={`action-form ${!isAllowedToviewItem() ? 'with-yellow' : 'no-yellow'}`}>
+        {/* Tipos de histórico */}
+        <div className="radio-group">
+          <label htmlFor="type">Tipo de histórico</label>
+          <div className="radio-item">
+            <input
+              {...register('typeHistory')}
+              value='retorno'
+              id="retorno"
+              type="radio"
+              disabled={isSubmitting}
+            />
+            <label htmlFor="retorno">Retorno</label>
+          </div>
+          <div className="radio-item">
+            <input
+              {...register('typeHistory')}
+              value="solucao"
+              id="solucao"
+              type="radio"
+              disabled={isSubmitting}
+            />
+            <label htmlFor="solucao">Solução</label>
+          </div>
+          {errors.typeHistory?.message && <span style={{ color: '#ef4444' }}>{errors.typeHistory.message}</span>}
         </div>
 
-        <div className="radio-item">
-          <input
-            {...register('typeHistory')}
-            value="solucao"
-            id="solucao"
-            type="radio"
-            disabled={isSubmitting}
+        {!isAllowedToviewItem() ? (
+          <div className="yellow-red-row">
+            <div className="switch-item">
+              <label htmlFor="close">Encerrar Ordem de Serviço?</label>
+              <Controller
+                control={control}
+                name="close"
+                render={({ field }) => (
+                  <SwitchRoot
+                    disabled={isDisabled || isSubmitting}
+                    id="close"
+                    checked={isDisabled ? false : field.value}
+                    onCheckedChange={field.onChange}
+                  >
+                    <SwitchThumb />
+                  </SwitchRoot>
+                )}
+              />
+            </div>
+            <MoreActionsMenu
+              numberOrder={numberOrder}
+              showEditStage
+              showTransfer
+              showUpload
+              showReports={isAllowedToviewItem()}
+              colorScheme="blue"
+            />
+          </div>
+        ) : (
+          <MoreActionsMenu
+            numberOrder={numberOrder}
+            showEditStage
+            showTransfer
+            showUpload
+            showReports={isAllowedToviewItem()}
+            colorScheme="blue"
           />
-          <label htmlFor="solucao">Solução</label>
-        </div>
-
-        {errors.typeHistory?.message && <span style={{ color: '#ef4444' }}>{errors.typeHistory.message}</span>}
-      </div>
-
-      <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center', justifyContent: !isAllowedToviewItem() ? 'space-between' : 'flex-end' }}>
-        {!isAllowedToviewItem() && <div className="switch-item">
-          <label htmlFor="close">Encerrar Ordem de Serviço?</label>
-          <Controller
-            control={control}
-            name="close"
-            render={({ field }) => (
-              <SwitchRoot
-                disabled={isDisabled || isSubmitting}
-                id="close"
-                checked={isDisabled ? false : field.value}
-                onCheckedChange={field.onChange}
-              >
-                <SwitchThumb />
-              </SwitchRoot>
-            )} />
-        </div>}
-        {/* Adicionar opções */}
-        <MoreActionsMenu
-          numberOrder={numberOrder}
-          showEditStage
-          showTransfer
-          showUpload
-          showReports={isAllowedToviewItem()}
-        />
+        )}
       </div>
 
       {/* Texto de histórico */}

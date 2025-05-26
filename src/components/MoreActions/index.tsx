@@ -7,15 +7,24 @@ import { TransferOrderModal } from '../TransferOrderModal';
 import { UploadModal } from '../UploadModal';
 import { Content, Item, TriggerButton } from './styles';
 
-interface MoreActionsMenuProps extends React.HTMLProps<HTMLDivElement> {
+interface MoreActionsMenuProps extends React.HTMLProps<HTMLButtonElement> {
   numberOrder: number;
   showUpload?: boolean;
   showEditStage?: boolean;
   showTransfer?: boolean;
   showReports?: boolean;
+  colorScheme?: 'gray' | 'red' | 'blue';
 }
 
-export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage = false, showTransfer = false, showReports = false, disabled }: MoreActionsMenuProps) {
+export function MoreActionsMenu({
+  numberOrder,
+  showUpload = false,
+  showEditStage = false,
+  showTransfer = false,
+  showReports = false,
+  disabled,
+  colorScheme,
+}: MoreActionsMenuProps) {
   const [openDropdown, setOpenDropdown] = useState(false)
   const [openTransferModal, setOpenTransferModal] = useState(false)
   const [openReportModal, setOpenReportModal] = useState(false)
@@ -53,9 +62,13 @@ export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage
   return (
     <>
       <DropdownMenu.Root open={openDropdown} onOpenChange={setOpenDropdown}>
-        <DropdownMenu.Trigger asChild>
-          <TriggerButton aria-label="Abrir menu de ações" title="Abrir menu de opções" disabled={disabled}>
-            <Plus size={24} />
+        <DropdownMenu.Trigger asChild disabled={disabled}>
+          <TriggerButton
+            aria-label="Abrir menu de ações"
+            title="Abrir menu de opções"
+            colorScheme={colorScheme}
+          >
+            <Plus size={24} aria-disabled={disabled} />
           </TriggerButton>
         </DropdownMenu.Trigger>
 
@@ -63,10 +76,12 @@ export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage
           <Content side="top" align="end">
 
             {showEditStage && (
-              <Item onSelect={(e) => {
-                e.preventDefault()
-                handleEditStageClick()
-              }}>
+              <Item
+                disabled={disabled}
+                onSelect={(e) => {
+                  e.preventDefault()
+                  handleEditStageClick()
+                }}>
                 <Edit3 size={16} />
                 Alterar Estágio da Ordem
               </Item>
@@ -74,6 +89,7 @@ export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage
 
             {showUpload && (
               <Item
+                disabled={disabled}
                 onSelect={(e) => {
                   e.preventDefault()
                   handleUploadClick()
@@ -85,20 +101,24 @@ export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage
             )}
 
             {showReports && (
-              <Item onSelect={(e) => {
-                e.preventDefault()
-                handleListReportsClick()
-              }}>
+              <Item
+                disabled={disabled}
+                onSelect={(e) => {
+                  e.preventDefault()
+                  handleListReportsClick()
+                }}>
                 <FileText size={16} />
                 Laudos
               </Item>
             )}
 
             {showTransfer && (
-              <Item onSelect={(e) => {
-                e.preventDefault()
-                handleTransferClick()
-              }}>
+              <Item
+                disabled={disabled}
+                onSelect={(e) => {
+                  e.preventDefault()
+                  handleTransferClick()
+                }}>
                 <UserPen size={16} />
                 Transferir Ordem
               </Item>
@@ -130,6 +150,7 @@ export function MoreActionsMenu({ numberOrder, showUpload = false, showEditStage
         open={openUploadModal}
         onOpenChange={setOpenUploadModal}
         numberOrder={numberOrder}
+        colorScheme={colorScheme}
       />
     </>
   );

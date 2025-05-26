@@ -118,7 +118,7 @@ export function RegisterServiceOrder() {
         const nr_seq_os = response.data
         setIsLoading(false)
         toast.success('Ordem de serviço aberta com sucesso!')
-        navigate(`/ajuste/success/${nr_seq_os}`)
+        navigate(`/ajuste/success/${nr_seq_os}`, { state: userMaiusculo })
       }
       catch (status: any) {
         setIsLoading(false);
@@ -143,12 +143,10 @@ export function RegisterServiceOrder() {
           }, 500)
         }
       })
-      .catch(() => {
-        toast.error('Não foi possível carregar as ordens pendentes de validação.', configToastError)
+      .catch((error) => {
+        if (error.response.status === 404) { console.log("Usuário não encontrado") }
       })
-      .finally(() => {
-        setIsLoadingUser(false)
-      })
+      .finally(() => { setIsLoadingUser(false) })
 
   }
 
@@ -166,7 +164,7 @@ export function RegisterServiceOrder() {
           <form onSubmit={handleSubmit(registrarEvento)}>
             <DivItems>
               {/* USUÁRIO */}
-              <NmItem style={{ width: '100%' }}>
+              <NmItem>
                 <p>Qual o seu usuário do  <span>Tasy</span> ? </p>
                 <div style={{ display: 'flex', alignItems: 'center' }}>
                   <input
@@ -182,16 +180,8 @@ export function RegisterServiceOrder() {
                 </div>
               </NmItem>
 
-              {/* MOSTRAR MODAL DE ORDENS PENDENTES DE VALIDAÇÃO */}
-              <PendingValidationModal
-                open={hasPendingOrders}
-                onOpenChange={setHasPendingOrders}
-                data={pendingOrdersPendingValidation}
-                requester={userMaiusculo}
-              />
-
               {/* RAMAL */}
-              <NmItem style={{ width: '100%' }}>
+              <NmItem>
                 <p>Qual seu ramal de contato?</p>
                 <input
                   required
@@ -203,6 +193,13 @@ export function RegisterServiceOrder() {
                 />
               </NmItem>
             </DivItems>
+            {/* MOSTRAR MODAL DE ORDENS PENDENTES DE VALIDAÇÃO */}
+            <PendingValidationModal
+              open={hasPendingOrders}
+              onOpenChange={setHasPendingOrders}
+              data={pendingOrdersPendingValidation}
+              requester={userMaiusculo}
+            />
 
             {/* SETOR */}
             <NmItem>

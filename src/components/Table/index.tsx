@@ -1,18 +1,15 @@
-import { AxiosError } from 'axios'
 import { EyeIcon } from 'lucide-react'
-import { toast } from 'react-toastify'
-import { ResultOrderDataProps } from '../../Pages/Formularios/Historico'
 import { useSearch } from '../../contexts/SearchContext'
-import api from '../../services/api'
+import { useSearchOrder } from '../../hooks/useSearchOrder'
 import { convertDate } from '../../utils/convert-date'
-import { configToastError } from '../../utils/toast-config'
+import { StatusBadge } from '../BadgeStatus'
 import { Button } from '../Button'
 import { Container, Td, Th, Tr } from './styles'
 
-interface ApiDataProps {
+export interface ApiDataProps {
     number: number
     title: string
-    closed: string
+    stage: string
     date: string
 }
 
@@ -22,37 +19,19 @@ interface TableProps {
 
 export default function Table({ data }: TableProps) {
     const {
-        setResultHistoryData,
-        setResultOrderData,
         setOpen,
         setIsLoading,
         setOrderNumber,
     } = useSearch()
+    const { searchOrder } = useSearchOrder()
     async function handleSearch(orderNumber: number, event?: React.FormEvent<HTMLFormElement>) {
         event?.preventDefault();
-        setOrderNumber('')
-        setOpen(false);
-        setIsLoading(true);
 
-        await api // await é o método que espera a resposta da API
-            .get(`/get/hist_ordem/${orderNumber}`) // .get é o método que faz a requisição para a API
-            .then(response => {
-                setResultHistoryData(response.data.history) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-                setResultOrderData(response.data.order) // setResultHistoryData é o método que guarda os dados da ordem pesquisada no estado resultHistoryData
-                setIsLoading(false)
-            }) // .then é o método que recebe a resposta da API e faz alguma coisa com ela
-            .catch((error: AxiosError) => {
-                setResultHistoryData([]) // caso o número da ordem não seja encontrado, o estado resultHistoryData é zerado
-                setResultOrderData({} as ResultOrderDataProps) // caso o número da ordem não seja encontrado, o estado resultOrderData é zerado
-                if (error?.code === 'ERR_NETWORK') {
-                    toast.error('Houve um problema de rede. Tente novamente mais tarde.', configToastError)
-                } else {
-                    toast.error('Número de ordem não encontrado, tente novamente.', configToastError)
-                }
-                console.error(error)
-                setIsLoading(false)
-            }) // .catch é o método que recebe o erro da API e faz alguma coisa com ele
-
+        await searchOrder(orderNumber, {
+            setIsLoading,
+            resetOrderNumber: () => setOrderNumber(''),
+            closeModal: () => setOpen(false),
+        })
     }
     return (
         <Container>
@@ -76,17 +55,8 @@ export default function Table({ data }: TableProps) {
                         <Tr key={index}>
                             <Td style={{ padding: '0' }}>{convertDate(result.date, 'DD[/]MM[/]YYYY')}</Td>
                             <Td>{result.number}</Td>
-                            <Td
-                                style={{ textAlign: "left" }}
-                            >
-                                {result.title}
-                            </Td>
-                            <Td>
-                                {result.closed === "S"
-                                    ? (<span className="badge badge-closed">Encerrada</span>)
-                                    : (<span className="badge badge-open">Aberta</span>)
-                                }
-                            </Td>
+                            <Td style={{ textAlign: "left" }} >{result.title}</Td>
+                            <Td><StatusBadge textTransForm='uppercase' status={result.stage} /></Td>
                             <Td>
                                 <Button variant='reply' onClick={() => handleSearch(result.number)}>
                                     <EyeIcon size={20} />

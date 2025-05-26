@@ -29,7 +29,10 @@ const router = createBrowserRouter([
       },
       {
         path: '/ajuste/success/:nr_seq_os',
-        element: <AjusteOk />,
+        element:
+          <SearchProvider>
+            <AjusteOk />
+          </SearchProvider>,
       },
       {
         path: '/historico',

@@ -109,7 +109,7 @@ export const TextArea = styled.textarea`
   height: 5rem;
   min-height: 5rem;
   padding: 0.5rem;
-  margin: 0.5rem 0 1rem 0;
+  margin: 0.5rem 0;
   border: 1px solid #ccc;
   border-radius: 4px;
   resize: none;
@@ -149,12 +149,26 @@ export const ButtonRow = styled.div`
   gap: 1rem;
 `;
 
-export const Button = styled.button`
+type ButtonProps = {
+  colorScheme?: 'gray' | 'red' | 'blue';
+}
+export const Button = styled.button<ButtonProps>`
   padding: 0.5rem 1rem;
   border: none;
   border-radius: 4px;
   cursor: pointer;
-  background-color: #2563eb;
+  background-color: ${({ colorScheme }) => {
+    switch (colorScheme) {
+      case 'red':
+        return '#dc2626';
+      case 'blue':
+        return '#2563eb';
+      case 'gray':
+        return '#6b7280';
+      default:
+        return '#007bff';
+    }
+  }};
   color: white;
   font-weight: bold;
   -webkit-font-smoothing: antialiased;
@@ -176,7 +190,7 @@ export const Button = styled.button`
   }
 
   &:hover {
-	background-color: #0056b3;
+	  background-color: ${({ colorScheme }) => (colorScheme === 'red' ? '#b91c1c' : '#0056b3')};
   }
 
   &:disabled {
@@ -184,7 +198,7 @@ export const Button = styled.button`
   }
 
   &:focus {
-    outline: 2px solid #007bff;
+    outline: 2px solid ${({ colorScheme }) => (colorScheme === 'red' ? '#dc2626' : '#007bff')};
   }
   
   &.cancel {
@@ -201,7 +215,6 @@ export const Button = styled.button`
     border: none;
     color: #2563eb;
     padding: 0.5rem 1rem;
-    font-size: 1.5rem;
     cursor: pointer;
     transition: all 0.25s ease-in-out;
 
@@ -209,6 +222,11 @@ export const Button = styled.button`
       color: #0056b3;
       background-color: #dbeafe;
       outline: 1px solid #0056b3;
+    }
+
+    &:focus {
+      outline: 2px solid #0056b3;
+      background-color: #dbeafe;
     }
 
   }
@@ -277,7 +295,7 @@ export const CloseButton = styled(Dialog.Close)`
 export const ConfirmContainer = styled.div<{ bgColor?: string, borderColor?: string }>`
   background: ${({ bgColor }) => bgColor ? bgColor : '#fef2f2'};
   border: 1px solid ${({ borderColor }) => borderColor ? borderColor : '#fecaca'};
-  padding: 0.75rem 1rem;
+  padding: 0.75rem 1rem 0.5rem;
   border-radius: 6px;
   display: flex;
   justify-content: space-between;
@@ -289,6 +307,7 @@ export const CancelBtn = styled.button`
   border: none;
   padding: 0.4rem 0.75rem;
   border-radius: 4px;
+  border: 1px solid #d4d4d8;
   margin-right: 0.5rem;
   cursor: pointer;
 

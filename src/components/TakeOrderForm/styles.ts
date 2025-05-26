@@ -33,6 +33,7 @@ export const FormStyled = styled.form`
 		flex-direction: row;
 		width: 100%;
 		gap: 0.5rem;
+		margin: 0.5rem 0;
 
 		#takeon-button {
 			background: #10b981; 

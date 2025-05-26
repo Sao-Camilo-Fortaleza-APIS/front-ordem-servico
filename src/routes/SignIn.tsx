@@ -86,7 +86,7 @@ export function SignIn() {
     return (
         <Container>
             <ContainerImage>
-                <img src="/assets/logo_horizontal.png" alt="" />
+                <img src="/assets/petala_cruz.png" alt="" />
             </ContainerImage>
 
             <SignInForm>

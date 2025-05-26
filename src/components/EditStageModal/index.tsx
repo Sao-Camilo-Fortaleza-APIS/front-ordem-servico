@@ -6,8 +6,8 @@ import { useNavigate } from 'react-router-dom';
 import { toast } from 'react-toastify';
 import { useHistoryData } from '../../hooks/useHistoryData';
 import api from '../../services/api';
-import { Button, ButtonRow, CloseButton, Content, DivColumn, DivRow, Label, Overlay, Title } from '../Report/styles';
-import { Select } from '../TransferOrderModal/styles';
+import { ButtonRow, CloseButton, Content, DivColumn, DivRow, Label, Overlay, Title } from '../Report/styles';
+import { Button, Select } from '../TransferOrderModal/styles';
 
 interface EditStageModalProps {
   open: boolean;
