@@ -99,6 +99,7 @@ export function PendingValidationModal({ open, onOpenChange, data, requester }: 
         } else {
             if (!satisfactionSelected) {
                 setWarningSatisfaction('Selecione uma opção de satisfação')
+                setLoading(false)
                 return
             }
             try {
