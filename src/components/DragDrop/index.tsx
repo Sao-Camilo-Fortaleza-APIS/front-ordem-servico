@@ -1,6 +1,7 @@
 import Cookies from "js-cookie";
-import { Loader2, Upload } from "lucide-react";
+import { Loader2, Upload, X } from "lucide-react";
 import { ChangeEvent, ComponentProps, DragEvent, MouseEvent, useState } from "react";
+import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useHistoryData } from "../../hooks/useHistoryData";
 import api from "../../services/api";
@@ -12,8 +13,11 @@ interface DragDropProps extends UploadModalProps, ComponentProps<'div'> { }
 
 export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragDropProps) {
     const { getHistory } = useHistoryData()
+    const { pathname } = useLocation()
+
     const userLogged = Cookies.get('user')
-    const [userConfirmation, setUserConfirmation] = useState<string | undefined>(userLogged)
+    const [userConfirmation, setUserConfirmation] = useState<string | undefined>(pathname.includes('historico') ? '' : userLogged)
+    const nm_user = pathname.includes('historico') ? userConfirmation : userLogged
 
     const [_, setDragOver] = useState(false)
     const [files, setFiles] = useState<FileList | null>(null)
@@ -57,10 +61,9 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
         e?.preventDefault()
         setIsLoading(true)
 
-        const nm_user = userLogged ? userLogged : userConfirmation
         if (!nm_user) {
             setIsLoading(false)
-            toast.error('Usuário não encontrado')
+            toast.error('Usuário não encontrado, informe um usuário')
             return
         }
         if (!numberOrder) {
@@ -117,7 +120,7 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
 
     }
 
-    const isDisabled = !files || files.length === 0 || userConfirmation === '' || isLoading
+    const isDisabled = !files || files.length === 0 || isLoading
 
     return (
         <>
@@ -149,7 +152,14 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
                 <FilePreview>
                     <DivRow>
                         {Array.from(files).map((file, index) => (
-                            <span key={index} style={{ textAlign: 'start' }}>Arquivo selecionado: {file.name}</span>
+                            <div key={index} style={{ textAlign: 'start', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
+                                Arquivo selecionado: {file.name}
+                                <span onClick={() => setFiles(null)}
+                                    style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', color: '#ef4444' }} >
+                                    <X size={20} />
+                                    Descartar
+                                </span>
+                            </div>
                         ))}
                     </DivRow>
 
@@ -160,7 +170,7 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
                             <Input
                                 value={userConfirmation}
                                 onChange={(e) => setUserConfirmation(e.target.value)}
-                                disabled={userLogged !== undefined || isDisabled}
+                                disabled={isDisabled || !pathname.includes('historico')}
                                 type="text"
                                 autoComplete="off"
                                 required
