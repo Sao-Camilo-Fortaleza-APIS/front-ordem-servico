@@ -1,10 +1,11 @@
 import Cookies from "js-cookie";
 import { Loader2, Upload, X } from "lucide-react";
-import { ChangeEvent, ComponentProps, DragEvent, MouseEvent, useState } from "react";
+import { ChangeEvent, ComponentProps, DragEvent, MouseEvent, useRef, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useHistoryData } from "../../hooks/useHistoryData";
 import api from "../../services/api";
+import { ALLOWED_EXTENSIONS, ALLOWED_MIME_TYPES, validateFiles } from "../../utils/validate-file";
 import { Button, DivColumn, DivRow, Input, Label } from "../Report/styles";
 import { UploadModalProps } from "../UploadModal";
 import { DropContainer, FilePreview, HiddenInput } from "../UploadModal/styles";
@@ -16,11 +17,14 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
     const { pathname } = useLocation()
 
     const userLogged = Cookies.get('user')
-    const [userConfirmation, setUserConfirmation] = useState<string | undefined>(pathname.includes('historico') ? '' : userLogged)
-    const nm_user = pathname.includes('historico') ? userConfirmation : userLogged
+    const pathsToCheck = ['/historico', '/ajuste/success/']
+    const mustBeWithoutLogin = pathsToCheck.some(path => pathname.includes(path))
+    const [userConfirmation, setUserConfirmation] = useState<string | undefined>(mustBeWithoutLogin ? '' : userLogged)
+    const nm_user = mustBeWithoutLogin ? userConfirmation : userLogged
 
+    const fileInputRef = useRef<HTMLInputElement | null>(null)
     const [_, setDragOver] = useState(false)
-    const [files, setFiles] = useState<FileList | null>(null)
+    const [files, setFiles] = useState<File[] | null>(null)
     const [isLoading, setIsLoading] = useState(false)
 
     const handleDrop = (e: DragEvent<HTMLDivElement>) => {
@@ -28,7 +32,12 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
         setDragOver(false)
         const droppedFiles = e.dataTransfer.files
         if (droppedFiles.length > 0) {
-            setFiles(droppedFiles)
+            const valid = validateFiles(droppedFiles)
+            if (valid.length > 0) {
+                setFiles(valid)
+            } else {
+                e.dataTransfer.clearData
+            }
         }
     }
 
@@ -42,9 +51,15 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
     }
 
     const handleFileSelect = (e: ChangeEvent<HTMLInputElement>) => {
+        if (!e.target.files) return
+
         if (e.target.files) {
-            const selectedFiles = e.target.files
-            setFiles(selectedFiles)
+            const valid = validateFiles(e.target.files)
+            if (valid.length > 0) {
+                setFiles(valid)
+            } else {
+                e.target.value = ''
+            }
         }
     }
 
@@ -83,7 +98,7 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
         formData.append('nm_user', nm_user)
         formData.append('archive', file)
 
-        const loadingToast = toast.loading('Anexando arquivo...')
+        const loadingToast = toast.loading('Anexando arquivo, aguarde...')
         try {
             await api
                 .post('/post/archive',
@@ -113,20 +128,23 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
                 render: `${(error as any)?.response?.data?.message || "Erro ao enviar o anexo"}`,
                 type: 'error',
                 isLoading: false,
-                autoClose: 2000,
+                autoClose: 8000,
+                pauseOnHover: true,
             })
             return
         }
 
     }
-
-    const isDisabled = !files || files.length === 0 || isLoading
+    const accept = [...ALLOWED_EXTENSIONS.map(ext => `.${ext}`), ...ALLOWED_MIME_TYPES].join(',')
+    const isDisabled = files?.length === 0 || isLoading
 
     return (
         <>
             <HiddenInput
                 id='fileInput'
+                ref={fileInputRef}
                 type="file"
+                accept={accept}
                 onChange={handleFileSelect}
             />
 
@@ -145,22 +163,33 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
                     <Upload size={20} /> Anexar arquivo
                 </Button>
 
-                <p>Arraste e solte os arquivos aqui ou clique para selecionar</p>
+                <p>Arraste e solte os arquivos aqui ou clique para selecionar.</p><p><b>Tipos permitidos:</b> {ALLOWED_EXTENSIONS.join(', ')}</p>
             </DropContainer >
 
             {files && (
                 <FilePreview>
                     <DivRow>
-                        {Array.from(files).map((file, index) => (
-                            <div key={index} style={{ textAlign: 'start', display: 'flex', alignItems: 'center', gap: '0.5rem' }}>
-                                Arquivo selecionado: {file.name}
-                                <span onClick={() => setFiles(null)}
-                                    style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', color: '#ef4444' }} >
-                                    <X size={20} />
-                                    Descartar
-                                </span>
-                            </div>
-                        ))}
+                        {Array.from(files).map((file, index) => {
+                            const isImage = file.type.startsWith('image/')
+                            const fileURL = URL.createObjectURL(file)
+                            return (
+                                <div key={index} style={{ textAlign: 'start', display: 'flex', flexDirection: 'column', alignItems: 'start', gap: '0.5rem' }}>
+                                    <div style={{ display: 'flex', justifyContent: 'flex-start', gap: '0.25rem' }}>
+                                        <strong>Arquivo: {file.name} ({file.size / 1024 > 1024 ? `${(file.size / 1024 / 1024).toFixed()} MB` : `${(file.size / 1024).toFixed()} KB`})</strong>
+                                        <p
+                                            onClick={(e) => {
+                                                setFiles(null)
+                                                fileInputRef.current && (fileInputRef.current.value = '')
+                                            }}
+                                            style={{ display: 'flex', alignItems: 'center', gap: '0.25rem', cursor: 'pointer', color: '#ef4444' }} >
+                                            <X size={20} />
+                                            Descartar
+                                        </p>
+                                    </div>
+                                    {isImage && (<img src={fileURL} alt={file.name} style={{ maxWidth: '200px', aspectRatio: '16 / 9', borderRadius: 8 }} />)}
+                                </div>
+                            )
+                        })}
                     </DivRow>
 
                     <DivRow style={{ alignItems: 'flex-end', justifyContent: 'flex-end', width: '100%' }}>
@@ -170,7 +199,7 @@ export function DragDrop({ numberOrder, onOpenChange, open, colorScheme }: DragD
                             <Input
                                 value={userConfirmation}
                                 onChange={(e) => setUserConfirmation(e.target.value)}
-                                disabled={isDisabled || !pathname.includes('historico')}
+                                disabled={isDisabled || !mustBeWithoutLogin}
                                 type="text"
                                 autoComplete="off"
                                 required
