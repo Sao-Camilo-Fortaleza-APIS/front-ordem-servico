@@ -23,10 +23,10 @@ export function SearchByUser() {
         setSearchMade(true)
         await api.get<ApiDataProps[]>(`/get/orders/requester/${query}`)
             .then(response => {
-                setApiData(response.data)
+                setApiData(response?.data)
             })
             .catch(error => {
-                setServerError(error.response.data.message)
+                setServerError(error?.response?.data?.message)
             })
             .finally(() => setIsLoading(false))
     }
