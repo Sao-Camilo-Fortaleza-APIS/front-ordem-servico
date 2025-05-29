@@ -1,4 +1,4 @@
-import { useLocation, useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import { DragDrop } from "../../../../components/DragDrop";
 import { Header } from "../../../../components/Header";
 import { Btns } from "../../../../styles/RegisterServiceOrder.styles";
@@ -6,12 +6,9 @@ import { ContainerForm } from "../styles";
 import { Ok } from "./styles";
 
 export function AjusteOk() {
-
     const navigate = useNavigate()
     const { nr_seq_os } = useParams()
 
-    const location = useLocation()
-    const userMaiusculo = location.state?.userMaiusculo
     return (
         <ContainerForm>
             <Header />

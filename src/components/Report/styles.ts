@@ -97,6 +97,7 @@ export const Input = styled.input`
 
   :disabled {
     cursor: not-allowed;
+    background-color: #e4e4e7;
   }
 
   ::placeholder {
