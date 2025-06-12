@@ -15,6 +15,7 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover
+        stacked
         theme="light" />
       <ContainerApp>
         <Outlet />
