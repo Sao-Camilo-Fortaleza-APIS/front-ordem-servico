@@ -35,6 +35,8 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   contact?: string
   damage: string
   date_order: string
+  dt_fim_desejado: string
+  dt_inicio_previsto: string
   location: string
   group: number
   group_planej: number

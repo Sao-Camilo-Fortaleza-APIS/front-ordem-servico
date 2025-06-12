@@ -6,8 +6,9 @@ import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "..
 import { badgeStyles, DefaultBadge, StatusBadge } from "../BadgeStatus";
 
 export function AccordionOrderHeader() {
-    const { resultOrderData } = useSearch()
+    const { resultOrderData, resultHistoryData } = useSearch()
     if (!resultOrderData || Object.keys(resultOrderData).length === 0) return null // Se não houver dados, não renderiza nada
+    console.log(resultOrderData?.executor)
     return (
         <Accordion type="single" collapsible>
             <AccordionItem value={`${resultOrderData?.number}`}>
@@ -24,7 +25,7 @@ export function AccordionOrderHeader() {
                         <span className='infos'>{resultOrderData?.describe}</span>
                         <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
                             <StatusBadge status={resultOrderData?.stage} />
-                            {resultOrderData?.stage && (
+                            {resultOrderData?.stage && ( // justificativa: o Tasy pode permitir abrir OS sem estágio
                                 <DefaultBadge
                                     textColor={badgeStyles[resultOrderData?.stage].color}
                                     bgColor={badgeStyles[resultOrderData?.stage].background}
@@ -54,6 +55,19 @@ export function AccordionOrderHeader() {
                             <Phone size={18} color='#6b7280' />
                             {resultOrderData?.contact}
                         </span>
+
+                        <div style={{ width: '100%', textAlign: 'right', display: 'flex', justifyContent: 'flex-end', gap: '0.5rem' }} >
+                            {resultOrderData?.group_planej === 28
+                                && resultHistoryData.length === 0
+                                && resultOrderData?.executor === null
+                                && (<DefaultBadge
+                                    textColor={badgeStyles[resultOrderData?.stage].color}
+                                    bgColor={badgeStyles[resultOrderData?.stage].background}
+                                    borderColor={badgeStyles[resultOrderData?.stage].border}
+                                >
+                                    <h3>O atendimento dessa OS poderá ser iniciado até {convertDate(resultOrderData?.dt_inicio_previsto)}</h3>
+                                </DefaultBadge>)}
+                        </div>
                     </div>
                 </AccordionContent>
             </AccordionItem>

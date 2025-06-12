@@ -2,7 +2,6 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import React from 'react';
 import ReactDOM from 'react-dom/client';
 import { RouterProvider, createBrowserRouter } from 'react-router-dom';
-import 'react-toastify/dist/ReactToastify.min.css';
 import App from './App';
 import { AjusteOk } from './Pages/Formularios/FormAjuste/AjusteSucess';
 import { Historico } from './Pages/Formularios/Historico';

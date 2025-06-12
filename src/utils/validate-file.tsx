@@ -1,7 +1,8 @@
 import { toast } from "react-toastify"
 
-export const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'png', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'xml', 'mp4', 'txt', 'wav', 'gif', 'odt', 'ods', 'ots', 'jfif', 'zip', 'webm', 'webp']
+export const ALLOWED_EXTENSIONS = ['jpg', 'jpeg', 'pdf', 'png', 'doc', 'docx', 'xls', 'xlsx', 'csv', 'xml', 'mp4', 'txt', 'wav', 'gif', 'odt', 'ods', 'ots', 'jfif', 'zip', 'webm', 'webp']
 export const ALLOWED_MIME_TYPES = [
+    'application/pdf',
     'application/vnd.openxmlformats-officedocument.wordprocessingml.document',
     'application/vnd.ms-excel',
     'application/vnd.oasis.opendocument.text',
