@@ -1,13 +1,15 @@
-import { useNavigate, useParams } from "react-router-dom";
+import { useLocation, useNavigate, useParams } from "react-router-dom";
 import { DragDrop } from "../../../../components/DragDrop";
 import { Header } from "../../../../components/Header";
 import { Btns } from "../../../../styles/RegisterServiceOrder.styles";
+import { convertDate } from "../../../../utils/convert-date";
 import { ContainerForm } from "../styles";
 import { Ok } from "./styles";
 
 export function AjusteOk() {
     const navigate = useNavigate()
     const { nr_seq_os } = useParams()
+    const { state } = useLocation()
 
     return (
         <ContainerForm>
@@ -19,7 +21,9 @@ export function AjusteOk() {
                         <img src="https://imagepng.org/wp-content/uploads/2019/12/check-icone-2.png" alt="" height={32} />
                     </h1>
 
-                    <h3> O número da sua Ordem de serviço é: <span>{nr_seq_os}</span></h3>
+                    {state?.grupo_planej === 28
+                        ? (<h3>O atendimento da sua OS <span>{nr_seq_os}</span> poderá ser iniciado até <span>{convertDate(state.dt_inicio_previsto)}</span></h3>)
+                        : (<h3> O número da sua Ordem de serviço é: <span>{nr_seq_os}</span></h3>)}
 
                 </div>
 
