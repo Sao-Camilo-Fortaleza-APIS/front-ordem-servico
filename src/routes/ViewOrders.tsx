@@ -1,10 +1,12 @@
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { LogOut } from "lucide-react";
-import { MouseEvent } from "react";
+import { MouseEvent, useEffect } from "react";
 import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
+import { Msg } from "../components/Msg";
+import { useSocket } from "../hooks/useSocket";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
 import { OrderResponse } from "./MyOrders";
@@ -24,6 +26,14 @@ export function ViewOrders() {
   let group: string = searchParams.get('group') ?? '';
   let sector: string = searchParams.get('sector') ?? '';
   let status: string = searchParams.get('status') ?? '';
+  //const { unreadCount } = useNotification(userId)
+  // const [showNotifications, setShowNotifications] = useState(false);
+
+  /* const toggleNotifications = () => {
+    setShowNotifications((prev) => !prev);
+  }; */
+
+  const { socket } = useSocket({ user })
 
   const cachedOrders = queryClient.getQueryData(['orders', filtro, user]);
 
@@ -63,16 +73,9 @@ export function ViewOrders() {
   })
 
   // filtrar os setores baseados nas OSs retornadas por grupo caso o grupo seja selecionado, caso contrário, retorna todos os setores das OSs
-  const filteredSectors = group !== ''
-    ? Array.from(new Set(ordersResponse?.filter(order => order.group === Number(group)).map(order => order.location).sort()))
-    : Array.from(new Set(ordersResponse?.map(order => order.location).sort()))
-
-  const filteredStatusOptions = status !== ''
-    ? Array.from(new Set(ordersResponse?.filter(order => order.stage === status).map(order => order.stage).sort()))
-    : Array.from(new Set(ordersResponse?.map(order => order.stage).sort()))
-
+  const filteredSectors = group !== '' ? Array.from(new Set(ordersResponse?.filter(order => order.group === Number(group)).map(order => order.location).sort())) : Array.from(new Set(ordersResponse?.map(order => order.location).sort()))
+  const filteredStatusOptions = status !== '' ? Array.from(new Set(ordersResponse?.filter(order => order.stage === status).map(order => order.stage).sort())) : Array.from(new Set(ordersResponse?.map(order => order.stage).sort()))
   const isLoadingOrders = isFetching || !ordersResponse || filteredSectors?.length === 0 || filteredStatusOptions?.length === 0
-
   function filterByExecutor(event: MouseEvent<HTMLButtonElement>) {
     event.preventDefault()
     navigate('/ordens/minhas')
@@ -85,8 +88,20 @@ export function ViewOrders() {
     Cookies.remove('exec.token')
     Cookies.remove('user')
     queryClient.clear()
+    socket.disconnect()
     navigate('/entrar')
   }
+
+  useEffect(() => {
+    socket.on("new_notification", (data) => {
+      toast(Msg, {
+        data: { title: 'Novo histórico!', content: `${data?.message}` },
+        hideProgressBar: true,
+        style: { border: '1px solid #e4e4e7', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' },
+      })
+    })
+
+  }, [socket])
 
   return (
     <Container>
@@ -94,7 +109,17 @@ export function ViewOrders() {
         <img className="logo-horizontal" src="../assets/logo_horizontal.png" alt="Logo São Camilo" width={1000} />
         <img className="petala" src="/assets/petala_cruz.png" alt="Logo horizontal" width={56} />
 
+        <div style={{ position: "relative" }}>
+          {/* 🔔 Bell */}
+          {/*  <NotificationBell onClick={toggleNotifications} unreadCount={unreadCount} /> */}
 
+          {/* 📜 Lista de notificações */}
+          {/* {showNotifications && (
+            <div style={{ position: "absolute", top: "40px", right: 0, zIndex: 999 }}>
+              <NotificationList userId={userId} />
+            </div>
+          )} */}
+        </div>
         <div className="hero">
           <span className="user-name">{user}</span>
           <button className="logout" onClick={logout}>
