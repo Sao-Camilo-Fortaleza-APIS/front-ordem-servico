@@ -55,6 +55,7 @@ export function Order({
                     </div>
                     <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
                         <StatusBadge status={stage} />
+                        <StatusBadge status={stage} />
                     </div>
                 </div>
                 <div className='icon'>

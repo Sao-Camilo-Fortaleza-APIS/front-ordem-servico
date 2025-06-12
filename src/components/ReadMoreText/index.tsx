@@ -22,7 +22,7 @@ interface ReadMoreTextProps {
 
 export const ReadMoreText = ({ text, maxChars = 100 }: ReadMoreTextProps) => {
     const [isExpanded, setIsExpanded] = useState(false);
-    const isTooLong = text.length > maxChars;
+    const isTooLong = text?.length > maxChars;
     const displayedText = isExpanded || !isTooLong ? text : text.slice(0, maxChars) + '...';
 
     return (
