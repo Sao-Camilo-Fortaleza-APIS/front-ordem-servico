@@ -93,18 +93,36 @@ export const DialogDescription = styled(Dialog.Description)`
 export const OrderDetails = styled.div<{ color: string }>`
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: space-between;
     padding: 0.5rem 1rem;
+    width: 100%;
     
     background-color: #f4f4f5;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: 0.5rem;
     border-left: 0.5rem solid;
     border-left-color: ${props => props.color};
 
     cursor: pointer;
 
-    div:first-child {
+    position: relative;
+
+    .badge {
+        position: absolute;
+        top: 0;
+        right: 0;
+        border-radius: 0 0.5rem;
+        padding: 6px 1rem;
+        font-size: 0.875rem;
+        font-weight: 500;
+        color: #fff;
+        background-color: #f32;
+    }
+
+    .details {
+        position: relative;
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: start;
@@ -138,6 +156,7 @@ export const OrderDetails = styled.div<{ color: string }>`
     }
     div.icon {
         margin-left: 0.5rem;
+        margin-top: 1rem;
     }
     // media queries smarthphone medium
     @media (max-width: 426px) {
