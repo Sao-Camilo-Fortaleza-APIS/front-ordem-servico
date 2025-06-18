@@ -212,22 +212,22 @@ export function RegisterServiceOrder() {
 
             {/* INDISPONIBILIDADE */}
             <NmItem>
-              <p>O serviço está parado?</p>
+              <p>Quem está sendo impactado?</p>
               <div className="div" id="valores">
 
-                <label htmlFor="nao">
-                  <input type="radio" id="nao" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
-                  Não
+                <label htmlFor="apenas-eu">
+                  <input type="radio" id="apenas-eu" value='N' checked={parado == 'N'} onChange={e => setParado(e.target.value)} />
+                  Apenas eu
                 </label>
 
-                <label htmlFor="parcial">
-                  <input type="radio" id="parcial" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
-                  Parcialmente
+                <label htmlFor="algumas-pessoas">
+                  <input type="radio" id="algumas-pessoas" value='P' checked={parado == 'P'} onChange={e => setParado(e.target.value)} />
+                  Algumas pessoas
                 </label>
 
-                <label htmlFor="sim">
-                  <input type="radio" id="sim" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
-                  Sim
+                <label htmlFor="todo-setor">
+                  <input type="radio" id="todo-setor" value='S' checked={parado == 'S'} onChange={e => setParado(e.target.value)} />
+                  Todo o setor
                 </label>
 
               </div>

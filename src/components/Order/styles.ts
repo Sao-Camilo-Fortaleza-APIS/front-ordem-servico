@@ -108,18 +108,6 @@ export const OrderDetails = styled.div<{ color: string }>`
 
     position: relative;
 
-    .badge {
-        position: absolute;
-        top: 0;
-        right: 0;
-        border-radius: 0 0.5rem;
-        padding: 6px 1rem;
-        font-size: 0.875rem;
-        font-weight: 500;
-        color: #fff;
-        background-color: #f32;
-    }
-
     .details {
         position: relative;
         flex: 1;
@@ -178,4 +166,17 @@ export const OrderDetails = styled.div<{ color: string }>`
             margin-right: 0;
         }
     }
+`
+
+export const BadgeSLA = styled.span<{ isExpired: boolean }>`
+    position: absolute;
+    top: 0;
+    right: 0;
+    border-radius: 0 0.5rem;
+    padding: 6px 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: ${({ isExpired }) => isExpired ? '#ef4444' : '#3b82f6'};
+    z-index: 100;
 `

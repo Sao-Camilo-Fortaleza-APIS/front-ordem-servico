@@ -99,17 +99,20 @@ export function MyOrders() {
                                     style={{ inset: "0", padding: "0", border: "0", margin: "0", width: "100%", backgroundColor: "transparent" }}
                                 >
                                     <Order
-                                        number={order.number}
-                                        damage={order.number + ' ' + order.damage}
-                                        date_order={order.date_order}
-                                        location={order.location}
-                                        requester={order.requester}
-                                        contact={order.contact}
-                                        group={order.group}
-                                        describe={order.describe}
-                                        awaiting_validate={order.awaiting_validate}
-                                        stage={order.stage}
-                                        group_planej={order.group_planej}
+                                        number={order?.number}
+                                        damage={order?.damage}
+                                        date_order={order?.date_order}
+                                        location={order?.location}
+                                        requester={order?.requester}
+                                        contact={order?.contact}
+                                        group={order?.group}
+                                        describe={order?.describe}
+                                        awaiting_validate={order?.awaiting_validate}
+                                        stage={order?.stage}
+                                        group_planej={order?.group_planej}
+                                        dt_fim_desejado={order?.dt_fim_desejado}
+                                        dt_inicio_previsto={order?.dt_inicio_previsto}
+                                        qtd_historico={order?.qtd_historico}
                                     />
                                 </button>
                             )
