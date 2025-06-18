@@ -11,22 +11,6 @@ export const Container = styled.div`
     width: 100%;
 `;
 
-export const DialogContent = styled(Dialog.Overlay)`
-    overflow: scroll;
-    width: 100vw;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    padding: 1rem; 
-    height: 100vh; 
-    background-color: #f4f4f5; 
-    z-index: 10;
-    min-width: 320px;
-    border-left: 1px solid #4b5563;
-`;
-
 export const DialogTitle = styled(Dialog.Title)`
     font-size: 1.5rem;
     font-weight: 600;
@@ -178,5 +162,4 @@ export const BadgeSLA = styled.span<{ isExpired: boolean }>`
     font-weight: 500;
     color: #fff;
     background-color: ${({ isExpired }) => isExpired ? '#ef4444' : '#3b82f6'};
-    z-index: 100;
 `
