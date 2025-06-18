@@ -46,7 +46,7 @@ const Countdown: React.FC<CountdownProps> = ({ endTime, expiredText = 'Atrasado'
     }
 
     return (
-        <div>
+        <div style={{ display: 'flex' }}>
             <span>{timeLeft.days > 0 && `${timeLeft.days}d `}</span>
             <span>{timeLeft.hours > 0 && `${timeLeft.hours}h `}</span>
             <span>{timeLeft.minutes}m </span>

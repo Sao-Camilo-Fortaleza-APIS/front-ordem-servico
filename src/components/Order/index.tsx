@@ -1,7 +1,6 @@
 import dayjs from 'dayjs';
 import { Clock, MapPin, User } from 'lucide-react';
 import { ComponentProps } from 'react';
-import { useLocation } from 'react-router-dom';
 import { convertDate, formatStartDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
 import { badgeStyles, DefaultBadge, StatusBadge } from '../BadgeStatus';
@@ -37,8 +36,6 @@ export function Order({
     dt_fim_desejado,
     qtd_historico
 }: OrderProps) {
-    const { pathname } = useLocation()
-
     let colorType = badgeStyles[stage].border
 
     const dateToConsider = qtd_historico < 1 ? dt_inicio_previsto : dt_fim_desejado

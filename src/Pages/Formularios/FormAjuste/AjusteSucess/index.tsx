@@ -22,8 +22,12 @@ export function AjusteOk() {
                     </h1>
 
                     {state?.grupo_planej === 28
-                        ? (<h3>O atendimento da sua OS <span>{nr_seq_os}</span> poderá ser iniciado até <span>{convertDate(state.dt_inicio_previsto)}</span></h3>)
-                        : (<h3> O número da sua Ordem de serviço é: <span>{nr_seq_os}</span></h3>)}
+                        ? (
+                            <h3>O atendimento da sua OS <span>{nr_seq_os}</span> poderá ser iniciado até
+                                <br />
+                                <span>{convertDate(state.dt_inicio_previsto)}</span>
+                            </h3>
+                        ) : (<h3> O número da sua Ordem de serviço é: <span>{nr_seq_os}</span></h3>)}
 
                 </div>
 

@@ -170,9 +170,9 @@ export const OrderDetails = styled.div<{ color: string }>`
 
 export const BadgeSLA = styled.span<{ isExpired: boolean }>`
     position: absolute;
-    top: 0;
+    bottom: 0;
     right: 0;
-    border-radius: 0 0.5rem;
+    border-radius: 1rem 0 0.75rem 0;
     padding: 6px 1rem;
     font-size: 0.875rem;
     font-weight: 500;
