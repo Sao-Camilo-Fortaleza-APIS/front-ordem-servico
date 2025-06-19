@@ -72,7 +72,7 @@ const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) => {
     return (
         <ChatContainer>
             <FixedHeader>
-                <Header orderData={orderData} onBack={onBack} />
+                <Header orderData={orderData} qtd_historico={historyData?.length} onBack={onBack} />
             </FixedHeader>
             <ScrollableContent>
                 <span className='info'>Início da conversa</span>

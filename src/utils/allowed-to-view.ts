@@ -12,3 +12,8 @@ export const isAllowedToviewItem = () => {
     }
     return false
 }
+/**
+ * Uma constante com as sequências dos grupos de trabalho da TI (exceto Plantão Sobreaviso - 54)
+ * @returns number[]
+ */
+export const IT_WORKGROUPS_SEQUENCES = [21, 22, 26, 28, 29, 32, 33, 34, 35, 36, 39, 43, 44, 45]

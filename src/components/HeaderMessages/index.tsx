@@ -9,6 +9,7 @@ import { StatusBadge } from '../BadgeStatus';
 import Countdown from '../Countdown';
 import { BadgeSLA } from '../Order/styles';
 import { ReadMoreText } from '../ReadMoreText';
+import { IT_WORKGROUPS_SEQUENCES } from '../../utils/allowed-to-view';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -60,13 +61,13 @@ const BackButton = styled.button`
 
 interface HeaderProps {
   orderData: ResultOrderDataProps
+  qtd_historico: number
   onBack: () => void
 }
 
-const Header = ({ orderData, onBack }: HeaderProps) => {
-  const dateToConsider = orderData.qtd_historico < 1 ? orderData.dt_inicio_previsto : orderData.dt_fim_desejado
+const Header = ({ orderData, onBack, qtd_historico }: HeaderProps) => {
+  const dateToConsider = qtd_historico < 1 ? orderData.dt_inicio_previsto : orderData.dt_fim_desejado
   const isExpired = dayjs(dateToConsider).diff(dayjs().add(-3, 'hour'), 'minute') <= 0 ? true : false
-
 
   return (
     <HeaderContainer>
@@ -80,9 +81,11 @@ const Header = ({ orderData, onBack }: HeaderProps) => {
         <span><User2 size={18} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
         <span><MapPin size={18} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
         <span className='date'><Clock size={18} /> {convertDate(orderData.date_order)}</span>
-        <BadgeSLA isExpired={isExpired}>
-          <Countdown endTime={dateToConsider} />
-        </BadgeSLA>
+        {IT_WORKGROUPS_SEQUENCES.includes(orderData.group) && (
+          <BadgeSLA isExpired={isExpired}>
+            <Countdown endTime={dateToConsider} />
+          </BadgeSLA>
+        )}
       </div>
     </HeaderContainer>
   )
