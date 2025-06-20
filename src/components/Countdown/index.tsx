@@ -1,9 +1,9 @@
 import dayjs from 'dayjs';
-import React, { useEffect, useState } from 'react';
+import React, { ReactNode, useEffect, useState } from 'react';
 
 type CountdownProps = {
     endTime: string // passe um formato de data
-    expiredText?: string
+    expiredText?: string | ReactNode
 }
 
 type TimeLeft = {
@@ -13,12 +13,11 @@ type TimeLeft = {
 }
 
 const Countdown: React.FC<CountdownProps> = ({ endTime, expiredText = 'Atrasado' }) => {
-    let difference = 0
     const calculateTimeLeft = (): TimeLeft | null => {
         const now = dayjs().add(-3, 'hour') // retirando a hora aqui pois ele entende como GMT e não GMT -3
         const end = dayjs(endTime)
 
-        difference = end.diff(now, 'minute') //new Date(endTime).getTime() - new Date().getTime();
+        const difference = end.diff(now, 'minute')
 
         if (difference <= 0) {
             return null;
@@ -42,7 +41,7 @@ const Countdown: React.FC<CountdownProps> = ({ endTime, expiredText = 'Atrasado'
     }, [endTime, endTime]);
 
     if (!timeLeft) {
-        return <div>{expiredText}</div>;
+        return <div style={{ display: 'flex', gap: '0.25rem', alignItems: 'center' }}>{expiredText}</div>;
     }
 
     return (
