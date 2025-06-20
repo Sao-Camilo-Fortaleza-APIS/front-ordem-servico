@@ -11,22 +11,6 @@ export const Container = styled.div`
     width: 100%;
 `;
 
-export const DialogContent = styled(Dialog.Overlay)`
-    overflow: scroll;
-    width: 100vw;
-    position: fixed;
-    right: 0;
-    top: 0;
-    bottom: 0;
-    left: 0;
-    padding: 1rem; 
-    height: 100vh; 
-    background-color: #f4f4f5; 
-    z-index: 10;
-    min-width: 320px;
-    border-left: 1px solid #4b5563;
-`;
-
 export const DialogTitle = styled(Dialog.Title)`
     font-size: 1.5rem;
     font-weight: 600;
@@ -93,18 +77,24 @@ export const DialogDescription = styled(Dialog.Description)`
 export const OrderDetails = styled.div<{ color: string }>`
     display: flex;
     align-items: center;
+    flex-direction: column;
     justify-content: space-between;
     padding: 0.5rem 1rem;
+    width: 100%;
     
     background-color: #f4f4f5;
     border: none;
-    border-radius: 0.375rem;
+    border-radius: 0.5rem;
     border-left: 0.5rem solid;
     border-left-color: ${props => props.color};
 
     cursor: pointer;
 
-    div:first-child {
+    position: relative;
+
+    .details {
+        position: relative;
+        flex: 1;
         display: flex;
         flex-direction: column;
         align-items: start;
@@ -138,6 +128,7 @@ export const OrderDetails = styled.div<{ color: string }>`
     }
     div.icon {
         margin-left: 0.5rem;
+        margin-top: 1rem;
     }
     // media queries smarthphone medium
     @media (max-width: 426px) {
@@ -159,4 +150,16 @@ export const OrderDetails = styled.div<{ color: string }>`
             margin-right: 0;
         }
     }
+`
+
+export const BadgeSLA = styled.span<{ isExpired: boolean }>`
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    border-radius: 1rem 0 0.75rem 0;
+    padding: 6px 1rem;
+    font-size: 0.875rem;
+    font-weight: 500;
+    color: #fff;
+    background-color: ${({ isExpired }) => isExpired ? '#ef4444' : '#3b82f6'};
 `

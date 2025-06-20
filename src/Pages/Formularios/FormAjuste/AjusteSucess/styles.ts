@@ -22,6 +22,7 @@ export const Ok = styled.div`
         font-weight: 400;
         padding-top: 0.5rem;
         padding-bottom: 0.5rem;
+        text-align: center;
         
         >span{
             font-weight: 700;

@@ -1,10 +1,13 @@
 // src/components/Header.js
+import dayjs from 'dayjs';
 import { ArrowLeft, Clock, MapPin, User2 } from 'lucide-react';
 import styled from 'styled-components';
 import { ResultOrderDataProps } from '../../Pages/Formularios/Historico';
 import { convertDate } from '../../utils/convert-date';
 import { capitalizeFirstLetterOfWords } from '../../utils/transform-text';
 import { StatusBadge } from '../BadgeStatus';
+import Countdown from '../Countdown';
+import { BadgeSLA } from '../Order/styles';
 import { ReadMoreText } from '../ReadMoreText';
 
 const HeaderContainer = styled.div`
@@ -57,23 +60,34 @@ const BackButton = styled.button`
 
 interface HeaderProps {
   orderData: ResultOrderDataProps
+  qtd_historico: number
   onBack: () => void
 }
 
-const Header = ({ orderData, onBack }: HeaderProps) => (
-  <HeaderContainer>
-    <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
-      <BackButton onClick={onBack}><ArrowLeft size={20} />Voltar</BackButton>
-      <StatusBadge status={orderData.stage} />
-    </div>
-    <div className='header-content'>
-      <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
-      <ReadMoreText text={orderData.describe} />
-      <span><User2 size={18} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
-      <span><MapPin size={18} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
-      <span className='date'><Clock size={18} /> {convertDate(orderData.date_order)}</span>
-    </div>
-  </HeaderContainer>
-);
+const Header = ({ orderData, onBack, qtd_historico }: HeaderProps) => {
+  const dateToConsider = qtd_historico < 1 ? orderData.dt_inicio_previsto : orderData.dt_fim_desejado
+  const isExpired = dayjs(dateToConsider).diff(dayjs().add(-3, 'hour'), 'minute') <= 0 ? true : false
+
+  return (
+    <HeaderContainer>
+      <div style={{ display: "flex", alignItems: "center", justifyContent: "space-between", width: "100%" }}>
+        <BackButton onClick={onBack}><ArrowLeft size={20} />Voltar</BackButton>
+        <StatusBadge status={orderData.stage} />
+      </div>
+      <div className='header-content'>
+        <h4 className='order-title'>Ordem: {orderData.number} - {capitalizeFirstLetterOfWords(orderData.damage)}</h4>
+        <ReadMoreText text={orderData.describe} />
+        <span><User2 size={18} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
+        <span><MapPin size={18} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
+        <span className='date'><Clock size={18} /> {convertDate(orderData.date_order)}</span>
+        {orderData.group_planej === 28 && (
+          orderData?.dt_last_hist_solution && orderData.stage === 'Aguardando Validação'
+            ? (<BadgeSLA isExpired={isExpired}><Countdown endTime={dayjs(orderData?.dt_last_hist_solution).add(7, 'days').toString()} /></BadgeSLA>)
+            : (<BadgeSLA isExpired={isExpired}><Countdown endTime={dateToConsider} /></BadgeSLA>)
+        )}
+      </div>
+    </HeaderContainer>
+  )
+}
 
 export default Header;

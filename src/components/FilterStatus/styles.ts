@@ -28,6 +28,7 @@ export const PopoverContent = styled(Popover.Content)`
   gap:0.5rem;
   color: #71717a; 
   font-weight: 500;
+  z-index: 20;
 `
 
 export const CheckboxLabel = styled.label`
