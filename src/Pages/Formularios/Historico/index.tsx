@@ -43,13 +43,15 @@ export interface ResultOrderDataProps { // Cabeçalho: Essa interface é o tipo 
   describe: string
   awaiting_validate: string
   executor: string
-  qtd_historico: number
+  qtd_historico: number,
+  dt_last_hist_solution: string
 }
 
 export interface ResultHistoryDataProps { // Históricos: Essa interface é o tipo dos dados que a API retorna
   date: string
   user: string
   history: string
+  type: string
 }
 
 export function Historico() {

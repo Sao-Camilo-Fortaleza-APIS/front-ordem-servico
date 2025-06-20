@@ -113,6 +113,7 @@ export function MyOrders() {
                                         dt_fim_desejado={order?.dt_fim_desejado}
                                         dt_inicio_previsto={order?.dt_inicio_previsto}
                                         qtd_historico={order?.qtd_historico}
+                                        dt_last_hist_solution={order?.dt_last_hist_solution}
                                     />
                                 </button>
                             )

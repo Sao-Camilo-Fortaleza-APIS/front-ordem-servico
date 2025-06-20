@@ -9,7 +9,6 @@ import { StatusBadge } from '../BadgeStatus';
 import Countdown from '../Countdown';
 import { BadgeSLA } from '../Order/styles';
 import { ReadMoreText } from '../ReadMoreText';
-import { IT_WORKGROUPS_SEQUENCES } from '../../utils/allowed-to-view';
 
 const HeaderContainer = styled.div`
   display: flex;
@@ -81,10 +80,10 @@ const Header = ({ orderData, onBack, qtd_historico }: HeaderProps) => {
         <span><User2 size={18} /> {capitalizeFirstLetterOfWords(orderData.requester)} - {orderData.contact}</span>
         <span><MapPin size={18} /> {capitalizeFirstLetterOfWords(orderData.location)}</span>
         <span className='date'><Clock size={18} /> {convertDate(orderData.date_order)}</span>
-        {IT_WORKGROUPS_SEQUENCES.includes(orderData.group) && (
-          <BadgeSLA isExpired={isExpired}>
-            <Countdown endTime={dateToConsider} />
-          </BadgeSLA>
+        {orderData.group_planej === 28 && (
+          orderData?.dt_last_hist_solution && orderData.stage === 'Aguardando Validação'
+            ? (<BadgeSLA isExpired={isExpired}><Countdown endTime={dayjs(orderData?.dt_last_hist_solution).add(7, 'days').toString()} /></BadgeSLA>)
+            : (<BadgeSLA isExpired={isExpired}><Countdown endTime={dateToConsider} /></BadgeSLA>)
         )}
       </div>
     </HeaderContainer>
