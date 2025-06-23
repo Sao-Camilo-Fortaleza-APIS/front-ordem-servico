@@ -32,7 +32,6 @@ export function RegisterServiceOrder() {
   const [hasPendingOrders, setHasPendingOrders] = useState<boolean>(false)
   const [pendingOrdersPendingValidation, setPendingOrdersWaitingValidation] = useState<OrderPendingData[]>([])
   const [isLoadingUser, setIsLoadingUser] = useState(false)
-  let dt_inicio_desejado = new Date()
 
   // Tratando os dados
   // Tirando os espaços vazios e deixando o usuario em maiusculo 
@@ -87,14 +86,6 @@ export function RegisterServiceOrder() {
       setIsLoading(true)
       window.scrollTo(0, 0)
       try {
-        const dataOficial = dt_inicio_desejado.toLocaleDateString('pt-BR', {
-          day: '2-digit',
-          month: '2-digit',
-          year: 'numeric',
-          hour: '2-digit',
-          minute: '2-digit',
-          second: '2-digit'
-        })
         // console.log({ user: userMaiusculo, ajuste: ajuste, obs: obs, ramal: ramal, parado: parado, prioridade: ie_prioridade, dt: dataOficial, slec: selectedValue, seqEquipamento: seqEquipamento, equipamento: equipamento, grupoPlanejamento: grupoPlanejamento, grupoTrabalho: grupoTrabalho })
         const response = await api.post('/form/ajuste', {
           nm_usuario: `${userMaiusculo}`,
@@ -102,21 +93,28 @@ export function RegisterServiceOrder() {
           titulo_p: `${ajuste}`,
           descricao_p: `${obs}`,
           ie_parado: `${parado}`,
-          dt_inicio_desejado: `${dataOficial}`,
           nr_seq_localizacao: `${selectedValue}`,
           nr_seq_equipamento: `${equipamento?.cd_equip}`,
           nr_grupo_planej: `${equipamento?.grupo_planej}`,
           nr_grupo_trabalho: `${equipamento?.cd_group_trab}`
         })
-        const nr_seq_os = response.data
+        const { nr_seq_os, dt_inicio_previsto } = response.data
         setIsLoading(false)
         toast.success('Ordem de serviço aberta com sucesso!')
-        navigate(`/ajuste/success/${nr_seq_os}`, { state: userMaiusculo })
+        navigate(
+          `/ajuste/success/${nr_seq_os}`,
+          {
+            state: {
+              grupo_planej: equipamento?.grupo_planej,
+              dt_inicio_previsto
+            }
+          })
       }
       catch (status: any) {
         setIsLoading(false);
         const erro = status.request.status
         const request = status.request.response
+        console.log(erro)
         toast.error(request)
       }
     }

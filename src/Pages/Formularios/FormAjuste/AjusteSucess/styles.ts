@@ -21,6 +21,7 @@ export const Ok = styled.div`
     h3{
         font-weight: 400;
         padding: 0.25rem 0;
+        text-align: center;
         
         >span{
             font-weight: 700;

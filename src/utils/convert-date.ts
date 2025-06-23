@@ -23,3 +23,14 @@ export function compareDate(expiration: number): boolean {
     return false
 }
 
+export const formatStartDate = (startTime: string): string => {
+    const now = dayjs()
+    const start = dayjs(startTime)
+    const isToday = now.isSame(start, 'day')
+
+    if (isToday) {
+        return start.add(3, 'hour').format('HH:mm')
+    }
+    return start.add(3, 'hour').format('DD/MM [às] HH:mm')
+}
+
