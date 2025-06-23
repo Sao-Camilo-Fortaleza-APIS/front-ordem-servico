@@ -1,11 +1,15 @@
 import dayjs from 'dayjs';
 import Cookies from 'js-cookie';
 import { useEffect, useState } from 'react';
+import { toast } from 'react-toastify';
 import styled from 'styled-components';
+import { useHistoryData } from '../../hooks/useHistoryData';
+import { useSocket } from '../../hooks/useSocket';
 import { ResultHistoryDataProps, ResultOrderDataProps } from '../../Pages/Formularios/Historico';
 import Actions from '../Actions';
 import Header from '../HeaderMessages';
 import MessageList from '../MessageList';
+import { Msg } from '../Msg';
 
 const ChatContainer = styled.div`
   background-color: #f2f4f8;
@@ -60,10 +64,27 @@ interface ChatScreenProps {
     onBack: () => void;
 }
 
-const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) => {
+export const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) => {
     const user = Cookies.get('user') || ''
     const hasExecutor = orderData.executor !== null;
     const [lastUpdate, setLastUpdate] = useState(new Date())
+    const { socket } = useSocket({ user })
+    const { getHistory } = useHistoryData()
+
+    useEffect(() => {
+        socket.on("new_notification", (data) => {
+            if (Number(orderData.number) !== data?.order_id) {
+                toast(Msg, {
+                    data: { title: 'Novo histórico!', content: `${data?.message}` },
+                    hideProgressBar: true,
+                })
+            }
+            if (orderData.number && Number(orderData.number) === data?.order_id) {
+                getHistory(String(orderData.number))
+            }
+        })
+
+    }, [socket])
 
     useEffect(() => {
         setLastUpdate(new Date())
@@ -88,5 +109,3 @@ const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) => {
         </ChatContainer>
     );
 };
-
-export default ChatScreen;

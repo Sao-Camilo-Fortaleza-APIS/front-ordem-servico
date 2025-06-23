@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import ChatScreen from "../components/ChatScreen";
+import { ChatScreen } from "../components/ChatScreen";
 import { Loader } from "../components/Load";
 import { useSearch } from "../contexts/SearchContext";
 import { useHistoryData } from "../hooks/useHistoryData";

@@ -20,8 +20,7 @@ export const Ok = styled.div`
     }
     h3{
         font-weight: 400;
-        padding-top: 0.5rem;
-        padding-bottom: 0.5rem;
+        padding: 0.25rem 0;
         text-align: center;
         
         >span{
