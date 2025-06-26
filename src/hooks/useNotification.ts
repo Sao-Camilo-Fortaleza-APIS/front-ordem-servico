@@ -1,41 +1,61 @@
-import { useEffect, useRef, useState } from "react";
-import { Socket } from "socket.io-client";
-import { socket } from "../services/socket";
+import { useQuery } from "@tanstack/react-query";
+import { AxiosError } from "axios";
+import api from "../services/api";
+import { queryClient } from "../services/react-query";
 
-interface Notification {
-    id: number | string;
-    orderId: string;
-    message: string;
-    timestamp: string;
-    seen: boolean;
+export interface Notification {
+    ds_mensagem: string
+    ds_remetente: string
+    nr_ordem: number
+    nr_seq_notificacao: number
+    dt_mensagem: string
 }
 
-export const useNotification = (userId: number | string) => {
-    const [notifications, setNotifications] = useState<Notification[]>([])
-    const [unreadCount, setUnreadCount] = useState(0)
-    const socketRef = useRef<Socket | null>(null)
+export const useNotification = (executor: number | string) => {
 
-    useEffect(() => {
-        socketRef.current = socket
-        socket.connect()
-        socket.emit("register_user", { user_id: userId })
+    const { data: notifications, isLoading, isFetching, refetch } = useQuery({
+        queryKey: ["notifications", executor],
+        queryFn: async () => {
+            const response = await api.get(`/get/notifications/${executor}`)
+            if (!(response?.status === 200)) {
+                console.error(response)
+                throw new Error(response?.data?.message)
+            }
+            return response?.data as Notification[]
+        },
+    })
 
-        socket.on("new_notification", (notification: Notification) => {
-            setNotifications((prev) => [notification, ...prev])
-            setUnreadCount((prev) => prev + 1)
-        })
+    const markAsSeen = async (notificationIds: number[]) => {
+        try {
+            console.log("Entrou aí")
+            const markAsSeenResponse = await api.put("/put/notifications/seen", {
+                notification_id: notificationIds
+            })
 
-        /* return () => {
-            socket.disconnect()
-        } */
-    }, [userId])
+            queryClient.invalidateQueries({ queryKey: ["notifications", executor], refetchType: 'all' })
 
-    const markAsSeen = async (notificationId: number | string) => {
-        setNotifications((prev) =>
-            prev.map((n) => n.id === notificationId ? { ...n, seen: true } : n)
-        )
-        setUnreadCount(prev => Math.max(0, prev - 1))
+            console.log(markAsSeenResponse?.data?.message)
+            return markAsSeenResponse?.data?.message
+        } catch (error) {
+            console.error("Erro ao marcar como lida", error)
+            return (error as AxiosError).message
+        }
     }
 
-    return { notifications, unreadCount, markAsSeen }
+    const markAllAsSeen = async () => {
+        const unseenIds = notifications?.map((n: Notification) => n.nr_seq_notificacao)
+        console.log("unseenIds ->", unseenIds)
+        try {
+            const markAllAsSeenResponse = await api.put("/put/notifications/seen", {
+                notification_id: unseenIds
+            })
+
+            refetch()
+            console.log(markAllAsSeenResponse?.data)
+        } catch (error) {
+            return (error as AxiosError).message
+        }
+    }
+
+    return { notifications, markAsSeen, refetch, isLoading, markAllAsSeen, isFetching }
 }

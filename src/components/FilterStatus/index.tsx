@@ -1,7 +1,7 @@
 import * as Popover from "@radix-ui/react-popover"
 import { Check, Funnel } from "lucide-react"
 import { useEffect, useState } from "react"
-import { CheckboxIndicator, CheckboxLabel, CheckboxRoot, PopoverContent, TriggerButton } from "./styles"
+import { Button, CheckboxIndicator, CheckboxLabel, CheckboxRoot, PopoverContent } from "./styles"
 
 const statusOptions = [
     'Aguardando Atendimento',
@@ -59,11 +59,13 @@ export function FilterStatus({ onFilterChange }: FilterStatusProps) {
 
     return (
         <Popover.Root>
-            <TriggerButton title="Filtrar Ordens por Estágio">
-                <Funnel fill="#71717A" size={20} /> Filtros
-            </TriggerButton>
+            <Popover.Trigger asChild>
+                <Button title="Filtrar Ordens por Estágio">
+                    <Funnel fill="#71717A" size={20} /> Filtros
+                </Button>
+            </Popover.Trigger>
 
-            <PopoverContent side="left">
+            <PopoverContent side="left" sideOffset={5}>
                 <span>Filtre as Ordens por estágio</span>
                 <div>
                     <CheckboxLabel>

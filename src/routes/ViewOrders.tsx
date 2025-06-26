@@ -1,3 +1,4 @@
+import * as Popover from "@radix-ui/react-popover";
 import { keepPreviousData, useQuery, useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { LogOut } from "lucide-react";
@@ -5,7 +6,11 @@ import { MouseEvent, useEffect } from "react";
 import { Outlet, useLocation, useNavigate, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import { Filter } from "../components/Filter";
+import { Button, PopoverContent } from "../components/FilterStatus/styles";
 import { Msg } from "../components/Msg";
+import { NotificationBell } from "../components/Notification/NotificationBell";
+import { NotificationList } from "../components/Notification/NotificationList";
+import { useNotification } from "../hooks/useNotification";
 import { useSocket } from "../hooks/useSocket";
 import api from "../services/api";
 import { Container, Header } from "../styles/ViewOrders.styles";
@@ -26,12 +31,7 @@ export function ViewOrders() {
   let group: string = searchParams.get('group') ?? '';
   let sector: string = searchParams.get('sector') ?? '';
   let status: string = searchParams.get('status') ?? '';
-  //const { unreadCount } = useNotification(userId)
-  // const [showNotifications, setShowNotifications] = useState(false);
-
-  /* const toggleNotifications = () => {
-    setShowNotifications((prev) => !prev);
-  }; */
+  const { notifications } = useNotification(user)
 
   const { socket } = useSocket({ user })
 
@@ -98,7 +98,9 @@ export function ViewOrders() {
         data: { title: 'Novo histórico!', content: `${data?.message}` },
         hideProgressBar: true,
         style: { border: '1px solid #e4e4e7', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' },
+        position: 'top-center',
       })
+      queryClient.invalidateQueries({ queryKey: ["notifications", user] })
     })
 
   }, [socket])
@@ -109,19 +111,27 @@ export function ViewOrders() {
         <img className="logo-horizontal" src="../assets/logo_horizontal.png" alt="Logo São Camilo" width={1000} />
         <img className="petala" src="/assets/petala_cruz.png" alt="Logo horizontal" width={56} />
 
-        <div style={{ position: "relative" }}>
-          {/* 🔔 Bell */}
-          {/*  <NotificationBell onClick={toggleNotifications} unreadCount={unreadCount} /> */}
+        <div className="hero" style={{ display: 'flex', alignItems: 'center' }}>
 
-          {/* 📜 Lista de notificações */}
-          {/* {showNotifications && (
-            <div style={{ position: "absolute", top: "40px", right: 0, zIndex: 999 }}>
-              <NotificationList userId={userId} />
-            </div>
-          )} */}
-        </div>
-        <div className="hero">
           <span className="user-name">{user}</span>
+
+          <Popover.Root>
+            <Popover.Trigger asChild>
+              <Button title="Abrir notificações">
+                <NotificationBell unreadCount={notifications?.length ?? 0} />
+              </Button>
+            </Popover.Trigger>
+            <PopoverContent
+              side="bottom"
+              sideOffset={5}
+              align="end"
+              collisionPadding={5}
+              avoidCollisions={true}
+            >
+              <NotificationList executor={user} />
+            </PopoverContent>
+          </Popover.Root>
+
           <button className="logout" onClick={logout}>
             <LogOut className="icon" size={24} />
             Sair

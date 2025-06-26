@@ -19,7 +19,8 @@ export function Msg({ closeToast, data }: MsgNotificationProps) {
                         border: '1px', borderRadius: '0.375rem',
                         padding: '8px 16px', color: 'white',
                         backgroundColor: '#2563EB',
-                        display: 'flex'
+                        display: 'flex',
+                        gap: '0.25rem'
                     }}>
                     Ir <ArrowRight size={16} />
                 </button>

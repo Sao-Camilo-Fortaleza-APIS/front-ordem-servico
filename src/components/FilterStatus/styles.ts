@@ -2,7 +2,7 @@ import * as Checkbox from "@radix-ui/react-checkbox"
 import * as Popover from "@radix-ui/react-popover"
 import styled from 'styled-components'
 
-export const TriggerButton = styled(Popover.Trigger)`
+export const Button = styled.button`
   padding: 0.5rem;
   background-color: #D4D4D8;
   border: none;
@@ -22,6 +22,7 @@ export const PopoverContent = styled(Popover.Content)`
   padding: 1rem;
   border-radius: 0.5rem;
   min-width: 220px;
+  width: 310px;
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   display:flex;
   flex-direction: column;
@@ -29,6 +30,10 @@ export const PopoverContent = styled(Popover.Content)`
   color: #71717a; 
   font-weight: 500;
   z-index: 20;
+
+  @media (min-width: 425px) {
+    width: 400px;
+  }
 `
 
 export const CheckboxLabel = styled.label`

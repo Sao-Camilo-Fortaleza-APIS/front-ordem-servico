@@ -134,8 +134,6 @@ export const Header = styled.header`
       display: flex;
       font-weight: 400;
       font-size: 0.875rem;
-      border-right: 1px solid #a1a1aa;
-      padding: 0.5rem 0.875rem 0.5rem 0;
     }
     
     .logout {
@@ -149,6 +147,8 @@ export const Header = styled.header`
       cursor: pointer;
       background-color: transparent;
       border: none;
+      border-left: 1px solid #a1a1aa;
+      padding: 0.5rem 0 0.5rem 0.875rem;
 
       :hover {
         color: #71717a;

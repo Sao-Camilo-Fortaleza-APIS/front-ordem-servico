@@ -77,6 +77,8 @@ export const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) 
                 toast(Msg, {
                     data: { title: 'Novo histórico!', content: `${data?.message}` },
                     hideProgressBar: true,
+                    style: { border: '1px solid #e4e4e7', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' },
+                    position: 'top-center',
                 })
             }
             if (orderData.number && Number(orderData.number) === data?.order_id) {
