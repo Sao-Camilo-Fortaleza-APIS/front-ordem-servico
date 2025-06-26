@@ -1,15 +1,14 @@
-import { BellDot } from "lucide-react"
+import { Bell } from "lucide-react"
 
 interface NotificationBellProps {
     unreadCount: number
-    onClick: () => void
 }
 
-export const NotificationBell = ({ unreadCount, onClick }: NotificationBellProps) => {
+export const NotificationBell = ({ unreadCount }: NotificationBellProps) => {
 
     return (
-        <div onClick={onClick} style={{ cursor: 'pointer', position: 'relative' }}>
-            <BellDot />
+        <div style={{ cursor: 'pointer', position: 'relative' }}>
+            <Bell />
             {unreadCount > 0 && (
                 <span style={{
                     position: "absolute",
