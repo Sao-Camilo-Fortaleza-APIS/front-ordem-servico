@@ -112,7 +112,7 @@ export const NotificationList = ({ executor }: { executor: string }) => {
             </Header>
 
             <Section>
-                {notifications?.length > 0
+                {notifications && notifications?.length > 0
                     ? (notifications?.map((n: INotification) => (
                         <Notification.Root key={n.nr_seq_notificacao}>
                             <Notification.Icon icon={MessageCircleMore} className={isLoading ? `animate-pulse` : ''} />
@@ -146,7 +146,7 @@ export const NotificationList = ({ executor }: { executor: string }) => {
             </Section>
 
             <Footer>
-                <FooterButton onClick={() => markAllAsSeen()} disabled={notifications?.length < 1 && true}>
+                <FooterButton onClick={() => markAllAsSeen()} disabled={notifications && notifications?.length < 1 && true}>
                     <CheckCheck size={20} /> MARCAR TODAS COMO LIDAS
                 </FooterButton>
             </Footer>
