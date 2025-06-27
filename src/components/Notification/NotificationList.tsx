@@ -146,7 +146,7 @@ export const NotificationList = ({ executor }: { executor: string }) => {
             </Section>
 
             <Footer>
-                <FooterButton onClick={() => markAllAsSeen()} disabled={notifications?.length === 0 && true}>
+                <FooterButton onClick={() => markAllAsSeen()} disabled={notifications?.length < 1 && true}>
                     <CheckCheck size={20} /> MARCAR TODAS COMO LIDAS
                 </FooterButton>
             </Footer>
