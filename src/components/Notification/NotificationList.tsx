@@ -143,29 +143,6 @@ export const NotificationList = ({ executor }: { executor: string }) => {
 
                     </Notification.Root>
                 )))}
-
-                <Notification.Root>
-                    <Notification.Icon icon={MessageCircleMore} className={isLoading ? `animate-pulse` : ''} />
-                    <Notification.Content text={`Novo histórico Myguel na OS 78768`} className={isLoading ? `animate-pulse` : ''}>
-                        <span style={{ fontSize: '14px' }}>Como está essa demanda?</span>
-                        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                            <Notification.Footer time="12:18" />
-
-                            <Notification.Actions>
-                                <Notification.Action
-                                    text="Ver histórico"
-                                    disabled={isLoading}
-                                />
-
-                                <Notification.Action
-                                    text="Marcar como lido"
-                                    disabled={isLoading}
-                                />
-                            </Notification.Actions>
-                        </div>
-                    </Notification.Content>
-
-                </Notification.Root>
             </Section>
 
             <Footer>
