@@ -112,37 +112,37 @@ export const NotificationList = ({ executor }: { executor: string }) => {
             </Header>
 
             <Section>
-                {notifications?.length === 0 ? (
-                    <p>Sem notificações novas</p>
-                ) : (notifications?.map((n: INotification) => (
-                    <Notification.Root key={n.nr_seq_notificacao}>
-                        <Notification.Icon icon={MessageCircleMore} className={isLoading ? `animate-pulse` : ''} />
-                        <Notification.Content text={`Novo histórico ${n?.ds_remetente} na OS ${n?.nr_ordem}`} className={isLoading ? `animate-pulse` : ''}>
-                            <span style={{ fontSize: '14px' }}>{stripHtml(n.ds_mensagem).slice(0, 20) + "..."}</span>
-                            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
-                                <Notification.Footer time={formatStartDate(n.dt_mensagem)} />
+                {notifications?.length > 0
+                    ? (notifications?.map((n: INotification) => (
+                        <Notification.Root key={n.nr_seq_notificacao}>
+                            <Notification.Icon icon={MessageCircleMore} className={isLoading ? `animate-pulse` : ''} />
+                            <Notification.Content text={`Novo histórico ${n?.ds_remetente} na OS ${n?.nr_ordem}`} className={isLoading ? `animate-pulse` : ''}>
+                                <span style={{ fontSize: '14px' }}>{stripHtml(n.ds_mensagem).slice(0, 20) + "..."}</span>
+                                <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', width: '100%' }}>
+                                    <Notification.Footer time={formatStartDate(n.dt_mensagem)} />
 
-                                <Notification.Actions>
-                                    <Notification.Action
-                                        text="Ver histórico"
-                                        onClick={() => {
-                                            navigate(`/ordem/${n?.nr_ordem}`)
-                                            handleMarkAsSeen([n.nr_seq_notificacao], n.nr_ordem)
-                                        }}
-                                        disabled={isLoading}
-                                    />
+                                    <Notification.Actions>
+                                        <Notification.Action
+                                            text="Ver histórico"
+                                            onClick={() => {
+                                                navigate(`/ordem/${n?.nr_ordem}`)
+                                                handleMarkAsSeen([n.nr_seq_notificacao], n.nr_ordem)
+                                            }}
+                                            disabled={isLoading}
+                                        />
 
-                                    <Notification.Action
-                                        text="Marcar como lido"
-                                        onClick={() => handleMarkAsSeen([n.nr_seq_notificacao], n.nr_ordem)}
-                                        disabled={isLoading}
-                                    />
-                                </Notification.Actions>
-                            </div>
-                        </Notification.Content>
+                                        <Notification.Action
+                                            text="Marcar como lido"
+                                            onClick={() => handleMarkAsSeen([n.nr_seq_notificacao], n.nr_ordem)}
+                                            disabled={isLoading}
+                                        />
+                                    </Notification.Actions>
+                                </div>
+                            </Notification.Content>
 
-                    </Notification.Root>
-                )))}
+                        </Notification.Root>
+                    )))
+                    : (<p>Sem notificações novas</p>)}
             </Section>
 
             <Footer>
