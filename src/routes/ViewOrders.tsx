@@ -95,7 +95,7 @@ export function ViewOrders() {
   useEffect(() => {
     socket.on("new_notification", (data) => {
       toast(Msg, {
-        data: { title: 'Novo histórico!', content: `${data?.message}` },
+        data: { title: 'Novo histórico!', content: `${data?.message}`, orderId: data?.order_id },
         hideProgressBar: true,
         style: { border: '1px solid #e4e4e7', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' },
         position: 'top-center',

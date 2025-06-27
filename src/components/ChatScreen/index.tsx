@@ -75,7 +75,7 @@ export const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) 
         socket.on("new_notification", (data) => {
             if (Number(orderData.number) !== data?.order_id) {
                 toast(Msg, {
-                    data: { title: 'Novo histórico!', content: `${data?.message}` },
+                    data: { title: 'Novo histórico!', content: `${data?.message}`, orderId: data?.order_id },
                     hideProgressBar: true,
                     style: { border: '1px solid #e4e4e7', boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)' },
                     position: 'top-center',
@@ -83,6 +83,19 @@ export const ChatScreen = ({ orderData, onBack, historyData }: ChatScreenProps) 
             }
             if (orderData.number && Number(orderData.number) === data?.order_id) {
                 getHistory(String(orderData.number))
+                toast("Novo histórico nesta Ordem", {
+                    position: 'top-center',
+                    autoClose: 2000,
+                    hideProgressBar: true,
+                    style: {
+                        border: '1px solid #e4e4e7',
+                        boxShadow: '0 1px 2px 0 rgb(0 0 0 / 0.05)',
+                        fontSize: '0.875rem',
+                        lineHeight: 'calc(1.25 / 0.875)',
+                        fontWeight: '600',
+                        color: '#27272a'
+                    },
+                })
             }
         })
 
